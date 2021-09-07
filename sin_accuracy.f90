@@ -7,12 +7,12 @@ real(dp) :: x, alpha, beta, a, xmin, xmax
 
 N = 100
 
-!xmin = 1e-20_dp
-!xmax = 1e30_dp
-!a = 1e40_dp
 xmin = 1e-20_dp
-xmax = 1e10_dp
-a = 1e20_dp
+xmax = 1e30_dp
+a = 1e40_dp
+!xmin = 1e-20_dp
+!xmax = 1e10_dp
+!a = 1e20_dp
 
 beta = log(a) / (N-1)
 alpha = (xmax - xmin) / (exp(beta*N) - 1)
