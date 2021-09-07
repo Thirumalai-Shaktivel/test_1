@@ -10,8 +10,8 @@ real(dp) :: x, alpha, beta, a, xmin, xmax
 N = 100
 
 xmin = 1e-20_dp
-xmax = 1e30_dp
-a = 1e40_dp
+xmax = 1e10_dp
+a = 1e20_dp
 
 beta = log(a) / (N-1)
 alpha = (xmax - xmin) / (exp(beta*N) - 1)
@@ -19,7 +19,7 @@ alpha = (xmax - xmin) / (exp(beta*N) - 1)
 
 do i = 1, N+1
     x = alpha * (exp(beta*(i-1)) - 1) + xmin
-    print "(es23.16, '   ', es23.16)", x, sin(x)
+    print "(es23.16, '   ', es23.16)", x, dsin(x)
 end do
 
 contains
@@ -91,15 +91,6 @@ real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
 real(dp) :: z
 z = x*x
 res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
-end function
-
-elemental real(sp) function ssin(x) result(r)
-real(sp), intent(in) :: x
-real(sp) :: y
-real(dp) :: tmp, x2
-x2 = x
-tmp = dsin(x2)
-r = tmp
 end function
 
 end program
