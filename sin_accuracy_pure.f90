@@ -78,7 +78,6 @@ end function
 elemental real(dp) function dsin(x) result(r)
 real(dp), intent(in) :: x
 real(dp) :: y
-integer :: n
 y = modulo(x, 2*pi)
 y = min(y, pi - y)
 y = max(y, -pi - y)
@@ -89,7 +88,6 @@ end function
 elemental real(dp) function dsin2(x) result(r)
 real(dp), intent(in) :: x
 real(dp) :: y
-integer :: n
 y = modulo_2pi(x)
 y = min(y, pi - y)
 y = max(y, -pi - y)
