@@ -6,13 +6,6 @@ real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 
 contains
 
-pure subroutine renormalize(zh, zl, xh, xl)
-real(dp), intent(out) :: zh, zl
-real(dp), intent(in) :: xh, xl
-zh = xh+xl
-zl = xh-zh+xl
-end subroutine
-
 pure subroutine split(zh, zl, xh)
 real(dp), intent(out) :: zh, zl
 real(dp), intent(in) :: xh
