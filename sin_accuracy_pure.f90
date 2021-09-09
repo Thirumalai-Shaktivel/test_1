@@ -115,8 +115,7 @@ pure real(dp) function dd_add1(xh, yh, yl) result(r)
 real(dp), intent(in) :: xh, yh, yl
 real(dp) :: zh, zl
 call renormalize(zh, zl, xh, yh)
-zl = zl+yl
-r = zh+zl
+r = zh+(zl+yl)
 end function
 
 pure subroutine renormalize(zh, zl, xh, xl)
