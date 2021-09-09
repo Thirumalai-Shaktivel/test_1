@@ -46,11 +46,15 @@ end function
 real(dp) function dsin2(x) result(r)
 real(dp), intent(in) :: x
 real(dp) :: y
-y = modulo_2pi(x)
-y = min(y, pi - y)
-y = max(y, -pi - y)
-y = min(y, pi - y)
-r = kernel_dsin(y)
+if (abs(x) < pi/2) then
+    r = kernel_dsin(x)
+else
+    y = modulo_2pi(x)
+    y = min(y, pi - y)
+    y = max(y, -pi - y)
+    y = min(y, pi - y)
+    r = kernel_dsin(y)
+end if
 end function
 
 ! Accurate on [-pi/2,pi/2] to about 1e-16
