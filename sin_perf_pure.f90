@@ -94,8 +94,6 @@ real(dp), parameter :: yl = 2.4492935982947064e-16_dp ! 2*pi (low)
 real(dp), parameter :: v1 =  6.2831853628158569_dp
 real(dp), parameter :: v2 = -5.5636270701597823e-8_dp
 call split(u1, u2, xh)
-!call split(v1, v2, yh)
-!print "(es23.16, '  ', es23.16)", v1, v2
 zh0 = xh*yh
 zl0 = (((u1*v1-zh0)+(u1*v2))+(u2*v1))+(u2*v2)
 zl0 = zl0 + xh*yl
@@ -116,7 +114,7 @@ real(dp), parameter :: c = 2**27+1 ! = 134217729._dp
 real(dp), volatile :: up
 up = xh*c
 zh = (xh-up)
-zh = zh + up
+zh = zh+up
 zl = xh-zh
 end subroutine
 
