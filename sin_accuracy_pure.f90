@@ -139,9 +139,9 @@ pure subroutine dd_mul(zh, zl, xh, xl, yh, yl)
 real(dp), intent(out) :: zh, zl
 real(dp), intent(in) :: xh, xl, yh, yl
 real(dp) :: zh0, zl0, u1, u2, v1, v2
-zh0 = xh*yh;
 call split(u1, u2, xh, xl)
 call split(v1, v2, yh, yl)
+zh0 = xh*yh
 zl0 = (((u1*v1-zh0)+(u1*v2))+(u2*v1))+(u2*v2)
 zl0 = zl0 + xh*yl + xl*yh
 call renormalize(zh, zl, zh0, zl0)
