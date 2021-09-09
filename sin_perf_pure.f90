@@ -1,6 +1,6 @@
 program sin_perf_pure
 use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64
-use b, only: modulo_2pi
+use b, only: dd_mul, dd_add1
 implicit none
 
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
@@ -67,6 +67,30 @@ real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
 real(dp) :: z
 z = x*x
 res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
+end function
+
+elemental integer(8) function floor2(x) result(r)
+real(dp), intent(in) :: x
+if (x >= 0) then
+    r = x
+else
+    r = x-1
+end if
+end function
+
+pure real(dp) function modulo_2pi(xh) result(zh)
+real(dp), intent(in) :: xh
+integer(8) :: N
+real(dp) :: yh, yl, zl
+if (abs(xh) < 1e16) then
+    yh = 6.283185307179586_dp ! 2*pi (high)
+    yl = 2.4492935982947064e-16_dp ! 2*pi (low)
+    N = floor2(xh/yh)
+    call dd_mul(zh, zl, -real(N,dp), 0._dp, yh, yl)
+    zh = dd_add1(xh, zh, zl)
+else
+    error stop "unsupported range"
+end if
 end function
 
 end program
