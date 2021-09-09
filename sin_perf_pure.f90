@@ -85,10 +85,12 @@ call renormalize(zh, zl, xh, yh)
 r = zh+(zl+yl)
 end function
 
-subroutine dd_mul(zh, zl, xh, yh, yl)
+subroutine dd_mul(zh, zl, xh)
 real(dp), intent(out) :: zh, zl
-real(dp), intent(in) :: xh, yh, yl
+real(dp), intent(in) :: xh
 real(dp) :: zh0, zl0, u1, u2, v1, v2
+real(dp), parameter :: yh = 6.283185307179586_dp ! 2*pi (high)
+real(dp), parameter :: yl = 2.4492935982947064e-16_dp ! 2*pi (low)
 call split(u1, u2, xh)
 call split(v1, v2, yh)
 zh0 = xh*yh
@@ -121,9 +123,8 @@ integer(8) :: N
 real(dp) :: yh, yl, zl
 if (abs(xh) < 1e16) then
     yh = 6.283185307179586_dp ! 2*pi (high)
-    yl = 2.4492935982947064e-16_dp ! 2*pi (low)
     N = floor2(xh/yh)
-    call dd_mul(zh, zl, -real(N,dp), yh, yl)
+    call dd_mul(zh, zl, -real(N,dp))
     zh = dd_add1(xh, zh, zl)
 else
     error stop "unsupported range"
