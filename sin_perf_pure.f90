@@ -88,11 +88,14 @@ end function
 subroutine dd_mul(zh, zl, xh)
 real(dp), intent(out) :: zh, zl
 real(dp), intent(in) :: xh
-real(dp) :: zh0, zl0, u1, u2, v1, v2
+real(dp) :: zh0, zl0, u1, u2
 real(dp), parameter :: yh = 6.283185307179586_dp ! 2*pi (high)
 real(dp), parameter :: yl = 2.4492935982947064e-16_dp ! 2*pi (low)
+real(dp), parameter :: v1 =  6.2831853628158569_dp
+real(dp), parameter :: v2 = -5.5636270701597823e-8_dp
 call split(u1, u2, xh)
-call split(v1, v2, yh)
+!call split(v1, v2, yh)
+!print "(es23.16, '  ', es23.16)", v1, v2
 zh0 = xh*yh
 zl0 = (((u1*v1-zh0)+(u1*v2))+(u2*v1))+(u2*v2)
 zl0 = zl0 + xh*yl
