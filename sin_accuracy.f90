@@ -20,6 +20,6 @@ alpha = (xmax - xmin) / (exp(beta*N) - 1)
 
 do i = 1, N+1
     x = alpha * (exp(beta*(i-1)) - 1) + xmin
-    print "(es23.16, '   ', es23.16)", x, sin(x)
+    print "(es23.16e3, '   ', es23.16)", x, sin(x)
 end do
 end program
