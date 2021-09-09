@@ -1,6 +1,6 @@
 program sin_perf_pure
 use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64
-use b, only: dd_mul, renormalize
+use b, only: split, renormalize
 implicit none
 
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
@@ -84,6 +84,18 @@ real(dp) :: zh, zl
 call renormalize(zh, zl, xh, yh)
 r = zh+(zl+yl)
 end function
+
+pure subroutine dd_mul(zh, zl, xh, xl, yh, yl)
+real(dp), intent(out) :: zh, zl
+real(dp), intent(in) :: xh, xl, yh, yl
+real(dp) :: zh0, zl0, u1, u2, v1, v2
+call split(u1, u2, xh)
+call split(v1, v2, yh)
+zh0 = xh*yh
+zl0 = (((u1*v1-zh0)+(u1*v2))+(u2*v1))+(u2*v2)
+zl0 = zl0 + xh*yl + xl*yh
+call renormalize(zh, zl, zh0, zl0)
+end subroutine
 
 pure real(dp) function modulo_2pi(xh) result(zh)
 real(dp), intent(in) :: xh
