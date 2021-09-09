@@ -19,29 +19,10 @@ alpha = (xmax - xmin) / (exp(beta*N) - 1)
 
 do i = 1, N+1
     x = alpha * (exp(beta*(i-1)) - 1) + xmin
-    print "(es23.16, '   ', es23.16)", x, dsin2(x)
+    print "(es23.16, '   ', es25.16e3, '   ', es25.16e3)", x, dsin2(x), dsin1(x)
 end do
 
 contains
-
-
-pure real(dp) function abs(x) result(r)
-real(dp), intent(in) :: x
-if (x >= 0) then
-    r = x
-else
-    r = -x
-end if
-end function
-
-elemental integer function floor(x) result(r)
-real(dp), intent(in) :: x
-if (x >= 0) then
-    r = x
-else
-    r = x-1
-end if
-end function
 
 elemental integer(8) function floor2(x) result(r)
 real(dp), intent(in) :: x
@@ -52,30 +33,8 @@ else
 end if
 end function
 
-elemental real(dp) function modulo(x, y) result(r)
-real(dp), intent(in) :: x, y
-r = x-floor(x/y)*y
-end function
 
-elemental real(dp) function min(x, y) result(r)
-real(dp), intent(in) :: x, y
-if (x < y) then
-    r = x
-else
-    r = y
-end if
-end function
-
-elemental real(dp) function max(x, y) result(r)
-real(dp), intent(in) :: x, y
-if (x > y) then
-    r = x
-else
-    r = y
-end if
-end function
-
-elemental real(dp) function dsin(x) result(r)
+elemental real(dp) function dsin1(x) result(r)
 real(dp), intent(in) :: x
 real(dp) :: y
 y = modulo(x, 2*pi)
