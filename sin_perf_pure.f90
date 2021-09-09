@@ -1,6 +1,6 @@
 program sin_perf_pure
 use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64
-use b, only: dd_mul, dd_add1
+use b, only: dd_mul, renormalize
 implicit none
 
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
@@ -76,6 +76,13 @@ if (x >= 0) then
 else
     r = x-1
 end if
+end function
+
+pure real(dp) function dd_add1(xh, yh, yl) result(r)
+real(dp), intent(in) :: xh, yh, yl
+real(dp) :: zh, zl
+call renormalize(zh, zl, xh, yh)
+r = zh+(zl+yl)
 end function
 
 pure real(dp) function modulo_2pi(xh) result(zh)

@@ -6,13 +6,6 @@ real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 
 contains
 
-pure real(dp) function dd_add1(xh, yh, yl) result(r)
-real(dp), intent(in) :: xh, yh, yl
-real(dp) :: zh, zl
-call renormalize(zh, zl, xh, yh)
-r = zh+(zl+yl)
-end function
-
 pure subroutine renormalize(zh, zl, xh, xl)
 real(dp), intent(out) :: zh, zl
 real(dp), intent(in) :: xh, xl
