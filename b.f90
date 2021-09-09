@@ -12,7 +12,8 @@ real(dp), intent(in) :: xh
 real(dp), parameter :: c = 2**27+1 ! = 134217729._dp
 real(dp) :: up
 up = xh*c
-zh = (xh-up)+up
+zh = (xh-up)
+zh = zh + up
 zl = xh-zh
 end subroutine
 

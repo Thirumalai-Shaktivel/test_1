@@ -1,6 +1,6 @@
 program sin_perf_pure
 use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64
-use b, only: split
+!use b, only: split
 implicit none
 
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
@@ -102,6 +102,17 @@ real(dp), volatile, intent(out) :: zh, zl
 real(dp), intent(in) :: xh, xl
 zh = xh+xl
 zl = xh-zh+xl
+end subroutine
+
+subroutine split(zh, zl, xh)
+real(dp), volatile, intent(out) :: zh, zl
+real(dp), intent(in) :: xh
+real(dp), parameter :: c = 2**27+1 ! = 134217729._dp
+real(dp), volatile :: up
+up = xh*c
+zh = (xh-up)
+zh = zh + up
+zl = xh-zh
 end subroutine
 
 real(dp) function modulo_2pi(xh) result(zh)
