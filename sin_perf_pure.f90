@@ -122,14 +122,10 @@ real(dp) function modulo_2pi(xh) result(zh)
 real(dp), intent(in) :: xh
 integer(8) :: N
 real(dp) :: yh, yl, zl
-if (abs(xh) < 1e16) then
     yh = 6.283185307179586_dp ! 2*pi (high)
     N = floor2(xh/yh)
     call dd_mul(zh, zl, -real(N,dp))
     zh = dd_add1(xh, zh, zl)
-else
-    error stop "unsupported range"
-end if
 end function
 
 end program
