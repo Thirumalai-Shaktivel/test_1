@@ -5,13 +5,15 @@ implicit none
 
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 
-integer :: i, N, k, M
+integer :: i, N, Ntile, k, M, u
 real(dp) :: alpha, beta, a, xmin, xmax
 real(dp) :: t1, t2
-real(dp), allocatable :: r(:), x(:)
+real(dp), allocatable :: x(:)
+real(dp), allocatable :: r(:)
 
-N = 1024
+Ntile = 1024
 M = 100000
+N = M * Ntile
 
 allocate(r(N), x(N))
 xmin = -pi/2
@@ -23,15 +25,19 @@ call random_number(x)
 x = x*(xmax-xmin)+xmin
 
 call cpu_time(t1)
-do k = 1, M
-    do i = 1, N
+do k = 1, N, Ntile
+    do i = k, k+Ntile-1
+        r(i) = x(i)
         !r(i) = kernel_dsin(x(i))
-        r(i) = dsin2(x(i))
+        !r(i) = dsin2(x(i))
     end do
-    x = r
 end do
 call cpu_time(t2)
-print "(i4, '   ', es15.6, '   ', es15.6)", N, (t2-t1)/M, (t2-t1)/M/N
+print "(i6, '   ', es15.6)", Ntile, (t2-t1)/N
+! To prevent the compiler to optimize out the above loop
+open(newunit=u, file="log.txt", status="replace", action="write")
+write(u, *) r(1:10)
+close(u)
 
 
 contains
