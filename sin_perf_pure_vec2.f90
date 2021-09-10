@@ -90,8 +90,16 @@ real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
 real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
 real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
 real(dp) :: z(n)
-z = x*x
-R = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
+integer(i8) :: i
+do i = 1, n
+    z(i) = x(i)*x(i)
+end do
+do i = 1, n
+    R(i) = (S4+z(i)*(S5+z(i)*(S6+z(i)*(S7+z(i)*S8))))
+end do
+do i = 1, n
+    R(i) = x(i) * (S1+z(i)*(S2+z(i)*(S3+z(i)*R(i))))
+end do
 end subroutine
 
 elemental integer(8) function floor2(x) result(r)
