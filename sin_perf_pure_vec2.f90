@@ -1,5 +1,5 @@
 module sin_perf_pure_vec2
-use, intrinsic :: iso_fortran_env, only: dp => real64
+use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 implicit none
 
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
@@ -7,7 +7,7 @@ real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 contains
 
 subroutine array_copy(n, A, B)
-integer, intent(in) :: n
+integer(i8), intent(in) :: n
 real(dp), intent(in) :: A(n)
 real(dp), intent(out) :: B(n)
 B = A

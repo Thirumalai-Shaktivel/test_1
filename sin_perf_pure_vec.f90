@@ -1,12 +1,46 @@
 program sin_perf_pure_vec
-use, intrinsic :: iso_fortran_env, only: dp => real64
+use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 use sin_perf_pure_vec2, only: array_copy, pi
 implicit none
 
-integer, parameter :: sizes(*) = [ &
-    8, 16, 32, 64, 128, 1024, 1024*1024, 1024*1024*10]
+integer(i8), parameter :: sizes(*) = [ &
+    8, 16, 32, 64, 128, 256, 512, &
+    1024, & ! 1 KB
+    2 * 1024, &
+    4 * 1024, &
+    3 * 1024, &
+    6 * 1024, &
+    8 * 1024, &
+    10 * 1024, &
+    16 * 1024, &
+    32*1024, &
+    64*1024, &
+    96*1024, &
+    128*1024, &
+    196*1024, &
+    256*1024, &
+    400*1024, &
+    512*1024, &
+    600*1024, &
+    800*1024, &
+    900*1024, &
+    1024*1024, & ! 1 MB
+    1400*1024, &
+    1800*1024, &
+    2 * 1024*1024, &
+    4 * 1024*1024, &
+    8 * 1024*1024, &
+    16 * 1024*1024, & ! 16 MB
+    32 * 1024*1024, &
+    64 * 1024*1024 &
+!    128 * 1024*1024, &
+!    1024*1024*1024, & ! 1 GB
+!    2 * 1024*1024*1024, &
+!    4 * 1024*1024*1024 & ! 4 GB
+    ]
 
-integer :: i, j, N, Ntile, k, M, u
+integer :: i, j, k, M, u
+integer(i8) :: Ntile
 real(dp) :: alpha, beta, a, xmin, xmax
 real(dp) :: t1, t2
 real(dp), allocatable :: x(:)
@@ -16,24 +50,23 @@ xmin = -pi/2
 xmax = pi/2
 
 do j = 1, size(sizes)
-    Ntile = sizes(j)
-    M = 1024*100000 / Ntile
+    Ntile = sizes(j) / 8 ! Double precision (8 bytes) as array element size
+    M = 1024*10000 / Ntile
     if (M == 0) M = 1
-    N = M * Ntile
-    allocate(r(N), x(N))
+    allocate(r(Ntile), x(Ntile))
     call random_number(x)
     x = x*(xmax-xmin)+xmin
 
     call cpu_time(t1)
-    do k = 1, N, Ntile
+    do k = 1, M
         !call array_copy(Ntile, x(k:k+Ntile-1), r(k:k+Ntile-1))
-        call array_copy(Ntile, x(1:Ntile), r(1:Ntile))
+        call array_copy(Ntile, x, r)
         !r(i) = x(i)
         !r(i) = kernel_dsin(x(i))
         !r(i) = dsin2(x(i))
     end do
     call cpu_time(t2)
-    print "(i10, i10, es15.6)", Ntile, M, (t2-t1)/N
+    print "(i10, i10, es15.6)", Ntile, M, (t2-t1)/(M*Ntile)
     ! To prevent the compiler to optimize out the above loop
     open(newunit=u, file="log.txt", status="replace", action="write")
     write(u, *) r(1:10)
