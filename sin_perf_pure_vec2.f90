@@ -89,14 +89,15 @@ real(dp), parameter :: S5 = 2.7557315514280769795e-6_dp
 real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
 real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
 real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
-real(dp) :: z(n)
+real(dp) :: z
 integer(i8) :: i
 do i = 1, n
-    z(i) = x(i)*x(i)
-    R(i) = S5+z(i)*(S6+z(i)*(S7+z(i)*S8))
+    z = x(i)*x(i)
+    R(i) = S5+z*(S6+z*(S7+z*S8))
 end do
 do i = 1, n
-    R(i) = x(i) * (S1+z(i)*(S2+z(i)*(S3+z(i)*(S4+z(i)*R(i)))))
+    z = x(i)*x(i)
+    R(i) = x(i) * (S1+z*(S2+z*(S3+z*(S4+z*R(i)))))
 end do
 end subroutine
 
