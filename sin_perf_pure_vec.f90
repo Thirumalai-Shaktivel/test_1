@@ -52,7 +52,7 @@ xmax = pi/2
 
 do j = 1, size(sizes)
     Ntile = sizes(j) / 8 ! Double precision (8 bytes) as array element size
-    M = 1024*10000*3 / Ntile
+    M = 1024*10000*6 / Ntile
     if (M == 0) M = 1
     allocate(r(Ntile), x(Ntile))
     call random_number(x)
