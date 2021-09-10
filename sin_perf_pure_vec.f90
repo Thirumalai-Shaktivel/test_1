@@ -1,6 +1,7 @@
 program sin_perf_pure_vec
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
-use sin_perf_pure_vec2, only: array_copy, pi, array_kernel_sin1
+use sin_perf_pure_vec2, only: array_copy, pi, array_kernel_sin1, &
+        array_kernel_sin2
 implicit none
 
 integer(i8), parameter :: sizes(*) = [ &
@@ -61,7 +62,8 @@ do j = 1, size(sizes)
     do k = 1, M
         !call array_copy(Ntile, x(k:k+Ntile-1), r(k:k+Ntile-1))
         !call array_copy(Ntile, x, r)
-        call array_kernel_sin1(Ntile, x, r)
+        !call array_kernel_sin1(Ntile, x, r)
+        call array_kernel_sin2(Ntile, x, r)
         !r(i) = x(i)
         !r(i) = kernel_dsin(x(i))
         !r(i) = dsin2(x(i))
