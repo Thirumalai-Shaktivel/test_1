@@ -13,6 +13,16 @@ real(dp), intent(out) :: B(n)
 B = A
 end subroutine
 
+subroutine array_kernel_sin1(n, A, B)
+integer(i8), intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
+integer(i8) :: i
+do i = 1, n
+    B(i) = kernel_dsin(A(i))
+end do
+end subroutine
+
 
 elemental real(dp) function dsin1(x) result(r)
 real(dp), intent(in) :: x
