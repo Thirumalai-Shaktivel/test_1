@@ -26,7 +26,8 @@ do j = 1, size(sizes)
 
     call cpu_time(t1)
     do k = 1, N, Ntile
-        call array_copy(Ntile, x(k:k+Ntile-1), r(k:k+Ntile-1))
+        !call array_copy(Ntile, x(k:k+Ntile-1), r(k:k+Ntile-1))
+        call array_copy(Ntile, x(1:Ntile), r(1:Ntile))
         !r(i) = x(i)
         !r(i) = kernel_dsin(x(i))
         !r(i) = dsin2(x(i))
