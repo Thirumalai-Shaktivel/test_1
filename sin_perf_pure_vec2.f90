@@ -60,6 +60,11 @@ real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
 real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
 real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
 real(dp) :: z
+! Operations
+! fma: 7
+! *: 2
+! R: 1
+! W: 1
 z = x*x
 res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
 end function
