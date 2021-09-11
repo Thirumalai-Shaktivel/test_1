@@ -31,8 +31,7 @@ kernel_sin1:
         mov rax, 0
         align 16
 .main_loop:
-        ; TODO: should we use vmovapd instead of vmovaps?
-        vmovaps ymm0, [rsi+8*rax] ; x = load A(i:i+3)
+        vmovapd ymm0, [rsi+8*rax] ; x = load A(i:i+3)
         vmulpd ymm1, ymm0, ymm0   ; r = x*x
         vmovapd ymm2, ymm1        ; z = r
         vfmadd213pd ymm1, ymm15, ymm14 ; r = S7+z*S8
@@ -43,7 +42,7 @@ kernel_sin1:
         vfmadd213pd ymm1, ymm2, ymm9 ; r = S2+z*r
         vfmadd213pd ymm1, ymm2, ymm8 ; r = S1+z*r
         vmulpd ymm1, ymm1, ymm0   ; r = x*r
-        vmovaps [rdx+8*rax], ymm1 ; store B(i:i+3) = r
+        vmovapd [rdx+8*rax], ymm1 ; store B(i:i+3) = r
         add rax, 4                ; i += 4
         cmp rax, rdi
         jl .main_loop             ; jump if i < n
