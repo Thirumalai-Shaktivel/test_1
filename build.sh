@@ -6,7 +6,7 @@ set -ex
 nasm -f macho64 array_copy2c.asm -o array_copy2.o
 nasm -f macho64 array_read.asm
 nasm -f macho64 array_write.asm
-nasm -f macho64 kernel_sin1a.asm -o kernel_sin.o
+nasm -f macho64 kernel_sin1b.asm -o kernel_sin.o
 #clang -c array_copy2.c -o array_copy2.o
 
 gfortran -O3 -march=native -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
