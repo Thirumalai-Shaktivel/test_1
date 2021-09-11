@@ -1,4 +1,5 @@
 ; void array_copy2(long n, double *A, double *B);
+; n must be divisible by 4
 ; Original, simplest version
 
 section .text

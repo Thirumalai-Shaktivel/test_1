@@ -4,8 +4,9 @@ use sin_perf_pure_vec2, only: array_copy, pi, array_kernel_sin1, &
         array_kernel_sin2, array_copy2
 implicit none
 
+! The sizes must be divisible by 512 (=64 doubles)
 integer(i8), parameter :: sizes(*) = [ &
-    8, 16, 32, 64, 128, 256, 512, &
+    512, &
     1024, & ! 1 KB
     2 * 1024, &
     4 * 1024, &
@@ -50,16 +51,17 @@ real(dp), allocatable :: r(:)
 xmin = -pi/2
 xmax = pi/2
 
-Ntile = 64
-allocate(r(Ntile), x(Ntile))
-call random_number(x)
-print *, x
-print *, r
-call array_copy2(Ntile, x, r)
-print *, x
-print *, r
-deallocate(r, x)
-stop
+! Test for correctness
+!Ntile = 64
+!allocate(r(Ntile), x(Ntile))
+!call random_number(x)
+!print *, x
+!print *, r
+!call array_copy2(Ntile, x, r)
+!print *, x
+!print *, r
+!deallocate(r, x)
+!stop
 
 do j = 1, size(sizes)
     Ntile = sizes(j) / 8 ! Double precision (8 bytes) as array element size
