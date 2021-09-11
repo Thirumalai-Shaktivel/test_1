@@ -50,7 +50,7 @@ real(dp), allocatable :: r(:)
 xmin = -pi/2
 xmax = pi/2
 
-Ntile = 32
+Ntile = 64
 allocate(r(Ntile), x(Ntile))
 call random_number(x)
 print *, x
