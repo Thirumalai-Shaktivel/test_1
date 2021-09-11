@@ -1,8 +1,18 @@
 module sin_perf_pure_vec2
+use iso_c_binding, only: c_long, c_double
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 implicit none
 
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
+
+interface
+    subroutine array_copy2(n, A, B) bind(c)
+    import :: c_long, c_double
+    integer(c_long), value, intent(in) :: n
+    real(c_double), intent(in) :: A(n)
+    real(c_double), intent(out) :: B(n)
+    end subroutine
+end interface
 
 contains
 
