@@ -1,4 +1,4 @@
-; void array_copy2(long n, double *A);
+; void array_read(long n, double *A);
 ; n must be divisible by 64
 ; Loop unrolled version
 

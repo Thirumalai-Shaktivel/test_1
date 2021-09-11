@@ -18,6 +18,12 @@ interface
     integer(c_long), value, intent(in) :: n
     real(c_double), intent(in) :: A(n)
     end subroutine
+
+    subroutine array_write(n, B) bind(c)
+    import :: c_long, c_double
+    integer(c_long), value, intent(in) :: n
+    real(c_double), intent(out) :: B(n)
+    end subroutine
 end interface
 
 contains
