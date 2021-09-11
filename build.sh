@@ -3,7 +3,7 @@
 set -ex
 
 # Use macho64 for macOS, win64 for Windows and elf64 for Linux
-nasm -f macho64 array_copy2b.asm -o array_copy2.o
+nasm -f macho64 array_copy2c.asm -o array_copy2.o
 #clang -c array_copy2.c -o array_copy2.o
 
 gfortran -O3 -march=native -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
