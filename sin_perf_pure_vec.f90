@@ -35,10 +35,10 @@ integer(i8), parameter :: sizes(*) = [ &
     16 * 1024*1024, & ! 16 MB
     32 * 1024*1024, &
     64 * 1024*1024, &
-    128 * 1024*1024, &
-    1024*1024*1024, & ! 1 GB
-    2 * 1024*1024*1024, &
-    4 * 1024*1024*1024 & ! 4 GB
+    128 * 1024*1024 &
+!    1024*1024*1024, & ! 1 GB
+!    2 * 1024*1024*1024, &
+!    4 * 1024*1024*1024 & ! 4 GB
     ]
 
 integer :: i, j, k, M, u
@@ -74,9 +74,9 @@ do j = 1, size(sizes)
     call cpu_time(t1)
     do k = 1, M
         !call array_copy(Ntile, x(k:k+Ntile-1), r(k:k+Ntile-1))
-        !call array_copy2(Ntile, x, r)
+        call array_copy2(Ntile, x, r)
         !call array_read(Ntile, x)
-        call array_write(Ntile, r)
+        !call array_write(Ntile, r)
         !call array_kernel_sin1(Ntile, x, r)
         !call array_kernel_sin2(Ntile, x, r)
         !r(i) = x(i)
