@@ -50,6 +50,17 @@ real(dp), allocatable :: r(:)
 xmin = -pi/2
 xmax = pi/2
 
+Ntile = 32
+allocate(r(Ntile), x(Ntile))
+call random_number(x)
+print *, x
+print *, r
+call array_copy2(Ntile, x, r)
+print *, x
+print *, r
+deallocate(r, x)
+stop
+
 do j = 1, size(sizes)
     Ntile = sizes(j) / 8 ! Double precision (8 bytes) as array element size
     M = 1024*10000*6 / Ntile
