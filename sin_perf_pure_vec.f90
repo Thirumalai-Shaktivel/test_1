@@ -1,7 +1,8 @@
 program sin_perf_pure_vec
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 use sin_perf_pure_vec2, only: array_copy, pi, array_kernel_sin1, &
-        array_kernel_sin2, array_copy2, array_read, array_write
+        array_kernel_sin2, array_copy2, array_read, array_write, &
+        kernel_sin1
 implicit none
 
 ! The sizes must be divisible by 512 (=64 doubles)
@@ -52,16 +53,18 @@ xmin = -pi/2
 xmax = pi/2
 
 ! Test for correctness
-!Ntile = 64
-!allocate(r(Ntile), x(Ntile))
-!call random_number(x)
-!print *, x
-!print *, r
-!call array_copy2(Ntile, x, r)
-!print *, x
-!print *, r
-!deallocate(r, x)
-!stop
+Ntile = 16
+allocate(r(Ntile), x(Ntile))
+call random_number(x)
+call random_number(r)
+print *, x
+call array_kernel_sin1(Ntile, x, r)
+print *, r
+call random_number(r)
+call kernel_sin1(Ntile, x, r)
+print *, r
+deallocate(r, x)
+stop
 
 do j = 1, size(sizes)
     Ntile = sizes(j) / 8 ! Double precision (8 bytes) as array element size
