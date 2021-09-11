@@ -42,8 +42,8 @@ kernel_sin1:
         vfmadd213pd ymm1, ymm2, ymm10 ; r = S3+z*r
         vfmadd213pd ymm1, ymm2, ymm9 ; r = S2+z*r
         vfmadd213pd ymm1, ymm2, ymm8 ; r = S1+z*r
-        vmulpd ymm3, ymm1, ymm0   ; r = x*x
-        vmovaps [rdx+8*rax], ymm3 ; store B(i:i+3) = r
+        vmulpd ymm1, ymm1, ymm0   ; r = x*r
+        vmovaps [rdx+8*rax], ymm1 ; store B(i:i+3) = r
         add rax, 4                ; i += 4
         cmp rax, rdi
         jl .main_loop             ; jump if i < n
