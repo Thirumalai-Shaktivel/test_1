@@ -53,18 +53,18 @@ xmin = -pi/2
 xmax = pi/2
 
 ! Test for correctness
-Ntile = 16
-allocate(r(Ntile), x(Ntile))
-call random_number(x)
-call random_number(r)
-print *, x
-call array_kernel_sin1(Ntile, x, r)
-print *, r
-call random_number(r)
-call kernel_sin1(Ntile, x, r)
-print *, r
-deallocate(r, x)
-stop
+!Ntile = 16
+!allocate(r(Ntile), x(Ntile))
+!call random_number(x)
+!call random_number(r)
+!print *, x
+!call array_kernel_sin1(Ntile, x, r)
+!print *, r
+!call random_number(r)
+!call kernel_sin1(Ntile, x, r)
+!print *, r
+!deallocate(r, x)
+!stop
 
 do j = 1, size(sizes)
     Ntile = sizes(j) / 8 ! Double precision (8 bytes) as array element size
@@ -78,11 +78,12 @@ do j = 1, size(sizes)
     do k = 1, M
         !call array_copy(Ntile, x(k:k+Ntile-1), r(k:k+Ntile-1))
         !call array_copy2(Ntile, x, r)
+        call kernel_sin1(Ntile, x, r)
         !call array_read(Ntile, x)
         !call array_write(Ntile, r)
         !call array_kernel_sin1(Ntile, x, r)
         !call array_kernel_sin2(Ntile, x, r)
-        r = sin(x)
+        !r = sin(x)
         !r(i) = x(i)
         !r(i) = kernel_dsin(x(i))
         !r(i) = dsin2(x(i))
