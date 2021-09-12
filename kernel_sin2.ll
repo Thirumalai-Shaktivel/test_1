@@ -1,9 +1,14 @@
-; Compile to assembly with:
+; Compile to assembly with (~75 cycles / array element):
 ; clang -S kernel_sin2.ll -o -
-; To get vectorized results:
-; clang -O3 -march=native -ffast-math -funroll-loops -S kernel_sin2.ll -o -
-; This seems to get the best result:
+;
+; Scalar loop, with vfmadd213sd (~10 cycles):
+; clang -O1 -march=native -S kernel_sin2.ll -o -
+;
+; This seems to get best vectorized results (2.25 cycles):
 ; clang -O2 -march=native -S kernel_sin2.ll -o -
+;
+; Also 2.25 cycles
+; clang -O3 -march=native -ffast-math -funroll-loops -S kernel_sin2.ll -o -
 
 target triple = "x86_64-apple-macosx11.0.0"
 
