@@ -9,7 +9,7 @@ nasm -f macho64 array_write.asm
 nasm -f macho64 kernel_sin1c.asm -o kernel_sin.o
 clang -O2 -march=native -c kernel_sin2.ll -o kernel_sin.o
 clang -O3 -march=native -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
-gfortran -O3 -march=native -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
+gfortran -O3 -march=skylake -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
 #clang -c array_copy2.c -o array_copy2.o
 
 gfortran -O3 -march=native -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
