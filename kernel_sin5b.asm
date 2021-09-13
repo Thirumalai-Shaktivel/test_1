@@ -1,5 +1,6 @@
 ; void kernel_sin1(long n, double *A, double *B);
 ; Unrolled loop. ARM64 (M1)
+; Runs at 1.32 cycles per double
 
 
 .section __TEXT,__literal8,8byte_literals
