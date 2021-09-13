@@ -9,7 +9,7 @@ rm -rf sin_perf_pure_vec
 as -c array_copy3a.asm -o array_copy2.o
 as -c array_read2.asm -o array_read.o
 as -c array_write2a.asm -o array_write.o
-#as -c array_write2b.asm -o array_write.o
+as -c array_write2b.asm -o array_write.o
 #nasm -f macho64 array_read.asm
 #nasm -f macho64 array_write.asm
 #nasm -f macho64 kernel_sin1c.asm -o kernel_sin.o
