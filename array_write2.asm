@@ -10,10 +10,12 @@ _array_write:
         mul x0, x0, x9
         add x0, x0, x1
 .main_loop:
-        str x14, [x1, 0]
-        str x15, [x1, 8]
-        str x8,  [x1, 16]
-        str x7,  [x1, 24]
+        ; x1 ... pointer &B(i), we are processing B(i:i+3)
+        ; x0 ... ending condition pointer, ends when x1 == x0
+        str x2, [x1, 0]
+        str x3, [x1, 8]
+        str x4,  [x1, 16]
+        str x5,  [x1, 24]
         add x1, x1, 32
         cmp x1, x0
         b.ne	.main_loop
