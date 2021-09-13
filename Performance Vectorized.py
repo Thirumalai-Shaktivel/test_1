@@ -39,6 +39,7 @@ MB = 1024**2
 # W: 0.25   (Both `stp d0, d1, [x1]` and `str q1, [x1]` take 0.5 cycles; `stp q1, q2, [x1]` takes 1 cycle)
 # R: 0.1665 (`ldr q0, [x1]` takes 0.333)
 # *: 0.125  (`fmul.2d v0, v0, v0` takes 0.25)
+# # +: 0.125  (`fadd.2d v0, v0, v0` takes 0.25)
 #
 #cpu_freq = 2.4 * GHz
 cpu_freq = 3.2 * GHz
