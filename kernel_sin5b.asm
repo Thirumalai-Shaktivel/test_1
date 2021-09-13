@@ -75,25 +75,25 @@ _kernel_sin1:
         fmul.2d v1, v17, v0
         str q1, [x2, 0]
 
-        ldr q0, [x1, 16]
-        fmul.2d v1, v0, v0
-        mov.16b	v2, v1
-        mov.16b	v17, v14
-        fmla.2d v17, v2, v15
-        mov.16b	v18, v13
-        fmla.2d v18, v2, v17
-        mov.16b	v17, v12
-        fmla.2d v17, v2, v18
-        mov.16b	v18, v11
-        fmla.2d v18, v2, v17
-        mov.16b	v17, v10
-        fmla.2d v17, v2, v18
-        mov.16b	v18, v9
-        fmla.2d v18, v2, v17
-        mov.16b	v17, v16
-        fmla.2d v17, v2, v18
-        fmul.2d v1, v17, v0
-        str q1, [x2, 16]
+        ldr q20, [x1, 16]
+        fmul.2d v21, v20, v20
+        mov.16b	v22, v21
+        mov.16b	v23, v14
+        fmla.2d v23, v22, v15
+        mov.16b	v24, v13
+        fmla.2d v24, v22, v23
+        mov.16b	v23, v12
+        fmla.2d v23, v22, v24
+        mov.16b	v24, v11
+        fmla.2d v24, v22, v23
+        mov.16b	v23, v10
+        fmla.2d v23, v22, v24
+        mov.16b	v24, v9
+        fmla.2d v24, v22, v23
+        mov.16b	v23, v16
+        fmla.2d v23, v22, v24
+        fmul.2d v21, v23, v20
+        str q21, [x2, 16]
 
         add x1, x1, 32
         add x2, x2, 32
