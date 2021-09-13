@@ -12,7 +12,8 @@ _array_read:
         ldr d2, [x1, #16]
         ldr d3, [x1, #24]
         adds x1, x1, #32
-        cmp x1, x0
+;        cmp x1, x0
+        subs x0, x0, #4
         b.ne	.main_loop
 .epilog:
         ret
