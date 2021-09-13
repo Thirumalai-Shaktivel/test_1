@@ -12,6 +12,10 @@ _array_mul2:
         add x0, x0, x1
 .main_loop:
         ldr q0, [x1,   0]
+        fmul.2d v0, v0, v0
+        fmul.2d v0, v0, v0
+        fmul.2d v0, v0, v0
+        fmul.2d v0, v0, v0
         str q0, [x2,   0]
 
         add x1, x1, 16
