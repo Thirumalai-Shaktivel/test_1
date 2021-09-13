@@ -20,6 +20,13 @@ interface
     real(c_double), intent(out) :: B(n)
     end subroutine
 
+    subroutine array_fma2(n, A, B) bind(c)
+    import :: c_long, c_double
+    integer(c_long), value, intent(in) :: n
+    real(c_double), intent(in) :: A(n)
+    real(c_double), intent(out) :: B(n)
+    end subroutine
+
     subroutine array_read(n, A) bind(c)
     import :: c_long, c_double
     integer(c_long), value, intent(in) :: n

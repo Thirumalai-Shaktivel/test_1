@@ -15,6 +15,7 @@ as -c array_write2b.asm -o array_write.o
 as -c array_write2d.asm -o array_write.o
 as -c array_write2c.asm -o array_write.o
 as -c array_mul3a.asm -o array_mul.o
+as -c array_fma3a.asm -o array_fma.o
 #nasm -f macho64 array_read.asm
 #nasm -f macho64 array_write.asm
 #nasm -f macho64 kernel_sin1c.asm -o kernel_sin.o
@@ -32,4 +33,4 @@ gfortran -O3 -funroll-loops -ffast-math -c sin_perf_pure_vec.f90 -o sin_perf_pur
 gfortran -O3 -funroll-loops -ffast-math -flto \
     -o sin_perf_pure_vec sin_perf_pure_vec.o sin_perf_pure_vec2.o \
     kernel_sin.o \
-    array_copy2.o array_read.o array_write.o array_mul.o
+    array_copy2.o array_read.o array_write.o array_mul.o array_fma.o
