@@ -34,7 +34,7 @@ MB = 1024**2
 # https://www.techpowerup.com/cpu-specs/core-i9-10980hk.c2276
 # https://dougallj.github.io/applecpu/firestorm-simd.html
 #cpu_freq = 2.4 * GHz
-cpu_freq = 3.2 * GHz * 1.7
+cpu_freq = 3.2 * GHz
 L1 = 320 * KB
 L2 = 12 * MB
 #L3 = 16 * MB
