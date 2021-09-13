@@ -1,5 +1,7 @@
 ; void array_read(long n, double *A);
 ; Using SIMD, two doubles. ARM64 (M1)
+; Runs at 0.1665 cycles per double
+; The `ldr q1, [x1, 16]` intruction takes 0.333 cycles.
 
 .section	__TEXT,__text,regular,pure_instructions
 .globl	_array_read

@@ -1,5 +1,6 @@
 ; void array_copy2(long n, double *A, double *B);
 ; Vectorized version. ARM64 (M1)
+; Runs at about 0.32; We would expect to run at 0.25 (W).
 
 .section	__TEXT,__text,regular,pure_instructions
 .globl	_array_copy2
