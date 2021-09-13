@@ -16,11 +16,12 @@ as -c array_write2d.asm -o array_write.o
 as -c array_write2c.asm -o array_write.o
 as -c array_mul3a.asm -o array_mul.o
 as -c array_fma3a.asm -o array_fma.o
+as -c kernel_sin5a.asm -o kernel_sin.o
 #nasm -f macho64 array_read.asm
 #nasm -f macho64 array_write.asm
 #nasm -f macho64 kernel_sin1c.asm -o kernel_sin.o
 #clang -O2 -c kernel_sin2.ll -o kernel_sin.o
-clang -O3 -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
+#clang -O3 -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
 #gfortran -O3 -march=native -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
 #clang -O1 -c array_copy2.c -o array_copy2.o
 
