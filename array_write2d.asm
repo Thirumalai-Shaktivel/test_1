@@ -1,5 +1,7 @@
 ; void array_write(long n, double *B);
 ; Vectorized version, two quads at a time. ARM64 (M1)
+; The STP with Q (128 bit) registers takes 1 cycle, twice as long
+; Thus the array_write2c version is as efficient.
 
 .section	__TEXT,__text,regular,pure_instructions
 .globl	_array_write
