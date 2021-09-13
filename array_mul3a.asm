@@ -1,6 +1,6 @@
 ; void array_mul2(long n, double *A, double *B);
 ; Vectorized version. ARM64 (M1)
-; Runs at about ??; We would expect to run at 0.5 (twice 0.25 for mul).
+; Runs at 0.5; Theoretical: 4 * mul, each mul at 0.125, total 0.5
 
 .section	__TEXT,__text,regular,pure_instructions
 .globl	_array_mul2
