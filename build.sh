@@ -7,7 +7,8 @@ rm -rf sin_perf_pure_vec
 # Use macho64 for macOS, win64 for Windows and elf64 for Linux
 #nasm -f macho64 array_copy2c.asm -o array_copy2.o
 as -c array_copy3a.asm -o array_copy2.o
-as -c array_read2.asm -o array_read.o
+as -c array_read2a.asm -o array_read.o
+as -c array_read2b.asm -o array_read.o
 as -c array_write2a.asm -o array_write.o
 as -c array_write2b.asm -o array_write.o
 as -c array_write2d.asm -o array_write.o
