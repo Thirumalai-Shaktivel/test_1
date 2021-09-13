@@ -4,13 +4,14 @@ set -ex
 
 # Use macho64 for macOS, win64 for Windows and elf64 for Linux
 #nasm -f macho64 array_copy2c.asm -o array_copy2.o
+as -c array_copy3a.asm -o array_copy2.o
 #nasm -f macho64 array_read.asm
 #nasm -f macho64 array_write.asm
 #nasm -f macho64 kernel_sin1c.asm -o kernel_sin.o
 #clang -O2 -c kernel_sin2.ll -o kernel_sin.o
 clang -O3 -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
 #gfortran -O3 -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
-clang -O3 -funroll-loops -ffast-math -c array_copy2.c -o array_copy2.o
+#clang -O1 -c array_copy2.c -o array_copy2.o
 
 gfortran -O3 -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
 
