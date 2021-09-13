@@ -26,7 +26,7 @@ _kernel_sin1:
 
         adrp x11, S1@PAGE
         ldr  x12, [x11, S1@PAGEOFF]
-        dup.2d v8, x12
+        dup.2d v16, x12
 
         adrp x11, S2@PAGE
         ldr  x12, [x11, S2@PAGEOFF]
@@ -78,7 +78,7 @@ _kernel_sin1:
         ;vfmadd213pd ymm1, ymm2, ymm9 ; r = S2+z*r
         fmla.2d v1, v2, v9
         ;vfmadd213pd ymm1, ymm2, ymm8 ; r = S1+z*r
-        fmla.2d v1, v2, v8
+        fmla.2d v1, v2, v16
         ;vmulpd ymm1, ymm1, ymm0   ; r = x*r
         fmla.2d v1, v2, v0
 
