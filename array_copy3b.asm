@@ -14,15 +14,16 @@ _array_copy2:
         ldr q1, [x1,  16]
         ldr q2, [x1,  32]
         ldr q3, [x1,  48]
-        str q0, [x2,   0]
-        str q1, [x2,  16]
-        str q2, [x2,  32]
-        str q3, [x2,  48]
-
         ldr q4, [x1,  64]
+
+        str q0, [x2,   0]
         ldr q5, [x1,  80]
+        str q1, [x2,  16]
         ldr q6, [x1,  96]
+        str q2, [x2,  32]
         ldr q7, [x1, 112]
+
+        str q3, [x2,  48]
         str q4, [x2,  64]
         str q5, [x2,  80]
         str q6, [x2,  96]
