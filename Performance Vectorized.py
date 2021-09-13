@@ -57,5 +57,3 @@ show()
 # -
 
 min(sin_pure * cpu_freq)
-
-
