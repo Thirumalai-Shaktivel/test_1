@@ -18,8 +18,15 @@ _array_mul2:
         fmul.2d v0, v0, v0
         str q0, [x2,   0]
 
-        add x1, x1, 16
-        add x2, x2, 16
+        ldr q1, [x1,   16]
+        fmul.2d v1, v1, v1
+        fmul.2d v1, v1, v1
+        fmul.2d v1, v1, v1
+        fmul.2d v1, v1, v1
+        str q1, [x2,   16]
+
+        add x1, x1, 32
+        add x2, x2, 32
         cmp x1, x0
         b.ne	.main_loop
 .epilog:
