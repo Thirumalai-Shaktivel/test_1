@@ -40,6 +40,7 @@ MB = 1024**2
 # R: 0.1665 (`ldr q0, [x1]` takes 0.333)
 # *: 0.125  (`fmul.2d v0, v0, v0` takes 0.25)
 # # +: 0.125  (`fadd.2d v0, v0, v0` takes 0.25)
+# fma: 0.125  (`fmla.2d v0, v0, v0` takes 0.25)
 #
 #cpu_freq = 2.4 * GHz
 cpu_freq = 3.2 * GHz
