@@ -12,11 +12,15 @@ _array_write:
 .main_loop:
         ; x1 ... pointer &B(i), we are processing B(i:i+3)
         ; x0 ... ending condition pointer, ends when x1 == x0
-        stp x2, x3, [x1,  0]
-        stp x4, x5, [x1, 16]
-        stp x6, x7, [x1, 32]
-        stp x8, x9, [x1, 48]
-        add x1, x1, 64
+        stp d0, d1, [x1,  0]
+        stp d2, d3, [x1, 16]
+        stp d4, d5, [x1, 32]
+        stp d6, d7, [x1, 48]
+        stp d8, d9, [x1, 64]
+        stp d10, d11, [x1, 80]
+        stp d12, d13, [x1, 96]
+        stp d14, d15, [x1, 112]
+        add x1, x1, 128
         cmp x1, x0
         b.ne	.main_loop
 .epilog:
