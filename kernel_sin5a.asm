@@ -27,6 +27,34 @@ _kernel_sin1:
         adrp x11, S1@PAGE
         ldr  x12, [x11, S1@PAGEOFF]
         dup.2d v8, x12
+
+        adrp x11, S2@PAGE
+        ldr  x12, [x11, S2@PAGEOFF]
+        dup.2d v9, x12
+
+        adrp x11, S3@PAGE
+        ldr  x12, [x11, S3@PAGEOFF]
+        dup.2d v10, x12
+
+        adrp x11, S4@PAGE
+        ldr  x12, [x11, S4@PAGEOFF]
+        dup.2d v11, x12
+
+        adrp x11, S5@PAGE
+        ldr  x12, [x11, S5@PAGEOFF]
+        dup.2d v12, x12
+
+        adrp x11, S6@PAGE
+        ldr  x12, [x11, S6@PAGEOFF]
+        dup.2d v13, x12
+
+        adrp x11, S7@PAGE
+        ldr  x12, [x11, S7@PAGEOFF]
+        dup.2d v14, x12
+
+        adrp x11, S8@PAGE
+        ldr  x12, [x11, S8@PAGEOFF]
+        dup.2d v15, x12
 .main_loop:
         ;vmovapd ymm0, [rsi+8*rax] ; x = load A(i:i+3)
         ldr q0, [x1, 0]
