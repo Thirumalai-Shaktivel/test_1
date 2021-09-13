@@ -7,14 +7,14 @@ implicit none
 
 ! The sizes must be divisible by 512 (=64 doubles)
 integer(i8), parameter :: sizes(*) = [ &
-    512, &
-    1024, & ! 1 KB
-    2 * 1024, &
-    4 * 1024, &
-    3 * 1024, &
-    6 * 1024, &
-    8 * 1024, &
-    10 * 1024, &
+!    512, &
+!    1024, & ! 1 KB
+!    2 * 1024, &
+!    4 * 1024, &
+!    3 * 1024, &
+!    6 * 1024, &
+!    8 * 1024, &
+!    10 * 1024, &
     16 * 1024, &
     32*1024, &
     64*1024, &
@@ -36,14 +36,14 @@ integer(i8), parameter :: sizes(*) = [ &
     16 * 1024*1024, & ! 16 MB
     32 * 1024*1024, &
     64 * 1024*1024, &
-    128 * 1024*1024 &
-!    1024*1024*1024, & ! 1 GB
-!    2 * 1024*1024*1024, &
-!    4 * 1024*1024*1024 & ! 4 GB
+    128 * 1024*1024, &
+    1024*1024*1024, & ! 1 GB
+    2 * 1024*1024*1024, &
+    4 * 1024*1024*1024 & ! 4 GB
     ]
 
-integer :: i, j, k, M, u
-integer(i8) :: Ntile
+integer :: i, ii, j, k, M, u
+integer(i8) :: Ntile, Ntile2
 real(dp) :: alpha, beta, a, xmin, xmax
 real(dp) :: t1, t2
 real(dp), allocatable :: x(:)
@@ -74,11 +74,48 @@ do j = 1, size(sizes)
     call random_number(x)
     x = x*(xmax-xmin)+xmin
 
+    Ntile2 = 4096
+
     call cpu_time(t1)
     do k = 1, M
         !call array_copy(Ntile, x(k:k+Ntile-1), r(k:k+Ntile-1))
         !call array_copy2(Ntile, x, r)
-        call kernel_sin1(Ntile, x, r)
+        ! Non-tiled version:
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        !call kernel_sin1(Ntile, x, r)
+        !call kernel_sin1(Ntile, r, x)
+        ! Tiled version:
+        do i = 1, Ntile, Ntile2
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, x(i:i+Ntile2-1), r(i:i+Ntile2-1))
+            call kernel_sin1(Ntile2, r(i:i+Ntile2-1), x(i:i+Ntile2-1))
+        end do
         !call array_read(Ntile, x)
         !call array_write(Ntile, r)
         !call array_kernel_sin1(Ntile, x, r)
