@@ -87,7 +87,7 @@ _kernel_sin1:
         mov.16b	v17, v16
         fmla.2d v17, v2, v18
         ;vmulpd ymm1, ymm1, ymm0   ; r = x*r
-        fmla.2d v1, v17, v0
+        fmul.2d v1, v17, v0
 
         ; vmovapd [rdx+8*rax], ymm1 ; store B(i:i+3) = r
         str q1, [x2, 0]
