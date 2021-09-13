@@ -54,3 +54,8 @@ grid()
 ylim([0, 4])
 savefig("perf1.pdf")
 show()
+# -
+
+min(sin_pure * cpu_freq)
+
+
