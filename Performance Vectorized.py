@@ -36,11 +36,14 @@ MB = 1024**2
 #
 # Operation speeds Apple M1 (ARM64) per double
 #
-# W: 0.25   (Both `stp d0, d1, [x1]` and `str q1, [x1]` take 0.5 cycles; `stp q1, q2, [x1]` takes 1 cycle)
-# R: 0.1665 (`ldr q0, [x1]` takes 0.333)
+# W: 0.25 - 0.333 - 0.5   (Both `stp d0, d1, [x1]` and `str q1, [x1]` take 0.5 cycles; `stp q1, q2, [x1]` takes 1 cycle)
+# R: 0.1665 - 0.2 - 0.25 (`ldr q0, [x1]` takes 0.333)
 # *: 0.125  (`fmul.2d v0, v0, v0` takes 0.25)
 # # +: 0.125  (`fadd.2d v0, v0, v0` takes 0.25)
 # fma: 0.125  (`fmla.2d v0, v0, v0` takes 0.25)
+#
+# Note: There are two units for R, one unit for W and one unit can do both. The first number in 0.25 - 0.333 - 0.5
+# is only writing, then read/write sharing 50% of the common unit, and the last number is only the 1 unit for  W.
 #
 #cpu_freq = 2.4 * GHz
 cpu_freq = 3.2 * GHz

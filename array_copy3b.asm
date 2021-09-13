@@ -1,6 +1,10 @@
 ; void array_copy2(long n, double *A, double *B);
 ; Vectorized version. ARM64 (M1)
 ; Runs at about 0.32; We would expect to run at 0.25 (W).
+; Idea: there are 4 store/load units, two for load, one for store and one for
+; both. Assuming the "both" unit is 50% for write, then we have W: 1.5 units,
+; R: 2.5 units. The speed is then 1/1.5/2 = 0.333 cycles. For only writes we
+; get 1/2/2 = 0.25 cycles. For only reads we get 1/3/2 = 0.1667
 
 .section	__TEXT,__text,regular,pure_instructions
 .globl	_array_copy2
