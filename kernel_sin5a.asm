@@ -66,21 +66,28 @@ _kernel_sin1:
         mov.16b	v2, v1
 
         ; vfmadd213pd ymm1, ymm15, ymm14 ; r = S7+z*S8
-        fmla.2d v1, v15, v14
+        mov.16b	v17, v14
+        fmla.2d v17, v2, v15
         ;vfmadd213pd ymm1, ymm2, ymm13 ; r = S6+z*r
-        fmla.2d v1, v2, v13
+        mov.16b	v18, v13
+        fmla.2d v18, v2, v17
         ;vfmadd213pd ymm1, ymm2, ymm12 ; r = S5+z*r
-        fmla.2d v1, v2, v12
+        mov.16b	v17, v12
+        fmla.2d v17, v2, v18
         ;vfmadd213pd ymm1, ymm2, ymm11 ; r = S4+z*r
-        fmla.2d v1, v2, v11
+        mov.16b	v18, v11
+        fmla.2d v18, v2, v17
         ;vfmadd213pd ymm1, ymm2, ymm10 ; r = S3+z*r
-        fmla.2d v1, v2, v10
+        mov.16b	v17, v10
+        fmla.2d v17, v2, v18
         ;vfmadd213pd ymm1, ymm2, ymm9 ; r = S2+z*r
-        fmla.2d v1, v2, v9
+        mov.16b	v18, v9
+        fmla.2d v18, v2, v17
         ;vfmadd213pd ymm1, ymm2, ymm8 ; r = S1+z*r
-        fmla.2d v1, v2, v16
+        mov.16b	v17, v16
+        fmla.2d v17, v2, v18
         ;vmulpd ymm1, ymm1, ymm0   ; r = x*r
-        fmla.2d v1, v2, v0
+        fmla.2d v1, v17, v0
 
         ; vmovapd [rdx+8*rax], ymm1 ; store B(i:i+3) = r
         str q1, [x2, 0]
