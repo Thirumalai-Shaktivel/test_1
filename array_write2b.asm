@@ -1,5 +1,5 @@
 ; void array_write(long n, double *B);
-; Original, simplest version. ARM64 (M1)
+; Two doubles at once. ARM64 (M1)
 
 .section	__TEXT,__text,regular,pure_instructions
 .globl	_array_write
