@@ -7,6 +7,7 @@ rm -rf sin_perf_pure_vec
 # Use macho64 for macOS, win64 for Windows and elf64 for Linux
 #nasm -f macho64 array_copy2c.asm -o array_copy2.o
 as -c array_copy3a.asm -o array_copy2.o
+as -c array_read2.asm -o array_read.o
 #nasm -f macho64 array_read.asm
 #nasm -f macho64 array_write.asm
 #nasm -f macho64 kernel_sin1c.asm -o kernel_sin.o
@@ -24,4 +25,4 @@ gfortran -O3 -funroll-loops -ffast-math -c sin_perf_pure_vec.f90 -o sin_perf_pur
 gfortran -O3 -funroll-loops -ffast-math -flto \
     -o sin_perf_pure_vec sin_perf_pure_vec.o sin_perf_pure_vec2.o \
     kernel_sin.o \
-    array_copy2.o #array_read.o array_write.o
+    array_copy2.o array_read.o # array_write.o
