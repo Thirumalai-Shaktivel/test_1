@@ -44,6 +44,7 @@ MB = 1024**2
 #
 # Note: There are two units for R, one unit for W and one unit can do both. The first number in 0.25 - 0.333 - 0.5
 # is only writing, then read/write sharing 50% of the common unit, and the last number is only the 1 unit for  W.
+# Example: For array copy, we assume the unit gets used 50%, use the middle number and expect 0.333 for the peak.
 #
 #cpu_freq = 2.4 * GHz
 cpu_freq = 3.2 * GHz

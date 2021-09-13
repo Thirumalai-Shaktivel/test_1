@@ -1,3 +1,4 @@
+// Runs at 1.25 cycles per double
 void kernel_sin1(long n, double *A, double *B) {
     const double S1 = 0.9999999999999990771;
     const double S2 = -0.16666666666664811048;
