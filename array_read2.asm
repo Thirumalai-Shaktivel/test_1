@@ -12,10 +12,10 @@ _array_read:
         add x12, x1, #2
         add x13, x1, #3
 .main_loop:
-        ldr d0, [x10, x9, lsl #3]
-        ldr d1, [x11, x9, lsl #3]
-        ldr d2, [x12, x9, lsl #3]
-        ldr d3, [x13, x9, lsl #3]
+        ldr x14, [x10, x9, lsl #3]
+        ldr x15, [x11, x9, lsl #3]
+        ldr x8, [x12, x9, lsl #3]
+        ldr x7, [x13, x9, lsl #3]
         add x9, x9, #4
         cmp x9, x0
         b.ne	.main_loop
