@@ -2,6 +2,19 @@
 ; Vectorized version. ARM64 (M1)
 ; Runs at 0.5; Theoretical: 4 * fma, each fma at 0.125, total 0.5
 
+
+.section __TEXT,__literal8,8byte_literals
+.p2align 3
+
+S1: .quad 0x3feffffffffffff8 ; double 0.9999999999999990771
+S2: .quad 0xbfc55555555552b9 ; double -0.16666666666664812
+S3: .quad 0x3f8111111110208b ; double 0.0083333333332265193
+S4: .quad 0xbf2a01a019677b7b ; double -1.9841269813888535E-4
+S5: .quad 0x3ec71de371212827 ; double 2.7557315514280768E-6
+S6: .quad 0xbe5ae6315d6ba572 ; double -2.5051823583393709E-8
+S7: .quad 0x3de60de3f77343c0 ; double 1.6046585911173016E-10
+S8: .quad 0xbd69e2cff677919d ; double -7.3572396558796053E-13
+
 .section	__TEXT,__text,regular,pure_instructions
 .globl	_kernel_sin1
 .p2align	2
@@ -11,7 +24,9 @@ _kernel_sin1:
         mul x0, x0, x9
         add x0, x0, x1
 
-        ;dup.2d v1, x9
+        adrp x11, S1@PAGE
+        ldr  x12, [x11, S1@PAGEOFF]
+        dup.2d v8, x12
 .main_loop:
         ;vmovapd ymm0, [rsi+8*rax] ; x = load A(i:i+3)
         ldr q0, [x1, 0]
@@ -48,12 +63,3 @@ _kernel_sin1:
         b.ne	.main_loop
 .epilog:
         ret
-
-S1: .quad 0x3feffffffffffff8 ; double 0.9999999999999990771
-S2: .quad 0xbfc55555555552b9 ; double -0.16666666666664812
-S3: .quad 0x3f8111111110208b ; double 0.0083333333332265193
-S4: .quad 0xbf2a01a019677b7b ; double -1.9841269813888535E-4
-S5: .quad 0x3ec71de371212827 ; double 2.7557315514280768E-6
-S6: .quad 0xbe5ae6315d6ba572 ; double -2.5051823583393709E-8
-S7: .quad 0x3de60de3f77343c0 ; double 1.6046585911173016E-10
-S8: .quad 0xbd69e2cff677919d ; double -7.3572396558796053E-13
