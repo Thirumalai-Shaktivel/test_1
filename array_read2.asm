@@ -6,18 +6,16 @@
 .p2align	2
 
 _array_read:
-        mov x9, #0
-        add x10, x1, #0
-        add x11, x1, #1
-        add x12, x1, #2
-        add x13, x1, #3
+        mov x9, 8
+        mul x0, x0, x9
+        add x0, x0, x1
 .main_loop:
-        ldr x14, [x10, x9, lsl #3]
-        ldr x15, [x11, x9, lsl #3]
-        ldr x8, [x12, x9, lsl #3]
-        ldr x7, [x13, x9, lsl #3]
-        add x9, x9, #4
-        cmp x9, x0
+        ldr x14, [x1, 0]
+        ldr x15, [x1, 8]
+        ldr x8,  [x1, 16]
+        ldr x7,  [x1, 24]
+        add x1, x1, 32
+        cmp x1, x0
         b.ne	.main_loop
 .epilog:
         ret
