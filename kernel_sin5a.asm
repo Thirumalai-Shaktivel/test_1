@@ -20,10 +20,6 @@ S8: .quad 0xbd69e2cff677919d ; double -7.3572396558796053E-13
 .p2align	2
 
 _kernel_sin1:
-        mov x9, 8
-        mul x0, x0, x9
-        add x0, x0, x1
-
         adrp x11, S1@PAGE
         ldr  x12, [x11, S1@PAGEOFF]
         dup.2d v16, x12
@@ -75,7 +71,7 @@ _kernel_sin1:
         fmul.2d v1, v17, v0
         str q1, [x2], 16
 
-        cmp x1, x0
+        subs x0, x0, #2
         b.ne	.main_loop
 .epilog:
         ret
