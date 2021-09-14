@@ -38,6 +38,7 @@
     LLVM, and finally in the compiler itself. (Then it's just "fighting" the
     compiler.)
 
+* Better word for "anchor": reference benchmark
 
 Contents:
 
