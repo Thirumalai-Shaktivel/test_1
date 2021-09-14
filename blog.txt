@@ -1,0 +1,69 @@
+* Theoretical performance peak
+* We only include throughputs
+* Latency is not included, as it can be hidden
+* Depending on the CPU, if it has separate addition and multiplication units
+  (Sandy Bridge), then + and * operations are counted separately and executed
+  in parallel. For CPU (Haswell and up), the + and * operations seem to share
+  execution units (ports), so we add them together for the performance peak.
+* The maximum throughput is typically achieved by engaging all units. Typically
+  it's one operation per cycle, and if we have 4 units, its 0.25. If there are
+  2 units, its 0.5. --- this detail is not really needed.
+* ARM and Intel results
+* Graphs: Read, write, multiplication / fma, sin. Compare clang, gfortran,
+  assembly; and the theoretical peak
+* The idea is to use read/write/multiplication/fma benchmarks as anchors to
+  determine/measure the correct CPU frequency; then we can use the frequency to
+  measure the actual kernel (kernel_sin1 in our case)
+* This method is completely general, works for any CPU and does not depend on
+  low level details of the CPU operation, besides knowing how + and * and fma
+  operations are executed (whether in parallel or in sequence)
+* Write up the throughputs for the CPUs that we will use.
+* "Anchor" (find a better word) is used to calibrate our measurements /
+  detectors
+
+* Why assembly: we don't want to be using assembly. But it's great for the
+  simple benchmarks as we force the cpu to actually do the job (say only
+  reading array), as otherwise the compiler optimizes it out. Without
+  optimizaitons there are tons of ineffective instructions, so not running at
+  peak. With optimizations on, it optimizes the useless read away, so we can't
+  benchmark it. In assembly we are actually benchmarking the read.
+
+  * Great for the read / write / multiplication / fma benchmarks to use as
+    anchors --- the assembly does not change, once we trust it, we can always
+    use it as a robust "anchor". 
+  * The other reason is that we can apply the loop unrolling and rearrangement
+    by hand, no need to fight the compiler to produce the correct assembly.
+  * Sometimes it's the easiest to achieve the peak in assembly to know it's
+    possible, and then the next job is to figure out how to achieve it via
+    LLVM, and finally in the compiler itself. (Then it's just "fighting" the
+    compiler.)
+
+* Better word for "anchor": reference benchmark
+
+Contents:
+
+* The goal: fastest possible intrinsics, we'll start with sin
+
+* We'll create a benchmark of a loop of sin(sin(sin(sin(x)))) N times to have
+  enough computation and use loop tiling to achieve maximum performance. Show
+  that without loop tiling we will lose performance. If done right, even in
+  main memory things run essentially at the L1 cache performance. Then we use
+  this ultimate benchmark with all implementations (gfortran, intel, openlibm,
+  ...). This benchmark then shows all techniques for speed: tiling, L1
+  theoretical performance peak, assembly to achieve it, benchmarking
+  infrastructure, etc. Calculating the percentage of peak.
+
+* We will only do single core / serial implementation. Both Intel and ARM.
+
+* compare and understand accuracy (gfortran's sin accurate to the last bit, but
+  there is a performance price for that), we are ok if last few bits are
+  inaccurate, but we want the absolute best performance
+
+* Performance: theoretical peak, how to achieve it (in assembly if needed), all
+  the above stuff
+
+* Get back from assembly into Fortran / LLVM, still achieve the peak. We should
+  benchmark LFortran itself. Show a path forward via LLVM.
+
+* Benchmark other fast `sin` libraries out there --- MKL, Intel Ifort, there
+  are SIMD math libraries. Benchmark them all. Both for accuracy and speed.
