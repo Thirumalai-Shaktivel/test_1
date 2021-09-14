@@ -1,4 +1,5 @@
 subroutine kernel_sin1(n, A, B) bind(c)
+! Intel: 1.23 cycles per double; peak: 9*0.125 = 1.125
 use iso_fortran_env, only: dp=>real64
 use iso_c_binding, only: c_long, c_double
 integer(c_long), value, intent(in) :: n
