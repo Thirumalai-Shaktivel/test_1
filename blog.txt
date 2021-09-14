@@ -42,6 +42,18 @@
 Contents:
 
 * The goal: fastest possible intrinsics, we'll start with sin
+
+* We'll create a benchmark of a loop of sin(sin(sin(sin(x)))) N times to have
+  enough computation and use loop tiling to achieve maximum performance. Show
+  that without loop tiling we will lose performance. If done right, even in
+  main memory things run essentially at the L1 cache performance. Then we use
+  this ultimate benchmark with all implementations (gfortran, intel, openlibm,
+  ...). This benchmark then shows all techniques for speed: tiling, L1
+  theoretical performance peak, assembly to achieve it, benchmarking
+  infrastructure, etc. Calculating the percentage of peak.
+
+* We will only do single core / serial implementation. Both Intel and ARM.
+
 * compare and understand accuracy (gfortran's sin accurate to the last bit, but
   there is a performance price for that), we are ok if last few bits are
   inaccurate, but we want the absolute best performance
@@ -51,3 +63,6 @@ Contents:
 
 * Get back from assembly into Fortran / LLVM, still achieve the peak. We should
   benchmark LFortran itself. Show a path forward via LLVM.
+
+* Benchmark other fast `sin` libraries out there --- MKL, Intel Ifort, there
+  are SIMD math libraries. Benchmark them all. Both for accuracy and speed.
