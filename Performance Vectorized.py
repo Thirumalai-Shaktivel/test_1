@@ -105,13 +105,13 @@ def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
     L2x = L2 / (8*n)
     if L3:
         L3x = L3 / (8*n)
-    semilogx([x[0], L1x], [L1_peak, L1_peak], "--", lw=1, label=label, color=color)
-    semilogx([L1x, L2x], [L1_peak, L1_peak], "--", lw=2, color=color)
+    semilogx([x[0], L1x], [L1_peak, L1_peak], "o-", lw=1, label=label, color=color)
+    semilogx([L1x, L2x], [L1_peak, L1_peak], "o-", lw=2, color=color)
     if L3:
-        semilogx([L2x, L3x], [L1_peak, L1_peak], "--", lw=3, color=color)
-        semilogx([L3x, x[-1]], [L1_peak, L1_peak], "--", lw=4, color=color)
+        semilogx([L2x, L3x], [L1_peak, L1_peak], "o-", lw=3, color=color)
+        semilogx([L3x, x[-1]], [L1_peak, L1_peak], "o-", lw=4, color=color)
     else:
-        semilogx([L2x, x[-1]], [L1_peak, L1_peak], "--", lw=3, color=color)
+        semilogx([L2x, x[-1]], [L1_peak, L1_peak], "o-", lw=3, color=color)
 
 
 
