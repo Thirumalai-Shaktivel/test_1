@@ -54,7 +54,7 @@ if CPU == 1:
     # fma: 0.125  (`VFMADD...` is 0.5 cycles)
     #cpu_freq = 2.4 * GHz # Base
     #cpu_freq = 5.3 * GHz # Boost
-    cpu_freq = 4.590 * GHz # Actual
+    cpu_freq = 4.530 * GHz # Actual
     L1 = 64 * KB
     L2 = 256 * KB
     L3 = 16 * MB
