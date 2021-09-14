@@ -47,6 +47,8 @@ L1 = 64 * KB
 L2 = 256 * KB
 L3 = 16 * MB
 k = 8 * 2  # 8 bytes per element, 2 arrays
+R_clock = 0.125
+W_clock = 0.25
 
 # ARM:
 # https://www.techpowerup.com/cpu-specs/core-i9-10980hk.c2276
@@ -72,17 +74,19 @@ L1 = 320 * KB
 L2 = 12 * MB
 #L3 = 16 * MB
 k = 8 * 2 # 8 bytes per element, 2 arrays
+R_clock = 0.1667
+W_clock = 0.25
 
 figure(figsize=(20, 12))
 #loglog(x, sin_gf, ".", label="GFortran Intrinsic")
-semilogx([x2[0], x2[-1]], [0.125, 0.125], "--", color="gray")
-semilogx([x2[0], x2[-1]], [0.25, 0.25], "--", color="gray")
+semilogx([x2[0], x2[-1]], [R_clock, R_clock], "--", color="gray")
+semilogx([x2[0], x2[-1]], [W_clock, W_clock], "--", color="gray")
 semilogx(x2, read * cpu_freq, ".", label="R (0.125)")
 semilogx(x2, write * cpu_freq, ".", label="W (0.25)")
 semilogx(x2, sin_pure * cpu_freq, ".", label="Pure double double")
 semilogx([L1/k, L1/k], [0, 2], "-", label="L1")
 semilogx([L2/k, L2/k], [0, 2], "-", label="L2")
-semilogx([L3/k, L3/k], [0, 2], "-", label="L3")
+#semilogx([L3/k, L3/k], [0, 2], "-", label="L3")
 legend()
 xlabel("Array length [double]")
 ylabel("Time of sin(x) per array element")
@@ -93,7 +97,7 @@ savefig("perf1.pdf")
 show()
 
 # +
-i1 = 3
+i1 = 4
 i2 = 9
 print(read[i1:i2])
 print(write[i1:i2])
@@ -102,11 +106,11 @@ Rm = min(read[i1:i2])
 Wa = average(write[i1:i2])
 Wm = min(write[i1:i2])
 
-print("CPU freq R avg: %.3f GHz" % (0.125 / Ra / GHz),
-      "CPU freq R min: %.3f GHz" % (0.125 / Rm / GHz)
+print("CPU freq R avg: %.3f GHz" % (R_clock / Ra / GHz),
+      "CPU freq R min: %.3f GHz" % (R_clock / Rm / GHz)
     )
-print("CPU freq W avg: %.3f GHz" % (0.25 / Wa / GHz),
-      "CPU freq W min: %.3f GHz" % (0.25 / Wm / GHz)
+print("CPU freq W avg: %.3f GHz" % (W_clock / Wa / GHz),
+      "CPU freq W min: %.3f GHz" % (W_clock / Wm / GHz)
     )
 
 print("Using CPU freq: %.3f GHz" % (cpu_freq / GHz))
