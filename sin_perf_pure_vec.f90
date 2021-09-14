@@ -45,7 +45,7 @@ integer(i8), parameter :: sizes(*) = [ &
 integer :: i, j, k, M, u
 integer(i8) :: Ntile
 real(dp) :: alpha, beta, a, xmin, xmax
-real(dp) :: t1, t2
+real(dp) :: t1, t2, time_kernel, time_read, time_write
 real(dp), allocatable :: x(:)
 real(dp), allocatable :: r(:)
 
@@ -68,12 +68,26 @@ xmax = pi/2
 
 do j = 1, size(sizes)
     Ntile = sizes(j) / 8 ! Double precision (8 bytes) as array element size
-    M = 1024*10000*6*10*10*5 / Ntile
-    if (Ntile > 32768) M = M / 10
+    M = 1024*10000*6*10*2 / Ntile
+    if (Ntile > 32768) M = M / 5
     if (M == 0) M = 1
     allocate(r(Ntile), x(Ntile))
     call random_number(x)
     x = x*(xmax-xmin)+xmin
+
+    call cpu_time(t1)
+    do k = 1, M
+        call array_read(Ntile, x)
+    end do
+    call cpu_time(t2)
+    time_read = (t2-t1)/(M*Ntile)
+
+    call cpu_time(t1)
+    do k = 1, M
+        call array_write(Ntile, r)
+    end do
+    call cpu_time(t2)
+    time_write = (t2-t1)/(M*Ntile)
 
     call cpu_time(t1)
     do k = 1, M
@@ -90,7 +104,9 @@ do j = 1, size(sizes)
         !r(i) = dsin2(x(i))
     end do
     call cpu_time(t2)
-    print "(i10, i10, es15.6)", Ntile, M, (t2-t1)/(M*Ntile)
+    time_kernel = (t2-t1)/(M*Ntile)
+
+    print "(i10, i10, es15.6, es15.6, es15.6)", Ntile, M, time_kernel, time_read, time_write
     ! To prevent the compiler to optimize out the above loop
     open(newunit=u, file="log.txt", status="replace", action="write")
     write(u, *) r(1:10)
