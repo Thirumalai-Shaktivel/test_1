@@ -52,7 +52,7 @@ _kernel_sin1:
         ldr  x12, [x11, S8@PAGEOFF]
         dup.2d v15, x12
 .main_loop:
-        ldr q0, [x1], 16
+        ldr q0, [x1], #16
         fmul.2d v1, v0, v0
         mov.16b	v17, v14
         fmla.2d v17, v1, v15
@@ -69,7 +69,7 @@ _kernel_sin1:
         mov.16b	v17, v16
         fmla.2d v17, v1, v18
         fmul.2d v1, v17, v0
-        str q1, [x2], 16
+        str q1, [x2], #16
 
         subs x0, x0, #2
         b.ne	.main_loop
