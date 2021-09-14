@@ -1,6 +1,6 @@
 ; void array_mul2(long n, double *A, double *B);
-; n must be divisible by 4
-; Original, simplest version
+; n must be divisible by 8
+; The fastest version
 
 section .text
 
@@ -27,7 +27,15 @@ array_mul2:
         vmulpd ymm0, ymm0, ymm0   ; x = x*x
         vmulpd ymm0, ymm0, ymm0   ; x = x*x
         vmovaps [rdx+8*rax], ymm0 ; store B(i:i+3)
-        add rax, 4                ; i += 4
+
+        vmovaps ymm1, [rsi+8*(rax+4)] ;2
+        vmulpd ymm1, ymm1, ymm1   ;2
+        vmulpd ymm1, ymm1, ymm1   ;2
+        vmulpd ymm1, ymm1, ymm1   ;2
+        vmulpd ymm1, ymm1, ymm1   ;2
+        vmovaps [rdx+8*(rax+4)], ymm1 ;2
+
+        add rax, 8                ; i += 8
         cmp rax, rdi
         jl .main_loop             ; jump if i < n
 .epilog:
