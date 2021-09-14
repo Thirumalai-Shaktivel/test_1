@@ -68,8 +68,8 @@ _kernel_sin1:
         fmla.2d v18, v1, v17
         mov.16b	v17, v16
         fmla.2d v17, v1, v18
-        fmul.2d v1, v17, v0
-        str q1, [x2], #16
+        fmul.2d v0, v17, v0
+        str q0, [x2], #16
 
         subs x0, x0, #2
         b.ne	.main_loop
