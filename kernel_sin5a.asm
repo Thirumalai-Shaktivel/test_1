@@ -1,6 +1,6 @@
 ; void kernel_sin1(long n, double *A, double *B);
 ; Vectorized version. ARM64 (M1)
-; Runs at 1.43 cycles per double.
+; Runs at 1.316 cycles per double.
 
 
 .section __TEXT,__literal8,8byte_literals
@@ -56,7 +56,7 @@ _kernel_sin1:
         ldr  x12, [x11, S8@PAGEOFF]
         dup.2d v15, x12
 .main_loop:
-        ldr q0, [x1, 0]
+        ldr q0, [x1], 16
         fmul.2d v1, v0, v0
         mov.16b	v2, v1
         mov.16b	v17, v14
@@ -74,10 +74,8 @@ _kernel_sin1:
         mov.16b	v17, v16
         fmla.2d v17, v2, v18
         fmul.2d v1, v17, v0
-        str q1, [x2, 0]
+        str q1, [x2], 16
 
-        add x1, x1, 16
-        add x2, x2, 16
         cmp x1, x0
         b.ne	.main_loop
 .epilog:
