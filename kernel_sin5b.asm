@@ -1,6 +1,6 @@
 ; void kernel_sin1(long n, double *A, double *B);
 ; Unrolled loop. ARM64 (M1)
-; Runs at 1.32 cycles per double
+; Runs at 1.314 cycles per double
 
 
 .section __TEXT,__literal8,8byte_literals
@@ -57,13 +57,13 @@ _kernel_sin1:
         dup.2d v15, x12
 .main_loop:
         ldr q0, [x1, 0]
-        ldr q20, [x1, 16]
-        fmul.2d v1, v0, v0
-        fmul.2d v21, v20, v20
-        mov.16b	v2, v1
-        mov.16b	v22, v21
         mov.16b	v17, v14
+        fmul.2d v1, v0, v0
         mov.16b	v23, v14
+        mov.16b	v2, v1
+        ldr q20, [x1, 16]
+        fmul.2d v21, v20, v20
+        mov.16b	v22, v21
         fmla.2d v17, v2, v15
         fmla.2d v23, v22, v15
         mov.16b	v18, v13
