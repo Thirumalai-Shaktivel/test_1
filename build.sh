@@ -17,7 +17,7 @@ as -c array_write2c.asm -o array_write.o
 as -c array_mul3a.asm -o array_mul.o
 as -c array_fma3a.asm -o array_fma.o
 as -c kernel_sin5a.asm -o kernel_sin.o
-as -c kernel_sin5b.asm -o kernel_sin.o
+#as -c kernel_sin5b.asm -o kernel_sin.o
 #nasm -f macho64 array_read.asm
 #nasm -f macho64 array_write.asm
 #nasm -f macho64 kernel_sin1c.asm -o kernel_sin.o

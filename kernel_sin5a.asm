@@ -1,6 +1,6 @@
 ; void kernel_sin1(long n, double *A, double *B);
 ; Vectorized version. ARM64 (M1)
-; Runs at 1.316 cycles per double.
+; Runs at 1.30 cycles per double.
 
 
 .section __TEXT,__literal8,8byte_literals
