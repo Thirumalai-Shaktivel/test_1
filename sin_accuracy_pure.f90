@@ -58,17 +58,16 @@ end function
 elemental real(dp) function kernel_dsin(x) result(res)
 real(dp), intent(in) :: x
 real(dp), parameter :: S1 = 1
-real(dp), parameter :: S2 = -0.16666666666666664488_dp
-real(dp), parameter :: S3 = 8.333333333333120352e-3_dp
-real(dp), parameter :: S4 = -1.9841269841186957072e-4_dp
-real(dp), parameter :: S5 = 2.7557319207671621505e-6_dp
-real(dp), parameter :: S6 = -2.505210657472729942e-8_dp
-real(dp), parameter :: S7 = 1.6058925420593036404e-10_dp
-real(dp), parameter :: S8 = -7.642634259789033538e-13_dp
-real(dp), parameter :: S9 = 2.717542963462119677e-15_dp
+real(dp), parameter :: S2 = -0.16666666666665748417_dp
+real(dp), parameter :: S3 = 8.333333333260810195e-3_dp
+real(dp), parameter :: S4 = -1.9841269819408224684e-4_dp
+real(dp), parameter :: S5 = 2.7557315969010714494e-6_dp
+real(dp), parameter :: S6 = -2.5051843446312301534e-8_dp
+real(dp), parameter :: S7 = 1.6047020166520616231e-10_dp
+real(dp), parameter :: S8 = -7.360938387054769116e-13_dp
 real(dp) :: z
 z = x*x
-res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*(S8+z*S9))))))))
+res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
 end function
 
 pure real(dp) function dd_add1(xh, yh, yl) result(r)
