@@ -1,4 +1,4 @@
-subroutine kernel_sin1(n, A, B) bind(c)
+pure subroutine kernel_sin1(n, A, B) bind(c)
 ! Intel: 1.23 cycles per double; peak: 9*0.125 = 1.125
 ! ARM: 1.23 cycles per double
 use iso_fortran_env, only: dp=>real64
@@ -14,35 +14,20 @@ real(dp), parameter :: S5 = 2.7557315514280769795e-6_dp
 real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
 real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
 real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
-real(dp) :: x, z
+real(dp), parameter :: twopi = 6.283185307179586_dp
+real(dp), parameter :: p1 = 6.28318405151367188e+00_dp
+real(dp), parameter :: p2 = 1.25566566566703841e-06_dp
+real(dp), parameter :: p3 = 2.48934886875864535e-13_dp
+real(dp) :: x, z, Nd
 integer(c_long) :: i
 do i = 1, n
     x = A(i)
-    x = modulo_2pi_6(x)
+    Nd = floor(x/twopi)
+    x = ((x - Nd*p1) - Nd*p2) - Nd*p3
     x = min(x, pi - x)
     x = max(x, -pi - x)
     x = min(x, pi - x)
     z = x*x
     B(i) = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
 end do
-
-contains
-
-pure real(c_double) function modulo_2pi_6(xh) result(zh)
-real(c_double), intent(in) :: xh
-integer(c_long) :: N
-real(c_double) :: yh, yl, Nd, p1, p2, p3, p4, p5, p6, p7, p8
-yh = 6.283185307179586_dp ! 2*pi (high)
-p1 = 6.25000000000000000e+00_dp
-p2 = 3.12500000000000000e-02_dp
-p3 = 1.89208984375000000e-03_dp
-p4 = 4.19616699218750000e-05_dp
-p5 = 1.25169754028320312e-06_dp
-p6 = 3.95812094211578369e-09_dp
-p7 = 1.00044417195022106e-11_dp
-p8 = 2.48934886875864535e-13_dp
-Nd = floor(xh/yh)
-zh = (((((((xh - Nd*p1) - Nd*p2) - Nd*p3) - Nd*p4) - Nd*p5) - Nd*p6) - Nd*p7) - Nd*p8
-end function
-
 end subroutine
