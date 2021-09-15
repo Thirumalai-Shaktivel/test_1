@@ -165,7 +165,7 @@ ylabel("Relative Error of sin(x)")
 ylim([1e-18, 1])
 x0 = 30
 plot([x0, x0], [1e-11, 1e-5], "k--")
-x1 = 5000
+x1 = 1e9
 plot([x1, x1], [1e-11, 1e-5], "k-")
 grid()
 savefig("error_rel.pdf")
