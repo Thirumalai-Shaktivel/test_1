@@ -124,15 +124,16 @@ end function
 pure real(dp) function modulo_2pi_2(xh) result(zh)
 real(dp), intent(in) :: xh
 integer(8) :: N
-real(dp) :: yh, yl, Nd, p1, p2, p3
+real(dp) :: yh, yl, Nd, p1, p2, p3, p4
 if (abs(xh) < 1e16) then
     yh = 6.283185307179586_dp ! 2*pi (high)
-    p1 = 6.283184051513672
-    p2 = 1.2556656656670384e-06
-    p3 = 2.4893488687586454e-13
+    p1 = 6.28318405151367188e+00_dp
+    p2 = 1.25566566566703841e-06_dp
+    p3 = 2.48934770366582292e-13_dp
+    p4 = 1.16509282243734241e-19_dp
     N = floor2(xh/yh)
     Nd = real(N,dp)
-    zh = ((xh - Nd*p1) - Nd*p2) - Nd*p3
+    zh = (((xh - Nd*p1) - Nd*p2) - Nd*p3) - Nd*p4
 else
     error stop "unsupported range"
 end if
