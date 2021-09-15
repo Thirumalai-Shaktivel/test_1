@@ -283,21 +283,15 @@ end do
 end subroutine
 
 pure real(c_double) function modulo_2pi_6b(xh) result(zh)
-use iso_c_binding, only: c_long, c_double
+use iso_c_binding, only: c_double
 real(c_double), intent(in) :: xh
-integer(c_long) :: N
-real(c_double) :: yh, yl, Nd, p1, p2, p3, p4, p5, p6, p7, p8
-yh = 6.283185307179586_dp ! 2*pi (high)
-p1 = 6.25000000000000000e+00_dp
-p2 = 3.12500000000000000e-02_dp
-p3 = 1.89208984375000000e-03_dp
-p4 = 4.19616699218750000e-05_dp
-p5 = 1.25169754028320312e-06_dp
-p6 = 3.95812094211578369e-09_dp
-p7 = 1.00044417195022106e-11_dp
-p8 = 2.48934886875864535e-13_dp
+real(c_double) :: yh, Nd, p1, p2, p3
+yh = 6.283185307179586_dp
+p1 = 6.28318405151367188e+00_dp
+p2 = 1.25566566566703841e-06_dp
+p3 = 2.48934886875864535e-13_dp
 Nd = floor(xh/yh)
-zh = (((((((xh - Nd*p1) - Nd*p2) - Nd*p3) - Nd*p4) - Nd*p5) - Nd*p6) - Nd*p7) - Nd*p8
+zh = ((xh - Nd*p1) - Nd*p2) - Nd*p3
 end function
 
 end program
