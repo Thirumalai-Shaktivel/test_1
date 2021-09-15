@@ -230,3 +230,59 @@ ylabel("Error of sin(x)")
 #ylim([0, 3])
 grid()
 show()
+
+# +
+import struct
+
+def hex_to_double(s):
+    q = int(s,16)
+    b8 = struct.pack('Q', q)
+    d, = struct.unpack('d', b8)
+    return d
+
+def double_to_hex(d):
+    b8 = struct.pack('d', d)
+    q, = struct.unpack('Q', b8)
+    return hex(q)
+
+def chop(d, n):
+    s = double_to_hex(d)
+    s = list(s)
+    for i in range(n):
+        s[-(i+1)] = '0'
+    s = "".join(s)
+    return hex_to_double(s)
+
+c = arb.pi()*2
+
+p1 = chop(float(c), 8)
+p2 = chop(float(c-p1), 8)
+p3 = float(c-p1-p2)
+print(p1, p2, p3)
+
+p1 = chop(float(c), 11)
+p2 = chop(float(c-p1), 11)
+p3 = chop(float(c-p1-p2), 11)
+p4 = chop(float(c-p1-p2-p3), 11)
+p5 = float(c-p1-p2-p3-p4)
+print("%23.17e %23.17e %23.17e %23.17e %23.17e" % (p1, p2, p3, p4, p5))
+
+p = []
+N = 24
+for n in range(N):
+    d = c
+    for x in p:
+        d = d-x
+    if n == N-1:
+        p.append(float(d))
+    else:
+        p.append(chop(float(d), 13))
+for n, x in enumerate(p):
+    print("p%d = %23.17e_dp" % (n+1, x))
+
+def expr(n):
+    if n == 1:
+        return "xh - Nd*p%d" % n
+    else:
+        return "(%s) - Nd*p%d" % (expr(n-1), n)
+print(expr(N))
