@@ -268,7 +268,7 @@ p5 = float(c-p1-p2-p3-p4)
 print("%23.17e %23.17e %23.17e %23.17e %23.17e" % (p1, p2, p3, p4, p5))
 
 p = []
-N = 24
+N = 8
 for n in range(N):
     d = c
     for x in p:
@@ -276,7 +276,7 @@ for n in range(N):
     if n == N-1:
         p.append(float(d))
     else:
-        p.append(chop(float(d), 13))
+        p.append(chop(float(d), 12))
 for n, x in enumerate(p):
     print("p%d = %23.17e_dp" % (n+1, x))
 
