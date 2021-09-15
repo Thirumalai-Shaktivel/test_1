@@ -57,17 +57,18 @@ end function
 ! Accurate on [-pi/2,pi/2] to about 1e-16
 elemental real(dp) function kernel_dsin(x) result(res)
 real(dp), intent(in) :: x
-real(dp), parameter :: S1 = 0.9999999999999990771_dp
-real(dp), parameter :: S2 = -0.16666666666664811048_dp
-real(dp), parameter :: S3 = 8.333333333226519387e-3_dp
-real(dp), parameter :: S4 = -1.9841269813888534497e-4_dp
-real(dp), parameter :: S5 = 2.7557315514280769795e-6_dp
-real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
-real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
-real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
+real(dp), parameter :: S1 = 1
+real(dp), parameter :: S2 = -0.16666666666666664488_dp
+real(dp), parameter :: S3 = 8.333333333333120352e-3_dp
+real(dp), parameter :: S4 = -1.9841269841186957072e-4_dp
+real(dp), parameter :: S5 = 2.7557319207671621505e-6_dp
+real(dp), parameter :: S6 = -2.505210657472729942e-8_dp
+real(dp), parameter :: S7 = 1.6058925420593036404e-10_dp
+real(dp), parameter :: S8 = -7.642634259789033538e-13_dp
+real(dp), parameter :: S9 = 2.717542963462119677e-15_dp
 real(dp) :: z
 z = x*x
-res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
+res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*(S8+z*S9))))))))
 end function
 
 pure real(dp) function dd_add1(xh, yh, yl) result(r)
