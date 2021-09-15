@@ -31,8 +31,8 @@ if [[ $platform == "3" ]]; then
     as -c array_write2c.asm -o array_write.o
     as -c array_mul3a.asm -o array_mul.o
     as -c array_fma3a.asm -o array_fma.o
-    #as -c kernel_sin5a.asm -o kernel_sin.o
-    #as -c kernel_sin5b.asm -o kernel_sin.o
+    as -c kernel_sin5a.asm -o kernel_sin.o
+    as -c kernel_sin5b.asm -o kernel_sin.o
     gfortran -O3 -march=native -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
 elif [[ $platform == "2" || $platform == "1" ]]; then
     # Use macho64 for macOS, win64 for Windows and elf64 for Linux
