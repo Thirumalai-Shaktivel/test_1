@@ -41,8 +41,11 @@ p5 = 1.25169754028320312e-06_dp
 p6 = 3.95812094211578369e-09_dp
 p7 = 1.00044417195022106e-11_dp
 p8 = 2.48934886875864535e-13_dp
+! Slow
 N = floor(xh/yh)
 Nd = real(N,dp)
+! Fast
+!Nd = xh
 zh = (((((((xh - Nd*p1) - Nd*p2) - Nd*p3) - Nd*p4) - Nd*p5) - Nd*p6) - Nd*p7) - Nd*p8
 end function
 
