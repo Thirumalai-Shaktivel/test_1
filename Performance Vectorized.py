@@ -49,9 +49,11 @@ if CPU == 1:
     # https://www.agner.org/optimize/instruction_tables.pdf
     # R: 0.125    (`VMOVAPS y,m256` 0.5 cycles per instruction = 4 doubles)
     # W: 0.25     (`VMOVAPS m256,y` 1 cycle per instruction = 4 doubles)
-    # *: 0.125    (`vmulpd` is 0.5 cycles per 4 doubles)
-    # +: 0.125
+    # Arithmetics all ads up:
+    # *,+,-: 0.125    (`vmulpd` is 0.5 cycles per 4 doubles)
     # fma: 0.125  (`VFMADD...` is 0.5 cycles)
+    # min/max: 0.125 (`vmaxpd` is 0.5 cycles per 4 doubles)
+    # blendvpd: 0.25 (`vblendvpd` is 1 cycle)
     #cpu_freq = 2.4 * GHz # Base
     #cpu_freq = 5.3 * GHz # Boost
     cpu_freq = 4.530 * GHz # Actual
