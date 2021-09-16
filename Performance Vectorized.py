@@ -53,6 +53,7 @@ if CPU == 1:
     # *,+,-: 0.125    (`vmulpd` is 0.5 cycles per 4 doubles)
     # fma: 0.125  (`VFMADD...` is 0.5 cycles)
     # min/max: 0.125 (`vmaxpd` is 0.5 cycles per 4 doubles)
+    # int->double and double->int: 0.25  (`vcvtdq2pd` and `vcvttpd2dq` takes 1 cycle)
     # blendvpd: 0.25 (`vblendvpd` is 1 cycle)
     #cpu_freq = 2.4 * GHz # Base
     #cpu_freq = 5.3 * GHz # Boost

@@ -32,6 +32,8 @@ kernel_sin1:
         align 16
 .main_loop:
         vmovapd ymm0, [rsi+8*rax] ; x = load A(i:i+3)
+        vcvttpd2dq xmm1, ymm0 ; x = floor(x) ! double -> int
+        vcvtdq2pd ymm0, xmm1  ; x = floor(x) ! int -> double
         vmulpd ymm1, ymm0, ymm0   ; r = x*x
         vmovapd ymm2, ymm1        ; z = r
         vfmadd213pd ymm1, ymm15, ymm14 ; r = S7+z*S8
