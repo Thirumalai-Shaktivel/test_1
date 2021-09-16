@@ -20,16 +20,17 @@ real(dp), parameter :: p1 = 6.28318405151367188e+00_dp
 real(dp), parameter :: p2 = 1.25566566566703841e-06_dp
 real(dp), parameter :: p3 = 2.48934886875864535e-13_dp
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
-real(dp) :: x, z, Nd
+real(dp) :: x, z, Nd, x0
 integer(c_long) :: i
 do i = 1, n
-    x = A(i)
-    Nd = int(x*one_over_twopi) ! TODO: not correct for negative `x`
+    x0 = A(i)
+    x = abs(x0)
+    Nd = int(x*one_over_twopi)
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
     x = min(x, pi - x)
     x = max(x, -pi - x)
     x = min(x, pi - x)
-    B(i) = x
+    B(i) = x * sign(1._dp, x0)
 end do
 do i = 1, n
     x = B(i)
