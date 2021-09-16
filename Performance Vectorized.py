@@ -127,7 +127,7 @@ xlabel("Array length [double]")
 ylabel("Time of sin(x) per array element")
 grid()
 #xlim([1e2, None])
-ylim([0, 2])
+#ylim([0, 2])
 savefig("perf1.pdf")
 show()
 
