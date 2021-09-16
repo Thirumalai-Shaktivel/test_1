@@ -120,7 +120,7 @@ def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
         semilogx([L2x, L3x], [L1_peak, L1_peak], "o-", lw=3, color=color)
         semilogx([L3x, x[-1]], [L1_peak, L1_peak], "o-", lw=4, color=color)
     else:
-        semilogx([L2x, x[-1]], [L1_peak, L1_peak], "o-", lw=3, color=color)
+        semilogx([L2x, x[-1]], [L1_peak, L1_peak], "o-", lw=4, color=color)
 
 
 
