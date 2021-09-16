@@ -67,6 +67,7 @@ if CPU == 1:
     plus_clock = 0.125
     fma_clock = 0.125
     max_clock = 0.125
+    abs_clock = 0.0825 # (`vandpd` takes 0.33 cycles)
     float_int_conv_clock = 0.25
 elif CPU == 2:
     # ARM:
