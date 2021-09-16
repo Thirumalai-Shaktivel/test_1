@@ -286,3 +286,17 @@ def expr(n):
     else:
         return "(%s) - Nd*p%d" % (expr(n-1), n)
 print(expr(N))
+# -
+
+#   100000000
+N = 100000
+r = 0
+for i in range(N):
+    r += arb(i+1).sin()
+print(r)
+
+# +
+#print(abs(r-(1.7136493465705178)))
+#print(abs(r-(1.7136493465702742)))
+#print(abs(r-(1.7136493465708029)))
+#print(abs(r-(1.713649346570267)))
