@@ -67,3 +67,36 @@ Contents:
 
 * Benchmark other fast `sin` libraries out there --- MKL, Intel Ifort, there
   are SIMD math libraries. Benchmark them all. Both for accuracy and speed.
+
+* There are two approaches to math functions (intrinsic and non-intrinsic). In
+  Debug mode, we want use accuracy first, performance second. In Release mode
+  we want to use performance first, accuracy second. We want to include both in
+  LFortran. For the accurate versions, we can simply use existing math routines
+  such as from `openlibm`. For the performance first versions, we have to
+  implement our own, and show that we are getting maximum performance. The
+  content of this blog post series.
+
+* GFortran's `sin` (in both Debug/Release mode) is following accuracy first
+  approach. About 83% of all cases are exactly rounded, 17% is 1 ULP from the
+  exactly rounded double precision floating point answer. To get that accuracy,
+  a careful argument reduction is done To get that accuracy, a careful argument
+  reduction is done, and argument + tail is passed to the sin kernel (even
+  though both are possibly accurate to the last bit) in order not to lose the
+  last bit with double rounding. There are several if statements (branching),
+  overall making it very accurate, but slow.
+
+* For performance first, we investigate roughly along the following lines:
+
+* What is the fastest way to evaluate the kernel, say on [-pi/4,pi/4]? We find
+  that we have to evaluate at least 5 terms. We end up evaluating 8 terms and
+  get accuracy on [-pi/2, pi/2]. A tiny bit slower for the kernel, but saves on
+  argument reduction.
+
+* What is the fastest way to do argument reduction? One of the fastest is
+  branch free int() plus extended modular arithmetic (3 terms), which is
+  accurate up to x ~ 1e10. Regular `modulo` cannot be used, as it loses
+  accuracy quickly, already for x > 30.
+
+* Using this approach, we find the minimal algorithm, with theoretical
+  performance peak of about ~2.5 cycles per double. We then achieve over 50% of
+  this peak with pure Fortran implementation, on both Intel and ARM.
