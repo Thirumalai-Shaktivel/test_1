@@ -80,6 +80,8 @@ elif CPU == 2:
     # *: 0.125  (`fmul.2d v0, v0, v0` takes 0.25)
     # +: 0.125  (`fadd.2d v0, v0, v0` takes 0.25)
     # fma: 0.125  (`fmla.2d v0, v0, v0` takes 0.25)
+    # min/max: 0.125 (`fmaxnm.2d` takes 0.25)
+    # int->double, double->int: 0.125 (`fcvtzs` and `scvtf` take 0.25 each)
     #
     # Note: There are two units for R, one unit for W and one unit can do both. The
     # first number in 0.25 - 0.333 - 0.5 is only writing, then read/write sharing
@@ -97,6 +99,8 @@ elif CPU == 2:
     mul_clock = 0.125
     plus_clock = 0.125
     fma_clock = 0.125
+    max_clock = 0.125
+    float_int_conv_clock = 0.125
 else:
     raise Exception("CPU type not supported")
 
