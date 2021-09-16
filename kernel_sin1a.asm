@@ -28,10 +28,13 @@ kernel_sin1:
         vbroadcastsd ymm14, [S7]
         vbroadcastsd ymm15, [S8]
 
+        vbroadcastsd ymm7, [one_over_twopi]
+
         mov rax, 0
         align 16
 .main_loop:
         vmovapd ymm0, [rsi+8*rax] ; x = load A(i:i+3)
+        vmulpd ymm0, ymm0, ymm7   ; x = x/(2*pi)
         vcvttpd2dq xmm1, ymm0 ; x = floor(x) ! double -> int
         vcvtdq2pd ymm0, xmm1  ; x = floor(x) ! int -> double
         vmulpd ymm1, ymm0, ymm0   ; r = x*x
@@ -65,3 +68,4 @@ S5: dq 2.7557315514280769795e-6
 S6: dq -2.5051823583393710429e-8
 S7: dq 1.6046585911173017112e-10
 S8: dq -7.3572396558796051923e-13
+one_over_twopi: dq 0.15915494309189535
