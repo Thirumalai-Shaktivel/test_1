@@ -51,7 +51,7 @@ elif [[ $platform == "2" || $platform == "1" ]]; then
     clang -O2 -c kernel_sin2.ll -o kernel_sin.o
     clang -O3 -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
     #clang -O1 -c array_copy2.c -o array_copy2.o
-    nasm -f $nasm_f kernel_sin1c.asm -o kernel_sin.o
+    nasm -f $nasm_f kernel_sin1a.asm -o kernel_sin.o
     #clang -O2 -march=native -c kernel_sin2.ll -o kernel_sin.o
     #clang -O3 -march=native -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
     gfortran -O3 -march=skylake -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o

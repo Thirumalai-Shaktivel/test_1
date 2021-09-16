@@ -24,7 +24,7 @@ real(dp) :: x, z, Nd
 integer(c_long) :: i
 do i = 1, n
     x = A(i)
-    Nd = floor(x*one_over_twopi)
+    Nd = int(x*one_over_twopi) ! TODO: not correct for negative `x`
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
     x = min(x, pi - x)
     x = max(x, -pi - x)
