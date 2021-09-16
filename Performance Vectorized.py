@@ -81,6 +81,7 @@ elif CPU == 2:
     # +: 0.125  (`fadd.2d v0, v0, v0` takes 0.25)
     # fma: 0.125  (`fmla.2d v0, v0, v0` takes 0.25)
     # min/max: 0.125 (`fmaxnm.2d` takes 0.25)
+    # abs: 0.125 (`fabs.2d` takes 0.25)
     # int->double, double->int: 0.125 (`fcvtzs` and `scvtf` take 0.25 each)
     #
     # Note: There are two units for R, one unit for W and one unit can do both. The
@@ -100,6 +101,7 @@ elif CPU == 2:
     plus_clock = 0.125
     fma_clock = 0.125
     max_clock = 0.125
+    abs_clock = 0.125
     float_int_conv_clock = 0.125
 else:
     raise Exception("CPU type not supported")
@@ -107,7 +109,7 @@ else:
 
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
-kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*float_int_conv_clock + mul_clock)
+kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*float_int_conv_clock + 2*mul_clock + abs_clock)
 
 def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
     L1x = L1 / (8*n)
