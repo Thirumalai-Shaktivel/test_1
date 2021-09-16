@@ -30,6 +30,7 @@ kernel_sin1:
 
         vbroadcastsd ymm7, [one_over_twopi]
         vbroadcastsd ymm6, [pi]
+        vbroadcastsd ymm5, [mpi]
 
         mov rax, 0
         align 16
@@ -38,6 +39,10 @@ kernel_sin1:
         vmulpd ymm0, ymm0, ymm7   ; x = x/(2*pi)
         vcvttpd2dq xmm1, ymm0 ; x = floor(x) ! double -> int
         vcvtdq2pd ymm0, xmm1  ; x = floor(x) ! int -> double
+        vsubpd	ymm0, ymm6, ymm1 ; pi-x
+        vminpd  ymm0, ymm1, ymm0 ; x = min(x, pi-x)
+        vsubpd	ymm1, ymm5, ymm0 ; -pi-x
+        vmaxpd  ymm1, ymm1, ymm1 ; x = min(x, -pi-x)
         vsubpd	ymm0, ymm6, ymm1 ; pi-x
         vminpd  ymm0, ymm1, ymm0 ; x = min(x, pi-x)
         vmulpd ymm1, ymm0, ymm0   ; r = x*x
@@ -72,4 +77,5 @@ S6: dq -2.5051823583393710429e-8
 S7: dq 1.6046585911173017112e-10
 S8: dq -7.3572396558796051923e-13
 pi: dq 3.1415926535897932384626433832795
+mpi: dq -3.1415926535897932384626433832795
 one_over_twopi: dq 0.15915494309189535
