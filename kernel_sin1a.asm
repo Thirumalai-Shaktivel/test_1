@@ -38,7 +38,8 @@ kernel_sin1:
         vmulpd ymm0, ymm0, ymm7   ; x = x/(2*pi)
         vcvttpd2dq xmm1, ymm0 ; x = floor(x) ! double -> int
         vcvtdq2pd ymm0, xmm1  ; x = floor(x) ! int -> double
-        vsubpd	ymm0, ymm6, ymm1 ; x = pi-x
+        vsubpd	ymm0, ymm6, ymm1 ; pi-x
+        vminpd  ymm0, ymm1, ymm0 ; x = min(x, pi-x)
         vmulpd ymm1, ymm0, ymm0   ; r = x*x
         vmovapd ymm2, ymm1        ; z = r
         vfmadd213pd ymm1, ymm15, ymm14 ; r = S7+z*S8
