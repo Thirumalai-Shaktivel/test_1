@@ -14,7 +14,7 @@ real(dp), parameter :: S5 = 2.7557315514280769795e-6_dp
 real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
 real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
 real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
-real(dp), parameter :: twopi = 6.283185307179586_dp
+real(dp), parameter :: one_over_twopi = 1/6.283185307179586_dp
 real(dp), parameter :: p1 = 6.28318405151367188e+00_dp
 real(dp), parameter :: p2 = 1.25566566566703841e-06_dp
 real(dp), parameter :: p3 = 2.48934886875864535e-13_dp
@@ -22,7 +22,7 @@ real(dp) :: x, z, Nd
 integer(c_long) :: i
 do i = 1, n
     x = A(i)
-    Nd = floor(x/twopi)
+    Nd = floor(x*one_over_twopi)
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
     x = min(x, pi - x)
     x = max(x, -pi - x)
