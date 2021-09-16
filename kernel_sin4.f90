@@ -29,6 +29,10 @@ do i = 1, n
     x = min(x, pi - x)
     x = max(x, -pi - x)
     x = min(x, pi - x)
+    B(i) = x
+end do
+do i = 1, n
+    x = B(i)
     z = x*x
     B(i) = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
 end do
