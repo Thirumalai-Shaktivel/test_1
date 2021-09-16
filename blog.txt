@@ -100,3 +100,33 @@ Contents:
 * Using this approach, we find the minimal algorithm, with theoretical
   performance peak of about ~2.5 cycles per double. We then achieve over 50% of
   this peak with pure Fortran implementation, on both Intel and ARM.
+
+* If we wanted the absolute best performance, we would get rid of the extended
+  precision (saves about 0.375 cycle per double), so not much and we lose
+  accuracy for x > 30. We also don't need to do reduction at all if we only
+  want to use x from [-pi/2, pi/2]. Then the peak is about 1.75 cycles. For the
+  kernel, we can also reduce the polynomial to less terms, for lower accuracy.
+  We can save a few fmas, so perhaps peak at ~ 1.00 cycles.
+
+* Overall, as can be seen, even the most performing approach will not be much
+  faster than the current peak of 2.5 cycles per double, but it will be a lot
+  less accurate.
+
+* Our goal is sin(x) working at least for [-5000, 5000]. In this range, the
+  extended precision is needed for argument reduction. The fastest
+  implementation is with 3 terms, as we already use. And those happen to be
+  accurate all the way to x ~ 1e10.
+
+* It seems our current implementation is the fastest version that is still
+  usasble in practice. Any faster version will lose accuracy quickly, and even
+  then it can only get a peak of ~ 1.625 cycles, so only 1.6x faster. It
+  cannot get any faster than that anyway, as at least a few terms must be
+  evaluated, and the argument reduction still has to do int(), min, max, min.
+  So our usable version has a peak within 2x of the absolute best performing
+  version. We are over 50% of the peak, so total we are within a factor of 4x
+  of the best theoretical speed of the fastest way one can even compute sin(),
+  and it would not even be very accurate.
+
+* Exact theoretical peak for the absolute minimum version:
+  (3*fma_clock + 2*mul_clock) + (3*max_clock + 2*float_int_conv_clock + mul_clock)
+  On Intel it gives 1.625

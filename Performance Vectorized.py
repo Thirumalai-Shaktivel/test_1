@@ -168,3 +168,7 @@ kernel_min = min(sin_pure * cpu_freq)
 print("kernel min: %.3f" % kernel_min)
 print("kernel peak: %.3f" % kernel_peak)
 print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
+# -
+
+# The fastest possible way of calculating sin (not very accurate or usable)
+(3*fma_clock + 2*mul_clock) + (3*max_clock + 2*float_int_conv_clock + mul_clock)
