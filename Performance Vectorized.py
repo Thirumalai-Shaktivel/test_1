@@ -67,7 +67,7 @@ if CPU == 1:
     plus_clock = 0.125
     fma_clock = 0.125
     max_clock = 0.125
-    flot_int_conv_clock = 0.25
+    float_int_conv_clock = 0.25
 elif CPU == 2:
     # ARM:
     # https://www.techpowerup.com/cpu-specs/core-i9-10980hk.c2276
@@ -103,7 +103,7 @@ else:
 
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
-kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*flot_int_conv_clock + mul_clock)
+kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*float_int_conv_clock + mul_clock)
 
 def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
     L1x = L1 / (8*n)
