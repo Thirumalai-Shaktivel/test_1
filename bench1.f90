@@ -6,14 +6,18 @@ real(dp) :: t1, t2, r
 call cpu_time(t1)
 r = f(100000000)
 call cpu_time(t2)
-
 print *, "Time", t2-t1
 print *, r
 
 call cpu_time(t1)
 r = f2(100000000)
 call cpu_time(t2)
+print *, "Time", t2-t1
+print *, r
 
+call cpu_time(t1)
+r = f3(100000000)
+call cpu_time(t2)
 print *, "Time", t2-t1
 print *, r
 
@@ -37,6 +41,21 @@ contains
     end do
     call sin1(N, A, B)
     r = sum(B)
+    end function
+
+    real(dp) function f3(N) result(r)
+    integer, intent(in) :: N
+    integer, parameter :: Ntile = 4000
+    integer :: i, ii
+    real(dp) :: A(Ntile), B(Ntile)
+    r = 0
+    do i = 1, N, Ntile
+        do ii = i, i+Ntile-1
+            A(ii-i+1) = ii
+        end do
+        call sin1(Ntile, A, B)
+        r = r + sum(B)
+    end do
     end function
 
     pure subroutine sin1(n, A, B)
