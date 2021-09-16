@@ -10,7 +10,7 @@ real(dp) :: x, alpha, beta, a, xmin, xmax
 N = 100
 
 xmin = 1e-20_dp
-xmax = 1e15_dp
+xmax = 1e10_dp
 a = 1e20_dp
 
 beta = log(a) / (N-1)
@@ -257,6 +257,7 @@ pure subroutine kernel_sin1(n, A, B) bind(c)
 ! ARM: 1.23 cycles per double
 use iso_fortran_env, only: dp=>real64
 use iso_c_binding, only: c_long, c_double
+implicit none
 integer(c_long), value, intent(in) :: n
 real(c_double), intent(in) :: A(n)
 real(c_double), intent(out) :: B(n)
@@ -268,19 +269,24 @@ real(dp), parameter :: S5 = 2.7557315514280769795e-6_dp
 real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
 real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
 real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
-real(dp), parameter :: twopi = 6.283185307179586_dp
+real(dp), parameter :: one_over_twopi = 1/6.283185307179586_dp
 real(dp), parameter :: p1 = 6.28318405151367188e+00_dp
 real(dp), parameter :: p2 = 1.25566566566703841e-06_dp
 real(dp), parameter :: p3 = 2.48934886875864535e-13_dp
+real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 real(dp) :: x, z, Nd
 integer(c_long) :: i
 do i = 1, n
     x = A(i)
-    Nd = floor(x/twopi)
+    Nd = int(x*one_over_twopi) ! TODO: not correct for negative `x`
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
     x = min(x, pi - x)
     x = max(x, -pi - x)
     x = min(x, pi - x)
+    B(i) = x
+end do
+do i = 1, n
+    x = B(i)
     z = x*x
     B(i) = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
 end do
