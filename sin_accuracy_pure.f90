@@ -295,4 +295,59 @@ do i = 1, n
 end do
 end subroutine
 
+pure subroutine kernel_sin2(n, A, B) bind(c)
+use iso_fortran_env, only: dp=>real64
+use iso_c_binding, only: c_long, c_double
+implicit none
+integer(c_long), value, intent(in) :: n
+real(c_double), intent(in) :: A(n)
+real(c_double), intent(out) :: B(n)
+real(dp), parameter ::     c9 = -7.97255955009037868891952e-18_dp
+real(dp), parameter ::     c8 =  2.81009972710863200091251e-15_dp
+real(dp), parameter ::     c7 = -7.64712219118158833288484e-13_dp
+real(dp), parameter ::     c6 =  1.60590430605664501629054e-10_dp
+real(dp), parameter ::     c5 = -2.50521083763502045810755e-08_dp
+real(dp), parameter ::     c4 =  2.75573192239198747630416e-06_dp
+real(dp), parameter ::     c3 = -0.000198412698412696162806809_dp
+real(dp), parameter ::     c2 =  0.00833333333333332974823815_dp
+real(dp), parameter ::     c1 = -0.166666666666666657414808_dp
+real(dp), parameter :: S1 = 1
+real(dp), parameter :: S2 = c1
+real(dp), parameter :: S3 = c2
+real(dp), parameter :: S4 = c3
+real(dp), parameter :: S5 = c4
+real(dp), parameter :: S6 = c5
+real(dp), parameter :: S7 = c6
+real(dp), parameter :: S8 = c7
+real(dp), parameter :: S9 = c8
+real(dp), parameter :: S10 = c9
+real(dp), parameter :: p1 = 3.14159202575683594e+00_dp
+real(dp), parameter :: p2 = 6.27832832833519205e-07_dp
+real(dp), parameter :: p3 = 1.24467443437932268e-13_dp
+real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
+real(dp), parameter :: one_over_pi = 1/pi
+real(dp) :: x, z, Nd
+integer(c_long) :: i
+do i = 1, n
+    x = A(i)
+    Nd = int(x*one_over_pi)
+    x = ((x - Nd*p1) - Nd*p2) - Nd*p3
+    ! If A(i)>0, then 0 < x < pi
+    ! If A(i)<0, then -pi < x < 0
+    x = min(x, pi - x)
+    ! If A(i)>0, then 0 < x < pi/2
+    ! If A(i)<0, then -pi < x < 0 ! So probably wrong for x < 0
+
+    ! For even Nd, we have sin(A(i)) = sin(x)
+    ! For odd Nd,  we have sin(A(i)) = sin(x+pi) = -sin(x) = sin(-x)
+    if (modulo(int(Nd), 2) == 1) x = -x
+    B(i) = x
+end do
+do i = 1, n
+    x = B(i)
+    z = x*x
+    B(i) = x*(S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*(S8+z*(S9+z*S10)))))))))
+end do
+end subroutine
+
 end program
