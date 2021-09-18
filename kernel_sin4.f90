@@ -1,4 +1,4 @@
-pure subroutine kernel_sin1(n, A, B) bind(c)
+subroutine kernel_sin1(n, A, B) bind(c)
 ! Intel: 3.65 cycles per double; peak: 2.5
 ! ARM: 3.26 cycles per double; peak: 2.25
 use iso_fortran_env, only: dp=>real64
@@ -15,20 +15,25 @@ real(dp), parameter :: S5 = 2.7557315514280769795e-6_dp
 real(dp), parameter :: S6 = -2.5051823583393710429e-8_dp
 real(dp), parameter :: S7 = 1.6046585911173017112e-10_dp
 real(dp), parameter :: S8 = -7.3572396558796051923e-13_dp
-real(dp), parameter :: one_over_twopi = 1/6.283185307179586_dp
-real(dp), parameter :: p1 = 6.28318405151367188e+00_dp
-real(dp), parameter :: p2 = 1.25566566566703841e-06_dp
-real(dp), parameter :: p3 = 2.48934886875864535e-13_dp
+real(dp), parameter :: p1 = 3.14159202575683594e+00_dp
+real(dp), parameter :: p2 = 6.27832832833519205e-07_dp
+real(dp), parameter :: p3 = 1.24467443437932268e-13_dp
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
-real(dp) :: x, z, Nd
-integer(c_long) :: i
+real(dp), parameter :: one_over_pi = 1/pi
+real(dp) :: x, z
+real(dp) :: Nd
+integer(c_long) :: i, xi
+equivalence (x,xi)
 do i = 1, n
     x = A(i)
-    Nd = int(x*one_over_twopi)
+    Nd = nint(x*one_over_pi)
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
-    x = min(x, pi - x)
-    x = max(x, -pi - x)
-    x = min(x, pi - x)
+    ! -pi/2 < x < pi/2
+    ! For even Nd, we have sin(A(i)) = sin(x)
+    ! For odd Nd,  we have sin(A(i)) = sin(x+pi) = -sin(x) = sin(-x)
+    !if (modulo(int(Nd), 2) == 1) x = -x
+    !if (and(Nd, 1) /= 0) x = -x
+    xi = xor(shiftl(int(Nd, c_long),63), xi)
     B(i) = x
 end do
 do i = 1, n
