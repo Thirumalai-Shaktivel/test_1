@@ -330,14 +330,9 @@ real(dp) :: x, z, Nd
 integer(c_long) :: i
 do i = 1, n
     x = A(i)
-    Nd = int(x*one_over_pi)
+    Nd = nint(x*one_over_pi)
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
-    ! If A(i)>0, then 0 < x < pi
-    ! If A(i)<0, then -pi < x < 0
-    x = min(x, pi - x)
-    ! If A(i)>0, then 0 < x < pi/2
-    ! If A(i)<0, then -pi < x < 0 ! So probably wrong for x < 0
-
+    ! -pi/2 < x < pi/2
     ! For even Nd, we have sin(A(i)) = sin(x)
     ! For odd Nd,  we have sin(A(i)) = sin(x+pi) = -sin(x) = sin(-x)
     if (modulo(int(Nd), 2) == 1) x = -x
