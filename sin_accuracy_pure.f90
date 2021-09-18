@@ -345,7 +345,7 @@ do i = 1, n
 end do
 end subroutine
 
-pure subroutine kernel_sin3(n, A, B) bind(c)
+subroutine kernel_sin3(n, A, B) bind(c)
 use iso_fortran_env, only: dp=>real64
 use iso_c_binding, only: c_long, c_double
 implicit none
@@ -374,7 +374,8 @@ do i = 1, n
     ! -pi/2 < x < pi/2
     ! For even Nd, we have sin(A(i)) = sin(x)
     ! For odd Nd,  we have sin(A(i)) = sin(x+pi) = -sin(x) = sin(-x)
-    if (modulo(int(Nd), 2) == 1) x = -x
+    !if (modulo(int(Nd), 2) == 1) x = -x
+    if (and(int(Nd), 1) /= 0) x = -x
     B(i) = x
 end do
 do i = 1, n
