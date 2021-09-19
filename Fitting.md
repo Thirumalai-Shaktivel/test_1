@@ -34,6 +34,9 @@ def P(x, par):
     a = -(C1-1)/x2
     return x * polyn(x**2, [a] + par)
 
+def err(x, par):
+    return max(abs(sin(x)-P(x,par)))
+
 def poly2(z, a, b):
     return polyn(z, [a, b])
 
@@ -56,7 +59,7 @@ def err2(x, b):
     return max(abs(sin(x)-P2(x,b)))
 
 def err3(x, b, c):
-    return max(abs(sin(x)-P3(x,b,c)))
+    return err(x, [b, c])
 
 def err4(x, b, c, d):
     return max(abs(sin(x)-P4(x,b,c,d)))
@@ -77,7 +80,7 @@ res
 
 ```{code-cell} ipython3
 par0 = [0.1, 0.1]
-res = minimize(lambda par: err3(x, par[0], par[1]), par0, method='Nelder-Mead', tol=1e-6)
+res = minimize(lambda par: err(x, [par[0], par[1]]), par0, method='Nelder-Mead', tol=1e-6)
 b3 = res.x[0]
 c3 = res.x[1]
 res
