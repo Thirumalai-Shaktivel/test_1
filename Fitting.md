@@ -54,8 +54,7 @@ res
 ```{code-cell} ipython3
 par0 = [0.1, 0.1]
 res = minimize(lambda par: err(x, par), par0, method='Nelder-Mead', tol=1e-6)
-b3 = res.x[0]
-c3 = res.x[1]
+C3 = res.x
 res
 ```
 
@@ -82,7 +81,7 @@ plot(x, fn, label="sin(x)")
 #plot(x, Q1, label="Q1")
 #plot(x, P1, label="P1")
 #plot(x, P2(x, b2), label="P2")
-plot(x, P(x, [b3, c3]), label="P3")
+plot(x, P(x, C3), label="P3")
 plot(x, P(x, [b4, c4, d4]), label="P4")
 grid()
 legend()
@@ -93,7 +92,7 @@ show()
 
 ```{code-cell} ipython3
 e2 = err(x, [b2])
-e3 = err(x, [b3, c3])
+e3 = err(x, C3)
 e4 = err(x, [b4, c4, d4])
 
 #plot(x, sin(x)-Q1)
