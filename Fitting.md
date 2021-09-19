@@ -15,6 +15,7 @@ kernelspec:
 ```{code-cell} ipython3
 %pylab inline
 from scipy.optimize import minimize, minimize_scalar
+from scipy.special import factorial
 ```
 
 ```{code-cell} ipython3
@@ -52,14 +53,14 @@ res
 ```
 
 ```{code-cell} ipython3
-par0 = [0.1, 0.1]
+par0 = [-1/factorial(3), +1/factorial(5)]
 res = minimize(lambda par: err(x, par), par0, method='Nelder-Mead', tol=1e-6)
 C3 = res.x
 res
 ```
 
 ```{code-cell} ipython3
-par0 = [-1/(2*3), +1/(2*3*4*5), -1/(2*3*4*5*6*7)]
+par0 = [-1/factorial(3), +1/factorial(5), -1/factorial(7)]
 res = minimize(lambda par: err(x, par), par0, method='L-BFGS-B', tol=1e-15)
 C4 = res.x
 res
