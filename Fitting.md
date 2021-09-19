@@ -225,6 +225,20 @@ def polyn_arb(z, C):
         p += arb(C[i]) * arb(z)**arb(i)
     return p
 
+def sin8(x):
+    C8 = [
+        0.9999999999999990771,
+        -0.16666666666664811048,
+        8.333333333226519387e-3,
+        -1.9841269813888534497e-4,
+        2.7557315514280769795e-6,
+        -2.5051823583393710429e-8,
+        1.6046585911173017112e-10,
+        -7.3572396558796051923e-13,
+    ]
+    x = arb(x)
+    return x * polyn_arb(x*x, C8)
+
 def sin10q(x):
     R10 = [
         1.,
@@ -246,8 +260,20 @@ def err_arb(x):
     for i in range(size(x)):
         err[i] = float(arb(x[i]).sin() - sin10q(x[i]))
     return err
+
+def err_arb2(x):
+    err = empty(size(x), dtype="float64")
+    for i in range(size(x)):
+        err[i] = float(arb(x[i]).sin() - sin8(x[i]))
+    return err
 ```
 
 ```{code-cell} ipython3
 plot(x, err_arb(x))
+grid()
+show()
+
+plot(x, err_arb2(x))
+grid()
+show()
 ```
