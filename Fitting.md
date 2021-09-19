@@ -41,6 +41,12 @@ def P(x, par):
 def err(x, par):
     return max(abs(sin(x)-P(x,par)))
 
+def Q(x, par):
+    return x * polyn(x**2, par)
+
+def errQ(x, par):
+    return max(abs(sin(x)-Q(x,par)))
+
 print(P(0, [-0.140]))
 print(P(pi/2, [-0.140]))
 print(P(0, [-0.140, 0.1]))
@@ -57,7 +63,7 @@ res
 
 ```{code-cell} ipython3
 par0 = [-1/factorial(3), +1/factorial(5)]
-res = minimize(lambda par: err(x, par), par0, method='Nelder-Mead', tol=1e-6)
+res = minimize(lambda par: err(x, par), par0, method='Nelder-Mead', tol=1e-15)
 C3 = res.x
 res
 ```
@@ -73,6 +79,20 @@ res
 par0 = [-1/factorial(3), +1/factorial(5), -1/factorial(7), +1/factorial(9)]
 res = minimize(lambda par: err(x, par), par0, method='Nelder-Mead', tol=1e-15)
 C5 = res.x
+res
+```
+
+```{code-cell} ipython3
+par0 = [1, -1/factorial(3)]
+res = minimize(lambda par: errQ(x, par), par0, method='Nelder-Mead', tol=1e-10)
+Q2 = res.x
+res
+```
+
+```{code-cell} ipython3
+par0 = [1, -1/factorial(3), +1/factorial(5)]
+res = minimize(lambda par: errQ(x, par), par0, method='Nelder-Mead', tol=1e-10)
+Q3 = res.x
 res
 ```
 
@@ -139,6 +159,11 @@ for c in reduced_to_full(C2):
 ```
 
 ```{code-cell} ipython3
+for c in Q2:
+    print(c)
+```
+
+```{code-cell} ipython3
 def sin2(x):
     a = 0.982396485658623
     b = -0.14013802346642243
@@ -149,6 +174,12 @@ def sin2b(x):
     b = 4*(2-pi)/pi**3
     z = x*x
     return x*(1+z*b)
+
+def sin2c(x):
+    a = 0.9855295359722142
+    b = -0.14256672224418604
+    z = x*x
+    return x*(a+z*b)
 
 def sin3(x):
     a = 0.9996476733635783
@@ -161,8 +192,23 @@ def sin3(x):
 ```{code-cell} ipython3
 plot(x, sin(x)-sin2(x))
 plot(x, sin(x)-sin2b(x))
+plot(x, sin(x)-sin2c(x))
 ```
 
 ```{code-cell} ipython3
+plot(x, sin(x))
+plot(x, sin2c(x))
+```
 
+```{code-cell} ipython3
+sin2c(pi/2)
+```
+
+```{code-cell} ipython3
+e2 = max(abs(sin(x)-sin2(x)))
+e2b = max(abs(sin(x)-sin2b(x)))
+e2c = max(abs(sin(x)-sin2c(x)))
+print(e2)
+print(e2b)
+print(e2c)
 ```
