@@ -67,6 +67,13 @@ res
 ```
 
 ```{code-cell} ipython3
+par0 = [-1/factorial(3), +1/factorial(5), -1/factorial(7), +1/factorial(9)]
+res = minimize(lambda par: err(x, par), par0, method='Nelder-Mead', tol=1e-15)
+C5 = res.x
+res
+```
+
+```{code-cell} ipython3
 C1 = 4*(2-pi)/pi**3
 
 z = x**2
@@ -82,6 +89,7 @@ plot(x, fn, label="sin(x)")
 #plot(x, P2(x, b2), label="P2")
 plot(x, P(x, C3), label="P3")
 plot(x, P(x, C4), label="P4")
+plot(x, P(x, C5), label="P5")
 grid()
 legend()
 #ylim([0.8, 1])
@@ -93,6 +101,7 @@ show()
 e2 = err(x, C2)
 e3 = err(x, C3)
 e4 = err(x, C4)
+e5 = err(x, C5)
 
 #plot(x, sin(x)-Q1)
 #plot([-pi/2, pi/2], [e2, e2], "k--")
@@ -101,13 +110,18 @@ e4 = err(x, C4)
 #plot([-pi/2, pi/2], [-e3, -e3], "k--")
 #plot(x, sin(x)-P2(x, b2))
 #plot(x, sin(x)-P3(x, b3, c3), label="P3")
-plot([-pi/2, pi/2], [e4, e4], "k--")
-plot([-pi/2, pi/2], [-e4, -e4], "k--")
-plot(x, sin(x)-P(x, C4), label="P4")
+plot([-pi/2, pi/2], [e5, e5], "k--")
+plot([-pi/2, pi/2], [-e5, -e5], "k--")
+plot(x, sin(x)-P(x, C5), label="P5")
 grid()
 legend()
 show()
 print(e2)
 print(e3)
 print(e4)
+print(e5)
+```
+
+```{code-cell} ipython3
+
 ```
