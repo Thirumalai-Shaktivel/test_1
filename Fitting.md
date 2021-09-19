@@ -212,3 +212,42 @@ print(e2)
 print(e2b)
 print(e2c)
 ```
+
+```{code-cell} ipython3
+from flint import ctx, arb
+ctx.pretty = True
+ctx.unicode = True
+ctx.dps = 50
+
+def polyn_arb(z, C):
+    p = 0
+    for i in range(len(C)):
+        p += arb(C[i]) * arb(z)**arb(i)
+    return p
+
+def sin10q(x):
+    R10 = [
+        1.,
+        -0.166666666666666657414808,
+        0.00833333333333332974823815,
+        -0.000198412698412696162806809,
+        2.75573192239198747630416e-06,
+        -2.50521083763502045810755e-08,
+        1.60590430605664501629054e-10,
+        -7.64712219118158833288484e-13,
+        2.81009972710863200091251e-15,
+        -7.97255955009037868891952e-18,
+    ]
+    x = arb(x)
+    return x * polyn_arb(x*x, R10)
+
+def err_arb(x):
+    err = empty(size(x), dtype="float64")
+    for i in range(size(x)):
+        err[i] = float(arb(x[i]).sin() - sin10q(x[i]))
+    return err
+```
+
+```{code-cell} ipython3
+plot(x, err_arb(x))
+```
