@@ -127,5 +127,19 @@ print(e5)
 ```
 
 ```{code-cell} ipython3
+for c in reduced_to_full(C3):
+    print(c)
+```
 
+```{code-cell} ipython3
+def sin3(x):
+    a = 0.9996476733635783
+    b = -0.1655698056777521
+    c = 0.0074735069135234925
+    z = x*x
+    return x*(a+z*(b+z*c))
+```
+
+```{code-cell} ipython3
+plot(x, sin3(x))
 ```
