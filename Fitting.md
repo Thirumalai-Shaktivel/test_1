@@ -53,7 +53,7 @@ res
 
 ```{code-cell} ipython3
 par0 = [0.1, 0.1]
-res = minimize(lambda par: err(x, [par[0], par[1]]), par0, method='Nelder-Mead', tol=1e-6)
+res = minimize(lambda par: err(x, par), par0, method='Nelder-Mead', tol=1e-6)
 b3 = res.x[0]
 c3 = res.x[1]
 res
@@ -61,7 +61,7 @@ res
 
 ```{code-cell} ipython3
 par0 = [-1/(2*3), +1/(2*3*4*5), -1/(2*3*4*5*6*7)]
-res = minimize(lambda par: err(x, [par[0], par[1], par[2]]), par0, method='L-BFGS-B', tol=1e-15)
+res = minimize(lambda par: err(x, par), par0, method='L-BFGS-B', tol=1e-15)
 b4 = res.x[0]
 c4 = res.x[1]
 d4 = res.x[2]
