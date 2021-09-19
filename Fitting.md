@@ -30,9 +30,9 @@ def polyn(z, C):
 
 def P(x, par):
     x2 = pi/2
-    C1 = x2 * polyn(x2**2, [0] + par)
+    C1 = x2 * polyn(x2**2, concatenate(([0], par)))
     a = -(C1-1)/x2
-    return x * polyn(x**2, [a] + par)
+    return x * polyn(x**2, concatenate(([a], par)))
 
 def err(x, par):
     return max(abs(sin(x)-P(x,par)))
@@ -139,8 +139,4 @@ show()
 print(e2)
 print(e3)
 print(e4)
-```
-
-```{code-cell} ipython3
-
 ```
