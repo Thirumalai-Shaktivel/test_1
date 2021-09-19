@@ -61,9 +61,7 @@ res
 ```{code-cell} ipython3
 par0 = [-1/(2*3), +1/(2*3*4*5), -1/(2*3*4*5*6*7)]
 res = minimize(lambda par: err(x, par), par0, method='L-BFGS-B', tol=1e-15)
-b4 = res.x[0]
-c4 = res.x[1]
-d4 = res.x[2]
+C4 = res.x
 res
 ```
 
@@ -82,7 +80,7 @@ plot(x, fn, label="sin(x)")
 #plot(x, P1, label="P1")
 #plot(x, P2(x, b2), label="P2")
 plot(x, P(x, C3), label="P3")
-plot(x, P(x, [b4, c4, d4]), label="P4")
+plot(x, P(x, C4), label="P4")
 grid()
 legend()
 #ylim([0.8, 1])
@@ -93,7 +91,7 @@ show()
 ```{code-cell} ipython3
 e2 = err(x, [b2])
 e3 = err(x, C3)
-e4 = err(x, [b4, c4, d4])
+e4 = err(x, C4)
 
 #plot(x, sin(x)-Q1)
 #plot([-pi/2, pi/2], [e2, e2], "k--")
@@ -104,7 +102,7 @@ e4 = err(x, [b4, c4, d4])
 #plot(x, sin(x)-P3(x, b3, c3), label="P3")
 plot([-pi/2, pi/2], [e4, e4], "k--")
 plot([-pi/2, pi/2], [-e4, -e4], "k--")
-plot(x, sin(x)-P(x, [b4, c4, d4]), label="P4")
+plot(x, sin(x)-P(x, C4), label="P4")
 grid()
 legend()
 show()
