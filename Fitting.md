@@ -14,6 +14,7 @@ kernelspec:
 
 ```{code-cell} ipython3
 %pylab inline
+from scipy.optimize import minimize, minimize_scalar
 ```
 
 ```{code-cell} ipython3
@@ -26,6 +27,9 @@ def poly2(z, a, b):
 
 def poly3(z, a, b, c):
     return a + b*z + c*z**2
+
+def poly4(z, a, b, c, d):
+    return a + b*z + c*z**2 + d*z**3
 
 def P2(x, b):
     a = 0
@@ -41,19 +45,50 @@ def P3(x, b, c):
     a = -(C1-1)/x2
     return x * poly3(x**2, a, b, c)
 
+def P4(x, b, c, d):
+    a = 0
+    x2 = pi/2
+    C1 = x2 * poly4(x2**2, a, b, c, d)
+    a = -(C1-1)/x2
+    return x * poly4(x**2, a, b, c, d)
+
+def err2(x, b):
+    return max(abs(sin(x)-P2(x,b)))
+
+def err3(x, b, c):
+    return max(abs(sin(x)-P3(x,b,c)))
+
+def err4(x, b, c, d):
+    return max(abs(sin(x)-P4(x,b,c,d)))
+
 print(P2(0, -0.140))
 print(P2(pi/2, -0.140))
 print(P3(0, -0.140, 0.1))
 print(P3(pi/2, -0.140, 0.1))
+print(P4(0, -0.140, 0.1, 0.1))
+print(P4(pi/2, -0.140, 0.1, 0.1))
 ```
 
 ```{code-cell} ipython3
-def err2(x, b):
-    return max(abs(sin(x)-P2(x,b)))
-
-from scipy.optimize import minimize_scalar
 res = minimize_scalar(lambda b: err2(x, b))
 b2 = res.x
+res
+```
+
+```{code-cell} ipython3
+par0 = [0.1, 0.1]
+res = minimize(lambda par: err3(x, par[0], par[1]), par0, method='Nelder-Mead', tol=1e-6)
+b3 = res.x[0]
+c3 = res.x[1]
+res
+```
+
+```{code-cell} ipython3
+par0 = [-1/(2*3), +1/(2*3*4*5), -1/(2*3*4*5*6*7)]
+res = minimize(lambda par: err4(x, par[0], par[1], par[2]), par0, method='L-BFGS-B', tol=1e-15)
+b4 = res.x[0]
+c4 = res.x[1]
+d4 = res.x[2]
 res
 ```
 
@@ -68,10 +103,11 @@ P1 = x*2/pi
 fn = sin(x)
 
 plot(x, fn, label="sin(x)")
-plot(x, Q1, label="Q1")
+#plot(x, Q1, label="Q1")
 #plot(x, P1, label="P1")
-plot(x, P2(x, b2), label="P2")
-plot(x, P3(x, -0.140, 0.1), label="P3")
+#plot(x, P2(x, b2), label="P2")
+plot(x, P3(x, b3, c3), label="P3")
+plot(x, P4(x, b4, c4, d4), label="P4")
 grid()
 legend()
 #ylim([0.8, 1])
@@ -80,13 +116,28 @@ show()
 ```
 
 ```{code-cell} ipython3
-e = err2(x, b2)
+e2 = err2(x, b2)
+e3 = err3(x, b3, c3)
+e4 = err4(x, b4, c4, d4)
 
-plot(x, sin(x)-Q1)
-plot([-pi/2, pi/2], [e, e], "k--")
-plot([-pi/2, pi/2], [-e, -e], "k--")
-plot(x, sin(x)-P2(x, b2))
-#plot(x, sin(x)-P3(x, -0.140, 0.1))
+#plot(x, sin(x)-Q1)
+#plot([-pi/2, pi/2], [e2, e2], "k--")
+#plot([-pi/2, pi/2], [-e2, -e2], "k--")
+#plot([-pi/2, pi/2], [e3, e3], "k--")
+#plot([-pi/2, pi/2], [-e3, -e3], "k--")
+#plot(x, sin(x)-P2(x, b2))
+#plot(x, sin(x)-P3(x, b3, c3), label="P3")
+plot([-pi/2, pi/2], [e4, e4], "k--")
+plot([-pi/2, pi/2], [-e4, -e4], "k--")
+plot(x, sin(x)-P4(x, b4, c4, d4), label="P4")
 grid()
+legend()
 show()
+print(e2)
+print(e3)
+print(e4)
+```
+
+```{code-cell} ipython3
+
 ```
