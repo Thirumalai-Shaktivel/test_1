@@ -54,12 +54,12 @@ y = min(y, pi - y)
 r = kernel_dsin(y)
 end function
 
-elemental real(dp) function dsin3(x) result(r)
+real(dp) function dsin3(x) result(r)
 real(dp), intent(in) :: x
 real(dp) :: y
 real(dp) :: A(1), B(1)
 A(1) = x
-call kernel_sin1(1_8, A, B)
+call kernel_sin4(1_8, A, B)
 r = B(1)
 end function
 
@@ -384,5 +384,36 @@ do i = 1, n
     B(i) = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
 end do
 end subroutine
+
+
+subroutine kernel_sin4(n, A, B) bind(c)
+use iso_fortran_env, only: dp=>real64
+use iso_c_binding, only: c_long, c_double
+implicit none
+integer(c_long), value, intent(in) :: n
+real(c_double), intent(in) :: A(n)
+real(c_double), intent(out) :: B(n)
+real(dp), parameter :: S1 =  0.982396485658623
+real(dp), parameter :: S2 = -0.14013802346642243
+real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
+real(dp) :: x, z, Nd
+integer(c_long) :: i, xi
+equivalence (x,xi)
+do i = 1, n
+    x = A(i)
+    Nd = nint(x/pi)
+    x = x - Nd*pi
+    ! -pi/2 < x < pi/2
+    ! For even Nd, we have sin(A(i)) = sin(x)
+    ! For odd Nd,  we have sin(A(i)) = sin(x+pi) = -sin(x) = sin(-x)
+    ! Preferred way, but slow:
+    !if (modulo(int(Nd), 2) == 1) x = -x
+    ! Floating point and integer representation dependent, but fast:
+    xi = xor(shiftl(int(Nd, c_long),63), xi)
+    z = x*x
+    B(i) = x*(S1+z*S2)
+end do
+end subroutine
+
 
 end program
