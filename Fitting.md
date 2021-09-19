@@ -106,6 +106,13 @@ e3 = err(x, C3)
 e4 = err(x, C4)
 e5 = err(x, C5)
 
+plot([-pi/2, pi/2], [e2, e2], "k--")
+plot([-pi/2, pi/2], [-e2, -e2], "k--")
+plot(x, sin(x)-P(x, C2), label="P2")
+grid()
+legend()
+show()
+
 plot([-pi/2, pi/2], [e3, e3], "k--")
 plot([-pi/2, pi/2], [-e3, -e3], "k--")
 plot(x, sin(x)-P(x, C3), label="P3")
@@ -127,11 +134,22 @@ print(e5)
 ```
 
 ```{code-cell} ipython3
-for c in reduced_to_full(C3):
+for c in reduced_to_full(C2):
     print(c)
 ```
 
 ```{code-cell} ipython3
+def sin2(x):
+    a = 0.982396485658623
+    b = -0.14013802346642243
+    z = x*x
+    return x*(a+z*b)
+
+def sin2b(x):
+    b = 4*(2-pi)/pi**3
+    z = x*x
+    return x*(1+z*b)
+
 def sin3(x):
     a = 0.9996476733635783
     b = -0.1655698056777521
@@ -141,5 +159,10 @@ def sin3(x):
 ```
 
 ```{code-cell} ipython3
-plot(x, sin3(x))
+plot(x, sin(x)-sin2(x))
+plot(x, sin(x)-sin2b(x))
+```
+
+```{code-cell} ipython3
+
 ```
