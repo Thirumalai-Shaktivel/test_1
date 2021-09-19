@@ -9,12 +9,13 @@ real(c_double), intent(out) :: B(n)
 real(dp), parameter :: S1 =  0.982396485658623
 real(dp), parameter :: S2 = -0.14013802346642243
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
+real(dp), parameter :: one_over_pi = 1/pi
 real(dp) :: x, z, Nd
 integer(c_long) :: i, xi
 equivalence (x,xi)
 do i = 1, n
     x = A(i)
-    Nd = nint(x/pi)
+    Nd = int(x*one_over_pi + 0.5_dp)
     x = x - Nd*pi
     ! -pi/2 < x < pi/2
     ! For even Nd, we have sin(A(i)) = sin(x)
