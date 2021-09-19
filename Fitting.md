@@ -97,6 +97,22 @@ res
 ```
 
 ```{code-cell} ipython3
+par0 = [
+    0.9999999999999990771,
+    -0.16666666666664811048,
+    8.333333333226519387e-3,
+    -1.9841269813888534497e-4,
+    2.7557315514280769795e-6,
+    -2.5051823583393710429e-8,
+    1.6046585911173017112e-10,
+    -7.3572396558796051923e-13,
+]
+res = minimize(lambda par: errQ(x, par), par0, method='Nelder-Mead', tol=1e-15)
+Q8 = res.x
+res
+```
+
+```{code-cell} ipython3
 C1 = 4*(2-pi)/pi**3
 
 z = x**2
@@ -239,6 +255,10 @@ def sin8(x):
     x = arb(x)
     return x * polyn_arb(x*x, C8)
 
+def sin8b(x):
+    x = arb(x)
+    return x * polyn_arb(x*x, Q8)
+
 def sin10q(x):
     R10 = [
         1.,
@@ -266,6 +286,12 @@ def err_arb2(x):
     for i in range(size(x)):
         err[i] = float(arb(x[i]).sin() - sin8(x[i]))
     return err
+
+def err_arb3(x):
+    err = empty(size(x), dtype="float64")
+    for i in range(size(x)):
+        err[i] = float(arb(x[i]).sin() - sin8b(x[i]))
+    return err
 ```
 
 ```{code-cell} ipython3
@@ -274,6 +300,7 @@ grid()
 show()
 
 plot(x, err_arb2(x))
+plot(x, err_arb3(x))
 grid()
 show()
 ```
