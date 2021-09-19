@@ -40,17 +40,11 @@ def err(x, par):
 def poly2(z, a, b):
     return polyn(z, [a, b])
 
-def poly3(z, a, b, c):
-    return polyn(z, [a, b, c])
-
 def poly4(z, a, b, c, d):
     return polyn(z, [a, b, c, d])
 
 def P2(x, b):
     return P(x, [b])
-
-def P3(x, b, c):
-    return P(x, [b, c])
 
 def P4(x, b, c, d):
     return P(x, [b, c, d])
@@ -58,16 +52,13 @@ def P4(x, b, c, d):
 def err2(x, b):
     return max(abs(sin(x)-P2(x,b)))
 
-def err3(x, b, c):
-    return err(x, [b, c])
-
 def err4(x, b, c, d):
     return max(abs(sin(x)-P4(x,b,c,d)))
 
 print(P2(0, -0.140))
 print(P2(pi/2, -0.140))
-print(P3(0, -0.140, 0.1))
-print(P3(pi/2, -0.140, 0.1))
+print(P(0, [-0.140, 0.1]))
+print(P(pi/2, [-0.140, 0.1]))
 print(P4(0, -0.140, 0.1, 0.1))
 print(P4(pi/2, -0.140, 0.1, 0.1))
 ```
@@ -109,7 +100,7 @@ plot(x, fn, label="sin(x)")
 #plot(x, Q1, label="Q1")
 #plot(x, P1, label="P1")
 #plot(x, P2(x, b2), label="P2")
-plot(x, P3(x, b3, c3), label="P3")
+plot(x, P(x, [b3, c3]), label="P3")
 plot(x, P4(x, b4, c4, d4), label="P4")
 grid()
 legend()
@@ -120,7 +111,7 @@ show()
 
 ```{code-cell} ipython3
 e2 = err2(x, b2)
-e3 = err3(x, b3, c3)
+e3 = err(x, [b3, c3])
 e4 = err4(x, b4, c4, d4)
 
 #plot(x, sin(x)-Q1)
