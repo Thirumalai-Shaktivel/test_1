@@ -29,11 +29,14 @@ def polyn(z, C):
         p += C[i] * z**i
     return p
 
-def P(x, par):
+def reduced_to_full(C_reduced):
     x2 = pi/2
-    C1 = x2 * polyn(x2**2, concatenate(([0], par)))
-    a = -(C1-1)/x2
-    return x * polyn(x**2, concatenate(([a], par)))
+    V2 = x2 * polyn(x2**2, concatenate(([0], C_reduced)))
+    a = -(V2-1)/x2
+    return concatenate(([a], C_reduced))
+
+def P(x, par):
+    return x * polyn(x**2, reduced_to_full(par))
 
 def err(x, par):
     return max(abs(sin(x)-P(x,par)))
