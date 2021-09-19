@@ -47,7 +47,7 @@ print(P(pi/2, [-0.140, 0.1, 0.1]))
 
 ```{code-cell} ipython3
 res = minimize_scalar(lambda b: err(x, [b]))
-b2 = res.x
+C2 = [res.x]
 res
 ```
 
@@ -89,7 +89,7 @@ show()
 ```
 
 ```{code-cell} ipython3
-e2 = err(x, [b2])
+e2 = err(x, C2)
 e3 = err(x, C3)
 e4 = err(x, C4)
 
