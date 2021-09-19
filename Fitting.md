@@ -22,35 +22,35 @@ x = linspace(-pi/2, pi/2, 1000)
 ```
 
 ```{code-cell} ipython3
+def polyn(z, C):
+    p = 0
+    for i in range(len(C)):
+        p += C[i] * z**i
+    return p
+
+def P(x, par):
+    x2 = pi/2
+    C1 = x2 * polyn(x2**2, [0] + par)
+    a = -(C1-1)/x2
+    return x * polyn(x**2, [a] + par)
+
 def poly2(z, a, b):
-    return a + b*z
+    return polyn(z, [a, b])
 
 def poly3(z, a, b, c):
-    return a + b*z + c*z**2
+    return polyn(z, [a, b, c])
 
 def poly4(z, a, b, c, d):
-    return a + b*z + c*z**2 + d*z**3
+    return polyn(z, [a, b, c, d])
 
 def P2(x, b):
-    a = 0
-    x2 = pi/2
-    C1 = x2 * poly2(x2**2, a, b) # Should be equal to 1, we subtract from `a`
-    a = -(C1-1)/x2
-    return x * poly2(x**2, a, b)
+    return P(x, [b])
 
 def P3(x, b, c):
-    a = 0
-    x2 = pi/2
-    C1 = x2 * poly3(x2**2, a, b, c) # Should be equal to 1, we subtract from `a`
-    a = -(C1-1)/x2
-    return x * poly3(x**2, a, b, c)
+    return P(x, [b, c])
 
 def P4(x, b, c, d):
-    a = 0
-    x2 = pi/2
-    C1 = x2 * poly4(x2**2, a, b, c, d)
-    a = -(C1-1)/x2
-    return x * poly4(x**2, a, b, c, d)
+    return P(x, [b, c, d])
 
 def err2(x, b):
     return max(abs(sin(x)-P2(x,b)))
