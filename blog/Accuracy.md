@@ -60,26 +60,21 @@ diff_ulp = vectorize(diff_ulp1)
 ```
 
 ```{code-cell} ipython3
-D = loadtxt("sin_data.txt")
-x = D[:,0]
-sin_gf = D[:,1]
 D = loadtxt("sin_pure_data.txt")
-#assert(max(abs(x-D[:,0])) < 1e-16)
-x2 = D[:,0]
+x = D[:,0]
 sin_pure = D[:,1]
 sin_pure_double = D[:,2]
+sin_gf = D[:,3]
 
 err_gf = abs(sin_gf - compute_sin_arb(x))/abs(sin_gf)
-#err_gf = diff_ulp(sin_gf, compute_sin_arb(x))
-err_pure = abs(sin_pure - compute_sin_arb(x2))/abs(sin_pure)
-err_pure_double = abs(sin_pure_double - compute_sin_arb(x2))/abs(sin_pure_double)
-#err_pure = diff_ulp(sin_pure, compute_sin_arb(x2))
+err_pure = abs(sin_pure - compute_sin_arb(x))/abs(sin_pure)
+err_pure_double = abs(sin_pure_double - compute_sin_arb(x))/abs(sin_pure_double)
 
 
 figure(figsize=(12, 8))
 loglog(x, err_gf, ".", label="GFortran Intrinsic")
-loglog(x2, err_pure, ".", label="Pure")
-loglog(x2, err_pure_double, ".", label="Pure double double")
+loglog(x, err_pure, ".", label="Pure")
+loglog(x, err_pure_double, ".", label="Pure double double")
 legend()
 xlabel("x")
 ylabel("Relative Error of sin(x)")
