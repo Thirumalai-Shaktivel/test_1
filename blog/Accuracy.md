@@ -62,24 +62,26 @@ diff_ulp = vectorize(diff_ulp1)
 ```{code-cell} ipython3
 D = loadtxt("sin_pure_data.txt")
 x = D[:,0]
-sin_pos = D[:,1:4]
-sin_neg = D[:,4:7]
+sin_pos = D[:,1:5]
+sin_neg = D[:,5:]
 
 err_pos = empty_like(sin_pos)
-for i in range(3):
+for i in range(4):
     err_pos[:,i] = abs(sin_pos[:,i] - compute_sin_arb(x))/abs(sin_pos[:,i])
 err_neg = empty_like(sin_neg)
-for i in range(3):
+for i in range(4):
     err_neg[:,i] = abs(sin_neg[:,i] - compute_sin_arb(-x))/abs(sin_neg[:,i])
 
 
 figure(figsize=(12, 8))
-loglog(x, err_pos[:,2], "o", label="GFortran Intrinsic")
-loglog(x, err_neg[:,2], "y.", label="GFortran Intrinsic (neg)")
+loglog(x, err_pos[:,3], "o", label="GFortran Intrinsic")
+loglog(x, err_neg[:,3], "y.", label="GFortran Intrinsic (neg)")
 loglog(x, err_pos[:,0], "o", label="Fast Simple")
 loglog(x, err_neg[:,0], "y.", label="Fast Simple (neg)")
 loglog(x, err_pos[:,1], "o", label="Fast")
 loglog(x, err_neg[:,1], "y.", label="Fast (neg)")
+loglog(x, err_pos[:,2], "o", label="Fastest")
+loglog(x, err_neg[:,2], "y.", label="Fastest (neg)")
 legend()
 xlabel("x")
 ylabel("Relative Error of sin(x)")

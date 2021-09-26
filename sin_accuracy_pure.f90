@@ -19,8 +19,9 @@ alpha = (xmax - xmin) / (exp(beta*N) - 1)
 
 do i = 1, N+1
     x = alpha * (exp(beta*(i-1)) - 1) + xmin
-    print "(es23.16, 6(' ', es25.16e3))", x, &
-        dsin1(x), dsin3(x), sin(x), dsin1(-x), dsin3(-x), sin(-x)
+    print "(es23.16, 8(' ', es25.16e3))", x, &
+        dsin1( x), dsin3( x), dsin4( x), sin( x), &
+        dsin1(-x), dsin3(-x), dsin4(-x), sin(-x)
 end do
 
 contains
@@ -61,6 +62,15 @@ real(dp) :: y
 real(dp) :: A(1), B(1)
 A(1) = x
 call kernel_sin3(1_8, A, B)
+r = B(1)
+end function
+
+real(dp) function dsin4(x) result(r)
+real(dp), intent(in) :: x
+real(dp) :: y
+real(dp) :: A(1), B(1)
+A(1) = x
+call kernel_sin4(1_8, A, B)
 r = B(1)
 end function
 
@@ -406,7 +416,7 @@ integer(c_long) :: i, xi
 equivalence (x,xi)
 do i = 1, n
     x = A(i)
-    Nd = int(x*one_over_pi + 0.5_dp)
+    Nd = nint(x/pi)
     x = x - Nd*pi
     ! -pi/2 < x < pi/2
     ! For even Nd, we have sin(A(i)) = sin(x)
