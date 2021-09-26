@@ -9,7 +9,7 @@ real(dp) :: x, alpha, beta, a, xmin, xmax
 
 N = 100
 
-xmin = 1e-20_dp
+xmin = 1e-10_dp
 xmax = 5e9_dp
 a = 1e20_dp
 
