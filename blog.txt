@@ -130,3 +130,25 @@ Contents:
 * Exact theoretical peak for the absolute minimum version:
   (3*fma_clock + 2*mul_clock) + (3*max_clock + 2*float_int_conv_clock + mul_clock)
   On Intel it gives 1.625
+
+
+---------------------
+
+Appollo Guidance Computer (AGC):
+
+* https://space.stackexchange.com/questions/30952/how-did-the-apollo-computers-evaluate-transcendental-functions-like-sine-arctan
+
+They compute `sin(pi*x)`. The 16-bit fixed-point number could only store
+values from -1 to 1., so during the computation the argument is scaled by 2 to
+fit within this range.
+
+They used a polynomial approximation of the form x*(C1+x^2*(C2+x^2*C3)) to
+approximate sin(x*pi/2)/2 (they double the argument first, and the multiply by
+two at the end):
+
+C1 = 0.0363551
+C2 = -0.3216147
+C3 = 0.7853134
+
+The range is (-pi/2, pi/2) and the accuracy is about 1e-4 on this range. There
+was no argument reduction.
