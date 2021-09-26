@@ -19,7 +19,8 @@ alpha = (xmax - xmin) / (exp(beta*N) - 1)
 
 do i = 1, N+1
     x = alpha * (exp(beta*(i-1)) - 1) + xmin
-    print "(es23.16, '   ', es25.16e3, '   ', es25.16e3)", x, dsin1(x), dsin3(x)
+    print "(es23.16, 6(' ', es25.16e3))", x, &
+        dsin1(x), dsin3(x), sin(x), dsin1(-x), dsin3(-x), sin(-x)
 end do
 
 contains
@@ -37,10 +38,10 @@ end function
 elemental real(dp) function dsin1(x) result(r)
 real(dp), intent(in) :: x
 real(dp) :: y
-y = modulo(x, 2*pi)
-y = min(y, pi - y)
-y = max(y, -pi - y)
-y = min(y, pi - y)
+integer :: N
+N = nint(x/pi)
+y = x-N*pi
+if (modulo(N, 2) == 1) y = -y
 r = kernel_dsin(y)
 end function
 
@@ -366,7 +367,8 @@ real(dp), parameter :: p3 = 1.24467443437932268e-13_dp
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 real(dp), parameter :: one_over_pi = 1/pi
 real(dp) :: x, z, Nd
-integer(c_long) :: i
+integer(c_long) :: i, xi
+equivalence (x,xi)
 do i = 1, n
     x = A(i)
     Nd = nint(x*one_over_pi)
@@ -375,7 +377,8 @@ do i = 1, n
     ! For even Nd, we have sin(A(i)) = sin(x)
     ! For odd Nd,  we have sin(A(i)) = sin(x+pi) = -sin(x) = sin(-x)
     !if (modulo(int(Nd), 2) == 1) x = -x
-    if (and(int(Nd), 1) /= 0) x = -x
+    !if (and(int(Nd), 1) /= 0) x = -x
+    xi = xor(shiftl(int(Nd, c_long),63), xi)
     B(i) = x
 end do
 do i = 1, n
