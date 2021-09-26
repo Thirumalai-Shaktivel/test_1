@@ -62,25 +62,30 @@ diff_ulp = vectorize(diff_ulp1)
 ```{code-cell} ipython3
 D = loadtxt("sin_pure_data.txt")
 x = D[:,0]
-sin_pure = D[:,1]
-sin_pure_double = D[:,2]
-sin_gf = D[:,3]
+sin_pos = D[:,1:4]
+sin_neg = D[:,4:7]
 
-err_gf = abs(sin_gf - compute_sin_arb(x))/abs(sin_gf)
-err_pure = abs(sin_pure - compute_sin_arb(x))/abs(sin_pure)
-err_pure_double = abs(sin_pure_double - compute_sin_arb(x))/abs(sin_pure_double)
+err_pos = empty_like(sin_pos)
+for i in range(3):
+    err_pos[:,i] = abs(sin_pos[:,i] - compute_sin_arb(x))/abs(sin_pos[:,i])
+err_neg = empty_like(sin_neg)
+for i in range(3):
+    err_neg[:,i] = abs(sin_neg[:,i] - compute_sin_arb(-x))/abs(sin_neg[:,i])
 
 
 figure(figsize=(12, 8))
-loglog(x, err_gf, ".", label="GFortran Intrinsic")
-loglog(x, err_pure, ".", label="Pure")
-loglog(x, err_pure_double, ".", label="Pure double double")
+loglog(x, err_pos[:,2], "o", label="GFortran Intrinsic")
+loglog(x, err_neg[:,2], "y.", label="GFortran Intrinsic (neg)")
+loglog(x, err_pos[:,0], "o", label="Fast Simple")
+loglog(x, err_neg[:,0], "y.", label="Fast Simple (neg)")
+loglog(x, err_pos[:,1], "o", label="Fast")
+loglog(x, err_neg[:,1], "y.", label="Fast (neg)")
 legend()
 xlabel("x")
 ylabel("Relative Error of sin(x)")
 #xlim([1, 1e5])
 #ylim([1e-20, 1e-15])
-ylim([1e-18, 1])
+ylim([1e-18, None])
 x0 = 30
 plot([x0, x0], [1e-11, 1e-5], "k--")
 x1 = 1e10
@@ -88,6 +93,10 @@ plot([x1, x1], [1e-11, 1e-5], "k-")
 grid()
 savefig("error_rel.pdf")
 show()
+```
+
+```{code-cell} ipython3
+err_pos-err_neg
 ```
 
 ```{code-cell} ipython3
