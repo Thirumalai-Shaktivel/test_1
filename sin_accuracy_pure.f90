@@ -59,7 +59,7 @@ real(dp), intent(in) :: x
 real(dp) :: y
 real(dp) :: A(1), B(1)
 A(1) = x
-call kernel_sin4(1_8, A, B)
+call kernel_sin3(1_8, A, B)
 r = B(1)
 end function
 
