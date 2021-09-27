@@ -55,6 +55,7 @@ if CPU == 1:
     shift_clock = 0.25 # (`vpsllq` takes 1 cycle)
     float_int_conv_clock = 0.25
     filename = "sin_perf_intel.txt"
+    filename_out = "sin_perf_intel2.txt"
 elif CPU == 2:
     # ARM:
     # https://www.techpowerup.com/cpu-specs/core-i9-10980hk.c2276
@@ -93,6 +94,7 @@ elif CPU == 2:
     shift_clock = 0.125 # ?
     float_int_conv_clock = 0.125
     filename = "sin_perf_arm.txt"
+    filename_out = "sin_perf_arm2.txt"
 else:
     raise Exception("CPU type not supported")
 
@@ -167,6 +169,6 @@ print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
 ```
 
 ```{code-cell} ipython3
-# The fastest possible way of calculating sin (not very accurate or usable)
-(fma_clock + 2*mul_clock) + (3*max_clock + fma_clock + 2*float_int_conv_clock + mul_clock)
+D = [x2, sin_pure*cpu_freq, read*cpu_freq, write*cpu_freq, sin_pure*cpu_freq]
+savetxt(filename_out, D)
 ```
