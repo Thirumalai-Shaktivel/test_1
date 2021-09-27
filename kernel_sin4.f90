@@ -1,6 +1,6 @@
 subroutine kernel_sin1(n, A, B) bind(c)
 ! Intel: 2.83 cycles per double; peak: 2.458
-! ARM: 3.26 cycles per double; peak: 2.25
+! ARM: 2.5 cycles per double; peak: 2.125
 use iso_fortran_env, only: dp=>real64
 use iso_c_binding, only: c_long, c_double
 implicit none
