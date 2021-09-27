@@ -177,3 +177,7 @@ print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
 
 # The fastest possible way of calculating sin (not very accurate or usable)
 (fma_clock + 2*mul_clock) + (3*max_clock + fma_clock + 2*float_int_conv_clock + mul_clock)
+
+filename_out = "gfortran_intel.txt"
+D = [x2, sin_pure*cpu_freq, read*cpu_freq, write*cpu_freq]
+savetxt(filename_out, D)
