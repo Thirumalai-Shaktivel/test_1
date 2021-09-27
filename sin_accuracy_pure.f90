@@ -381,7 +381,8 @@ integer(c_long) :: i, xi
 equivalence (x,xi)
 do i = 1, n
     x = A(i)
-    Nd = nint(x*one_over_pi)
+    !Nd = nint(x*one_over_pi)
+    Nd = int(x/pi + 0.5_dp*sign(1._dp, x))
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
     ! -pi/2 < x < pi/2
     ! For even Nd, we have sin(A(i)) = sin(x)
