@@ -13,34 +13,15 @@ kernelspec:
 ---
 
 ```{code-cell} ipython3
+%pylab inline
+```
+
+```{code-cell} ipython3
 # Supported CPUs for analysis:
 # 1 ... 2.4 GHz 8-Core Intel Core i9 (MacBook Pro 2019)
 # 2 ... Apple M1 (ARM)
 
 CPU = 1
-```
-
-```{code-cell} ipython3
-# Select one of the supported build platforms:
-# 1 ... Linux Intel 64
-# 2 ... macOS Intel 64
-# 3 ... macOS ARM 64
-
-!./build.sh 2
-# !./sin_perf > sin_data.txt
-!./sin_perf_pure_vec > sin_pure_data_vec.txt
-```
-
-```{code-cell} ipython3
-%pylab inline
-```
-
-```{code-cell} ipython3
-D = loadtxt("sin_pure_data_vec.txt")
-x2 = D[:,0]
-sin_pure = D[:,2]
-read = D[:,3]
-write = D[:,4]
 
 GHz = 1e9
 KB = 1024
@@ -73,6 +54,7 @@ if CPU == 1:
     xor_clock = 0.0825
     shift_clock = 0.25 # (`vpsllq` takes 1 cycle)
     float_int_conv_clock = 0.25
+    filename = "sin_perf_intel.txt"
 elif CPU == 2:
     # ARM:
     # https://www.techpowerup.com/cpu-specs/core-i9-10980hk.c2276
@@ -110,9 +92,15 @@ elif CPU == 2:
     xor_clock = 0.125 # ?
     shift_clock = 0.125 # ?
     float_int_conv_clock = 0.125
+    filename = "sin_perf_arm.txt"
 else:
     raise Exception("CPU type not supported")
 
+D = loadtxt(filename)
+x2 = D[:,0]
+sin_pure = D[:,2]
+read = D[:,3]
+write = D[:,4]
 
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
