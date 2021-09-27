@@ -31,46 +31,20 @@ ctx.dps = 50
 ```
 
 ```{code-cell} ipython3
-def compute_sin_arb(x):
-    y = empty(size(x), dtype=arb)
-    for i in range(size(x)):
-        y[i] = arb(x[i]).sin()
-    return y
-```
-
-```{code-cell} ipython3
-def diff_ulp0(x, y):
-    x = float(x)
-    y = float(y)
-    if x == y: return 0
-    return abs(x-y)/math.ulp(max(abs(x), abs(y)))
-def diff_ulp1(x, y):
-    x0 = x
-    y0 = float(y)
-    if x == y: return 0
-    x = abs(float(x))
-    y = abs(float(y))
-    if x > y: x, y = y, x
-    ulp = 0
-    while x < y:
-        x = nextafter(x, y)
-        ulp += 1
-    return ulp
-diff_ulp = vectorize(diff_ulp1)
-```
-
-```{code-cell} ipython3
 D = loadtxt("sin_pure_data.txt")
 x = D[:,0]
 sin_pos = D[:,1:5]
 sin_neg = D[:,5:]
 
+@vectorize
+def arb_sin(x): return arb(x).sin()
+
 err_pos = empty_like(sin_pos)
 for i in range(4):
-    err_pos[:,i] = abs(sin_pos[:,i] - compute_sin_arb(x))/abs(sin_pos[:,i])
+    err_pos[:,i] = abs(sin_pos[:,i] - arb_sin(x))/abs(sin_pos[:,i])
 err_neg = empty_like(sin_neg)
 for i in range(4):
-    err_neg[:,i] = abs(sin_neg[:,i] - compute_sin_arb(-x))/abs(sin_neg[:,i])
+    err_neg[:,i] = abs(sin_neg[:,i] - arb_sin(-x))/abs(sin_neg[:,i])
     
 # Given that sin(x) = -sin(-x) numerically:
 assert abs(sin_pos-(-sin_neg)).max() == 0.0
@@ -117,12 +91,19 @@ x2 = D[:,0]
 sin_pure = D[:,1]
 sin_pure_double = D[:,2]
 
+@vectorize
+def diff_ulp(x, y):
+    x = float(x)
+    y = float(y)
+    if x == y: return 0
+    return abs(x-y)/math.ulp(max(abs(x), abs(y)))
+
 #err_gf = abs(sin_gf - compute_sin_arb(x))/abs(sin_gf)
-err_gf = diff_ulp(sin_gf, compute_sin_arb(x).astype('float64'))
+err_gf = diff_ulp(sin_gf, arb_sin(x).astype('float64'))
 #err_pure = abs(sin_pure - compute_sin_arb(x2))/abs(sin_pure)
 #err_pure_double = abs(sin_pure_double - compute_sin_arb(x2))/abs(sin_pure_double)
 #err_pure = diff_ulp(sin_pure, compute_sin_arb(x2).astype('float64'))
-err_pure_double = diff_ulp(sin_pure_double, compute_sin_arb(x2).astype('float64'))
+err_pure_double = diff_ulp(sin_pure_double, arb_sin(x2).astype('float64'))
 
 
 
@@ -140,25 +121,5 @@ ylabel("ULP Error of sin(x)")
 #plot([x0, x0], [1e-11, 1e-5], "k-")
 grid()
 savefig("error_ulp.pdf")
-show()
-```
-
-```{code-cell} ipython3
-D = loadtxt("sin_pure_data_kernel.txt")
-x = D[:,0]
-sin_pure_kernel = D[:,1]
-sin_arb = compute_sin_arb(x)
-
-err_pure_kernel = abs(sin_pure_kernel - sin_arb)
-#err_pure_kernel = diff_ulp(sin_pure_kernel, sin_arb)
-
-
-figure(figsize=(12, 8))
-plot(x, err_pure_kernel, label="Pure kernel")
-legend()
-xlabel("x")
-ylabel("Error of sin(x)")
-#ylim([0, 1])
-grid()
 show()
 ```
