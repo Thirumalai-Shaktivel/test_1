@@ -40,9 +40,6 @@ if CPU == 1:
     # min/max: 0.125 (`vmaxpd` is 0.5 cycles per 4 doubles)
     # int->double and double->int: 0.25  (`vcvtdq2pd` and `vcvttpd2dq` takes 1 cycle)
     # blendvpd: 0.25 (`vblendvpd` is 1 cycle)
-    #cpu_freq = 2.4 * GHz # Base
-    #cpu_freq = 5.3 * GHz # Boost
-    cpu_freq = 4.658 * GHz # Actual
     L1 = 64 * KB
     L2 = 256 * KB
     L3 = 16 * MB
@@ -79,9 +76,6 @@ elif CPU == 2:
     # 50% of the common unit, and the last number is only the 1 unit for  W.
     # Example: For array copy, we assume the unit gets used 50%, use the middle
     # number and expect 0.333 for the peak.
-    #
-    #cpu_freq = 2.4 * GHz # Base
-    cpu_freq = 3.2 * GHz # Boost
     L1 = 320 * KB
     L2 = 12 * MB
     L3 = None
@@ -100,11 +94,11 @@ elif CPU == 2:
 else:
     raise Exception("CPU type not supported")
 
-D = loadtxt(filename)
-x2 = D[:,0]
-sin_pure = D[:,2]
-read = D[:,3]
-write = D[:,4]
+D = loadtxt("sin_fastest_intel.txt")
+x2 = D[0,:]
+sin_pure = D[1,:]
+read = D[2,:]
+write = D[3,:]
 
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
@@ -126,51 +120,19 @@ def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
 
 
 
-figure(figsize=(20, 12))
+figure(figsize=(12, 8))
 draw_peak(x2, kernel_peak, L1, L2, L3, 2, "Kernel Theoretical Peak Performance in L1", "g")
 draw_peak(x2, R_clock, L1, L2, L3, 1, "R Theoretical Peak Performance in L1", "gray")
 draw_peak(x2, W_clock, L1, L2, L3, 1, "W Theoretical Peak Performance in L1", "gray")
-semilogx(x2, read * cpu_freq, ".", label="R (0.125)")
-semilogx(x2, write * cpu_freq, ".", label="W (0.25)")
-semilogx(x2, sin_pure * cpu_freq, "g.", label="Kernel Actual")
+semilogx(x2, read, ".", label="R (0.125)")
+semilogx(x2, write, ".", label="W (0.25)")
+semilogx(x2, sin_pure, "g.", label="Kernel Actual")
 legend()
 xlabel("Array length [double]")
 ylabel("Time of sin(x) per array element")
 grid()
 #xlim([1e2, None])
 ylim([0, 4])
-savefig("perf1.pdf")
+savefig("perf_fast_intel.pdf")
 show()
-```
-
-```{code-cell} ipython3
-i1 = 4
-i2 = 9
-print(read[i1:i2])
-print(write[i1:i2])
-Ra = average(read[i1:i2])
-Rm = min(read[i1:i2])
-Wa = average(write[i1:i2])
-Wm = min(write[i1:i2])
-
-print("CPU freq R avg: %.3f GHz" % (R_clock / Ra / GHz),
-      "CPU freq R min: %.3f GHz" % (R_clock / Rm / GHz)
-    )
-print("CPU freq W avg: %.3f GHz" % (W_clock / Wa / GHz),
-      "CPU freq W min: %.3f GHz" % (W_clock / Wm / GHz)
-    )
-
-print("Using CPU freq: \x1b[1m%.3f GHz\x1b[0m" % (cpu_freq / GHz))
-
-print("R avg: %.3f" % (Ra * cpu_freq), "R min: %.3f" % (Rm * cpu_freq))
-print("W avg: %.3f" % (Wa * cpu_freq), "W min: %.3f" % (Wm * cpu_freq))
-kernel_min = min(sin_pure * cpu_freq)
-print("kernel min: %.3f" % kernel_min)
-print("kernel peak: %.3f" % kernel_peak)
-print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
-```
-
-```{code-cell} ipython3
-D = [x2, sin_pure*cpu_freq, read*cpu_freq, write*cpu_freq, sin_pure*cpu_freq]
-savetxt(filename_out, D)
 ```
