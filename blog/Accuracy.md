@@ -71,6 +71,10 @@ for i in range(4):
 err_neg = empty_like(sin_neg)
 for i in range(4):
     err_neg[:,i] = abs(sin_neg[:,i] - compute_sin_arb(-x))/abs(sin_neg[:,i])
+    
+# Given that sin(x) = -sin(-x) numerically:
+assert abs(sin_pos-(-sin_neg)).max() == 0.0
+# we do not plot the error of sin(-x) below, since it overlaps with sin(x)
 
 
 figure(figsize=(12, 8))
@@ -97,10 +101,10 @@ savefig("error_rel.pdf")
 show()
 ```
 
-Check that (for $x>0$) we have $\sin(x) = -\sin(-x)$:
+We only plotted the error of $\sin(x)$ for $x>0$, because the values of $\sin(-x)$ are exactly equal to $-\sin(x)$ numerically, so the plots would overlap:
 
 ```{code-cell} ipython3
-abs(sin_pos-(-sin_neg)).max()
+abs(sin_pos+sin_neg).max()
 ```
 
 ```{code-cell} ipython3
