@@ -75,13 +75,13 @@ for i in range(4):
 
 figure(figsize=(12, 8))
 loglog(x, err_pos[:,3], "o", label="GFortran Intrinsic")
-loglog(x, err_neg[:,3], "y.", label="GFortran Intrinsic (neg)")
+#loglog(x, err_neg[:,3], "y.", label="GFortran Intrinsic (neg)")
 loglog(x, err_pos[:,0], "o", label="Fast Simple")
-loglog(x, err_neg[:,0], "y.", label="Fast Simple (neg)")
+#loglog(x, err_neg[:,0], "y.", label="Fast Simple (neg)")
 loglog(x, err_pos[:,1], "o", label="Fast")
-loglog(x, err_neg[:,1], "y.", label="Fast (neg)")
+#loglog(x, err_neg[:,1], "y.", label="Fast (neg)")
 loglog(x, err_pos[:,2], "o", label="Fastest")
-loglog(x, err_neg[:,2], "y.", label="Fastest (neg)")
+#loglog(x, err_neg[:,2], "y.", label="Fastest (neg)")
 legend()
 xlabel("x")
 ylabel("Relative Error of sin(x)")
@@ -97,8 +97,10 @@ savefig("error_rel.pdf")
 show()
 ```
 
+Check that (for $x>0$) we have $\sin(x) = -\sin(-x)$:
+
 ```{code-cell} ipython3
-err_pos-err_neg
+abs(sin_pos-(-sin_neg)).max()
 ```
 
 ```{code-cell} ipython3
