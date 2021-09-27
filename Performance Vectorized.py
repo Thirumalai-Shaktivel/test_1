@@ -105,6 +105,8 @@ elif CPU == 2:
     fma_clock = 0.125
     max_clock = 0.125
     abs_clock = 0.125
+    xor_clock = 0.125 # ?
+    shift_clock = 0.125 # ?
     float_int_conv_clock = 0.125
 else:
     raise Exception("CPU type not supported")
