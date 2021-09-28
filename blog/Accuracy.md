@@ -71,7 +71,7 @@ plot([x0, x0], [1e-11, 1e-5], "k--")
 x1 = 1e10
 plot([x1, x1], [1e-11, 1e-5], "k-")
 grid()
-savefig("error_rel.pdf")
+savefig("error_rel.png")
 show()
 ```
 
@@ -120,6 +120,6 @@ ylabel("ULP Error of sin(x)")
 #x0 = 30
 #plot([x0, x0], [1e-11, 1e-5], "k-")
 grid()
-savefig("error_ulp.pdf")
+savefig("error_ulp.png")
 show()
 ```
