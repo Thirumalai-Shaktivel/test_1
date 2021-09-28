@@ -141,6 +141,6 @@ grid()
 #xlim([1e2, None])
 ylim([0, 4])
 title("Performance of sin(x) implementations")
-savefig("perf_fast_intel.pdf")
+savefig("perf_fast_intel.png")
 show()
 ```
