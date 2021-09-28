@@ -14,6 +14,7 @@
 # ---
 
 # +
+# Use this notebook to visualize the data manually for each CPU, adjust CPU frequency and ensure everything looks good. Then save the data in clock cycles which are frequency independent.
 # Supported CPUs for analysis:
 # 1 ... 2.4 GHz 8-Core Intel Core i9 (MacBook Pro 2019)
 # 2 ... Apple M1 (ARM)
