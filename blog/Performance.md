@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-Use this notebook to visualize the data manually for each CPU, adjust CPU frequency and ensure everything looks good. Then save the data in clock cycles which are frequency independent.
+This notebook takes timings in clock cycles and visualizes the results together with their theoretical performance peaks.
 
 ```{code-cell} ipython3
 %pylab inline
