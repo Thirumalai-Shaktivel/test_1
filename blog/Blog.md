@@ -12,7 +12,15 @@ kernelspec:
   name: python3
 ---
 
-![Relative Error]("error_rel.png")
+# Designing Math Instrinsics for LFortran
+
+
+
+![Relative Error](./error_rel.png)
+
+![ULP Error](./error_ulp.png)
+
+![Performance](./perf_fast_intel.png)
 
 ```{code-cell} ipython3
 
