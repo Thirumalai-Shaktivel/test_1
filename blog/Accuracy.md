@@ -13,8 +13,10 @@ kernelspec:
 ---
 
 ```{code-cell} ipython3
-!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy.f90 -o sin_accuracy
-!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy_pure.f90 -o sin_accuracy_pure
+#!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy.f90 -o sin_accuracy
+#!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy_pure.f90 -o sin_accuracy_pure
+!gfortran -O3 -march=skylake -ffast-math -funroll-loops ../sin_accuracy.f90 -o sin_accuracy
+!gfortran -O3 -march=skylake -ffast-math -funroll-loops ../sin_accuracy_pure.f90 -o sin_accuracy_pure
 !./sin_accuracy > sin_data.txt
 !./sin_accuracy_pure > sin_pure_data.txt
 ```
