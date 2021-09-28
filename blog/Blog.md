@@ -80,3 +80,7 @@ The fast `sin(x)` version is still very accurate, up to 5 ULP with the average 1
 In this blog post we will obtain theoretical and actual performance of the implementations.
 
 ![Performance](./perf_fast_intel.png)
+
+We can plot the speed of the GFortran's sin(x):
+
+![Performance](./perf_gf_intel.png)
