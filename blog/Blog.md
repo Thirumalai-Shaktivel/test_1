@@ -78,6 +78,7 @@ The fast `sin(x)` version is still very accurate, up to 5 ULP with the average 1
 ## Performance
 
 In this blog post we will obtain theoretical and actual performance of the implementations. Let us start with the fastest version:
+
 ```fortran
 subroutine sin_fastest(n, A, B)
 ! Intel: runs at 1.8 cycles per double; Peak:: 1.458
@@ -173,10 +174,61 @@ fast_peak
 
 We can now benchmark the actual implementations. To do so, we first write assembly kernels for just memory reads and writes (16 times unrolled). We independently verify that this implementation is optimal and that both theoretical (0.125 and 0.25 cycles per double respectively) and actual speeds agree. We then compile these two kernels and the actual `sin(x)` implementation that we are measuring as separate compilation units and the benchmark driver is then repeatedly calling these on arrays of various sizes. For each size it benchmarks read, write and the `sin(x)` function. We then use the reference read/write benchmarks to compute the actual CPU frequency. For the MacBook Pro it happens to vary between 3.5 GHz to 4.5 GHz, but it seems stable enough for the given run as seen from the graph below, the read/write reference benchmarks are right on the theoretical peak line. Here are the benchmark results:
 
-+++
-
 ![Performance](./perf_fast_intel.png)
 
-We can plot the speed of the GFortran's sin(x):
++++
+
+We can see that the fastest `sin(x)` implementation runs at about 1.8 cycles per double (in L1 cache), running at about 80% peak performance:
+
+```{code-cell} ipython3
+fastest_peak / 1.8 * 100
+```
+
+The "fast" implementation runs at about 2.8 cycles per double, at about 87% peak:
+
+```{code-cell} ipython3
+fast_peak / 2.8 * 100
+```
+
+```{code-cell} ipython3
+2.8 / fastest_peak
+```
+
+This theoretical peak performance analysis and benchmarking is not processor or even x86 architecture dependent. The operation counts only depend on the algorithm and are the same for all CPUs. The only thing we have to know for a given CPU is:
+
+* Maximum throughputs of all operations per array element
+* Which operations the CPU can do at the same time (to know which throughputs to add together and which to ignore)
+
+We do not include latency, since in the ideal case it can be hidden and that is true in practice also, as seen above. And we do not include operations where we are not sure what the actual cost is, such as the `0.5_dp*sign(1._dp, x)` operation above (these can be included after a thorough analysis what the most efficient way of implementing it is in assembly). As such, we *know* that the theoretical performance peak is the number of clock counts that the CPU *has* to spend per array element (double in our case), no matter what. It might be that there are more operations that the CPU has to do, and so after a thorough additional analysis we can include those also. But we have to make sure we do not include any operation that the CPU does not have to do, such as latency that can be hidden with multiple techniques (out of order execution, loop unrolling, ...). As a result the theoretical peformance peak is the ideal best possible performance. One cannot get any faster than that. At the same time, we can get very close in practice as seen above.
+
+A general rule of thumb is that if we can get within 50% of the peak, that is good enough. We actually got 87% with our fast `sin(x)` implementation. What that means is that if somebody comes with a better implementation (say in hand optimized assembly) of the same algorithm and the same CPU, they can only get less than `2.8/fast_peak = 1.14x` faster than our current implementation. So one can decide whether it is worth spending additional time to get the possible 14% speedup or not.
+
+The other thing we know is that if somebody figures out a faster algorithm than our "fast" implementation, they can only get it as fast as the "fastest" implementation, unless they are willing to give up the argument reduction, in which case the implementation will be unusable outside outside of the kernel interval of $\left(-{\pi\over2}, {\pi\over2}\right)$ or such (as in the case of the Apollo AGC computer), or they want even less accuracy than 5%, such as piecewise linear approximation. So assuming you do not want to give up these two properties, you can also get `2.8 / fastest_peak = 1.92x` faster than our current "fast" implementation. In other words, you can only get less than 2x faster with a better algorithm. Most likely you would need to reduce accuracy to even have a faster algorithm, but there might be a way to keep the accuracy (more or less) and have a faster implementation, but what we do know is that it cannot even be 2x faster.
+
+We are assuming using double precision numbers. If we are ok with lower accuracy, we could use single precision numbers and those would be faster. It is also concievable to start with a fast single (or even half) precision estimate and then iterate for higher accuracy. But it seems even such an algorithm will be at least as slow as the "fastest" one above because presumably you need at least one `fma` to refine, and the fast single or half precision estimate will cost at least as two double precision multiplications.
+
+One could also think about a different way to do argument reduction. It seems one requires some kind of a "floor" operation, one way or another. But one could save the `if (modulo(int(Nd), 2) == 1) x = -x` operation by reducing to $\left(-{\pi}, {\pi}\right)$ and then fitting a polynomial over the whole period. One can adjust the above theoretical peak performance for the fastest version appropriately (remove the shift and xor operation, and add some extra fmas for a larger polynomial since we are fitting over a larger range).
+
+All this of course assumes that we have not made a mistake in our theoretical peak performance estimate or in benchmarking. If you discover a mistake, please let us know.
+
+### Summary:
+
+* Our fast implementation has $10^{-15}$ relative accuracy and argument range $|x| < 4\times10^{9}$
+* The given algorithm is written in pure Fortran (thus multiplatform) and running at 87% of the theoretical peak performance on the above CPU with GFortran, meaning the best possible implementation of the algorithm and the above CPU can only get 1.14x faster.
+* The fastest possible implementation (of the best possible algorithm) of $\sin(x)$ on the above CPU will be less than 2x faster than our current implementation.
+
+In this precise sense as shown by the above bullet points, we have a close to optimal "performance first, accuracy second" implementation of $\sin(x)$.
+
++++
+
+We can now compare to other implementations of `sin(x)`. Let us start with GFortran's default `sin(x)`:
 
 ![Performance](./perf_gf_intel.png)
+
+It seems it is roughly 28x slower than our fast implementation:
+
+```{code-cell} ipython3
+80 / 2.8
+```
+
+Of course, as discussed in the previous blog post, this is the "accuracy first, performance second" implementation. So it is expected to be a lot slower than our "performance first, accuracy second" implementation, but it is more accurate.
