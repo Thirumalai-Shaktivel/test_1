@@ -232,3 +232,17 @@ It seems it is roughly 28x slower than our fast implementation:
 ```
 
 Of course, as discussed in the previous blog post, this is the "accuracy first, performance second" implementation. So it is expected to be a lot slower than our "performance first, accuracy second" implementation, but it is more accurate.
+
++++
+
+#### What accuracy to choose for performance first?
+
+Now when we know how fast we can get with various implementations, how do we choose the accuracy that we want? For example, we can do a smaller (faster) polynomial and only do $10^{-10}$ accuracy. How should we proceed?
+
+Answer: this is an engineering question and a compromise. We know the algorithms and implementations that are available to us today, and we know from our theoretical analysis above that we can only get 2x faster, but the only known algorithm for the theoretically 2x faster version is only $10^{-2}$ accurate. If there was an implementation that is twice faster and gets $10^{-12}$ accuracy, then that might very well be worth it for some use cases. But we do not have such an implementation. To get $10^{-12}$ accuracy with our code above, we can remove perhaps 2 fmas. The theoretical performance peak improves by 0.25 from 2.4575 to 2.2075, that is only 11% faster and we have lost 25% of significant digits. That does not seem worth it. It seems there is a significant fixed cost to the sin(x) implementations above, and the extra accuracy is relatively cheap compared to it. So it makes sense to simply get the full double precision accuracy of $10^{-15}$. Using a similar argument, we can remove 2 fmas to obtain inaccurate (simple) reduction, but from the accuracy graph above the accuracy drops quickly for arguments like `x=100`, which for 11% speedup it does not seem worth it.
+
+Going the other way: one cannot go much beyond the $10^{-15}$ relative accuracy, however given that the fmas are relatively cheap, it might be possible to improve from 5 ULP to maybe 1 ULP by adding a few more fmas. That is worth investigating.
+
+Finally, one can consider a larger argument range at a cost of a slower reduction. One could consider going from $10^{10}$ to $10^{16}$. Going beyond that does not seem practical, as the distance between floating point numbers at $10^{16}$ is exactly 2.0, so there are three floating point numbers per period of `sin(x)`, hardly useful for any numerical integration or computation. The distance between floating point numbers at $10^{10}$ is about $10^{-6}$, so less than a single precision of accuracy. It might be useful in some applications, but one could also argue that if a computational code is getting into numbers like $10^{10}$ and the need to compute trigonometric functions on those, one should use the "accuracy first" versions.
+
+Yes, it is a compromise, but one that seems to make this "performance first" sin(x) version useful for a wide range of practical applications. For all other applications there is always the slower "accuracy first" version as a fall back that one can use. And one can always take the "performance first" version and tailor it for a particular application, perhaps making it a little bit slower but extend the argument range as needed, or making it a little bit faster and less accurate.
