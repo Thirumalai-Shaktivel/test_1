@@ -111,7 +111,7 @@ sin_gf = D[1,:]
 k = 8 * 2 # 8 bytes per element, 2 arrays
 #kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*float_int_conv_clock + mul_clock)
 fast_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
-fastest_peak = (fma_clock + 2*mul_clock) + (3*max_clock + fma_clock + 2*float_int_conv_clock + mul_clock)
+fastest_peak = (2*fma_clock + 2*mul_clock) + (fma_clock + 2*float_int_conv_clock + xor_clock + shift_clock)
 
 def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
     L1x = L1 / (8*n)
