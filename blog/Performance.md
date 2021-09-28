@@ -103,6 +103,9 @@ write = D[3,:]
 D = loadtxt("sin_perf_intel2.txt")
 sin_fast = D[1,:]
 
+D = loadtxt("gfortran_intel.txt")
+sin_gf = D[1,:]
+
 
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
@@ -142,5 +145,27 @@ grid()
 ylim([0, 4])
 title("Performance of sin(x) implementations")
 savefig("perf_fast_intel.png")
+show()
+```
+
+```{code-cell} ipython3
+figure(figsize=(12, 8))
+draw_peak(x2, fast_peak, L1, L2, L3, 2, "Fast sin(x) Theoretical Peak Performance in L1", "g")
+draw_peak(x2, fastest_peak, L1, L2, L3, 2, "Fastest sin(x) Theoretical Peak Performance in L1", "r")
+draw_peak(x2, R_clock, L1, L2, L3, 1, "R Theoretical Peak Performance in L1", "gray")
+draw_peak(x2, W_clock, L1, L2, L3, 1, "W Theoretical Peak Performance in L1", "gray")
+semilogx(x2, read, ".", label="Read (Peak %.3f)" % R_clock)
+semilogx(x2, write, ".", label="Write (Peak %.3f)" % W_clock)
+semilogx(x2, sin_fast, "go", label="Fast sin(x) (Peak %.3f)" % fast_peak)
+semilogx(x2, sin_fastest, "ro", label="Fastest sin(x) (Peak %.3f)" % fastest_peak)
+semilogx(x2, sin_gf, "yo", label="GFortran sin(x)")
+legend()
+xlabel("Array length [double]")
+ylabel("Clock cycles per array element")
+grid()
+#xlim([1e2, None])
+#ylim([0, 4])
+title("Performance of sin(x) implementations")
+savefig("perf_gf_intel.png")
 show()
 ```
