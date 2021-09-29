@@ -162,3 +162,14 @@ set of blog posts we can expand on:
 * Benchmarking other libraries like MKL and Julia
 * Mention the AGC
 * Add ARM benchmark results
+
+Plan for a series of blog posts:
+
+* Post 1: Intro+Design+Accuracy
+* Post 2: Performance I --- more of a summary (hitting the main points and
+  results, sometimes light on detail)
+* Post 3: Performance II --- full details of everything
+* Post 4: Cos(x) ---- cos(x) = sin(x+pi/2)
+* Post 5: Tan(x) ---- sin(x)/cos(x) or reduction + poly fit
+* Post 6: Exp(x)
+* ...
