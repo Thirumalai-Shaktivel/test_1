@@ -152,3 +152,13 @@ C3 = 0.7853134
 
 The range is (-pi/2, pi/2) and the accuracy is about 1e-4 on this range. There
 was no argument reduction.
+
+
+------------------
+
+Our current Blog.md (9/29/21) version hits all the points above. In the full
+set of blog posts we can expand on:
+
+* Benchmarking other libraries like MKL and Julia
+* Mention the AGC
+* Add ARM benchmark results
