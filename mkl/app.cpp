@@ -60,7 +60,10 @@ int main() {
 
         auto t1 = std::chrono::high_resolution_clock::now();
         for (k=0; k<M; k++) {
-            vdSin(Ntile,&x[0],&r[0]);
+            //vdSin(Ntile,&x[0],&r[0]);
+            for(i=0; i<x.size(); i++) {
+                r[i] = sin(x[i]);
+            }
         }
         auto t2 = std::chrono::high_resolution_clock::now();
         double time_kernel = std::chrono::duration_cast<std::chrono::microseconds>
