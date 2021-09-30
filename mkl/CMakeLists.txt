@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.13)
 enable_testing()
 project(oneMKL_Example LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+
 find_package(MKL CONFIG REQUIRED)
 #message(STATUS "${MKL_IMPORTED_TARGETS}") #Provides available list of targets based on input
 add_executable(myapp app.cpp)
