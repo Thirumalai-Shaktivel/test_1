@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <mkl.h>
+
 int main() {
     int n = 16;
     double x[16];
@@ -8,7 +10,7 @@ int main() {
     for(i=0; i<16; i++) {
         x[i] = 3.14;
     }
-//    vdSin(n,x,y);
+    vdSin(n,x,y);
     for(i=0; i<16; i++) {
         std::cout << x[i] << " " << y[i] << std::endl;
     }
