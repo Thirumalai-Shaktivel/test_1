@@ -3,6 +3,8 @@ enable_testing()
 project(oneMKL_Example LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=skylake -ffast-math -funroll-loops")
 
 find_package(MKL CONFIG REQUIRED)
 #message(STATUS "${MKL_IMPORTED_TARGETS}") #Provides available list of targets based on input
