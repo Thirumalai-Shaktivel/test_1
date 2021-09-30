@@ -58,9 +58,10 @@ int main() {
             x[i] = x[i]*(xmax-xmin)+xmin;
         }
 
+        // https://software.intel.com/content/www/us/en/develop/documentation/onemkl-developer-reference-c/top/vector-mathematical-functions/vm-mathematical-functions/trigonometric-functions/v-sin.html
         auto t1 = std::chrono::high_resolution_clock::now();
         for (k=0; k<M; k++) {
-            vmdSin(Ntile,&x[0],&r[0],VML_EP | VML_FTZDAZ_OFF);
+            vmdSin(Ntile,&x[0],&r[0],VML_LA | VML_FTZDAZ_OFF);
             //for(i=0; i<x.size(); i++) {
             //    r[i] = sin(x[i]);
             //}
