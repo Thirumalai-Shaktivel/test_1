@@ -49,7 +49,7 @@ int main() {
     xmax = M_PI/2;
     for(j=0; j<sizes.size(); j++) {
         Ntile = sizes[j] / 8;
-        M = 1024*10000*6*10*2 / Ntile;
+        M = 1024*10000*6 / Ntile;
         if (Ntile > 32768) M = M / 5;
         if (M == 0) M = 1;
         std::vector<double> r(Ntile), x(Ntile);
@@ -60,10 +60,10 @@ int main() {
 
         auto t1 = std::chrono::high_resolution_clock::now();
         for (k=0; k<M; k++) {
-            //vdSin(Ntile,&x[0],&r[0]);
-            for(i=0; i<x.size(); i++) {
-                r[i] = sin(x[i]);
-            }
+            vmdSin(Ntile,&x[0],&r[0],VML_EP | VML_FTZDAZ_OFF);
+            //for(i=0; i<x.size(); i++) {
+            //    r[i] = sin(x[i]);
+            //}
         }
         auto t2 = std::chrono::high_resolution_clock::now();
         double time_kernel = std::chrono::duration_cast<std::chrono::microseconds>
