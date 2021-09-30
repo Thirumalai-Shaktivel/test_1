@@ -1,3 +1,3 @@
 # Compile with MKL
 
-mamba create -n mkl mkl
+mamba create -n mkl mkl-devel
