@@ -63,9 +63,11 @@ int main() {
             vdSin(Ntile,&x[0],&r[0]);
         }
         auto t2 = std::chrono::high_resolution_clock::now();
-        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>
-                (t2 - t1).count()
-                  << "ms" << std::endl;
+        double time_kernel = std::chrono::duration_cast<std::chrono::microseconds>
+                (t2 - t1).count();
+        time_kernel = time_kernel / M / 1e6;
+        std::cout << Ntile << " " << M << " " << time_kernel << std::endl;
+
     }
     return 0;
 }
