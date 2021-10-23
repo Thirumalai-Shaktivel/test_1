@@ -1,28 +1,7 @@
 program performance
-use iso_c_binding, only: c_long, c_double
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
+use sin_implementations, only: array_read, array_write, kernel_sin1
 implicit none
-
-interface
-    subroutine array_read(n, A) bind(c)
-    import :: c_long, c_double
-    integer(c_long), value, intent(in) :: n
-    real(c_double), intent(in) :: A(n)
-    end subroutine
-
-    subroutine array_write(n, B) bind(c)
-    import :: c_long, c_double
-    integer(c_long), value, intent(in) :: n
-    real(c_double), intent(out) :: B(n)
-    end subroutine
-
-    subroutine kernel_sin1(n, A, B) bind(c)
-    import :: c_long, c_double
-    integer(c_long), value, intent(in) :: n
-    real(c_double), intent(in) :: A(n)
-    real(c_double), intent(out) :: B(n)
-    end subroutine
-end interface
 
 ! The sizes must be divisible by 512 (=64 doubles)
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
