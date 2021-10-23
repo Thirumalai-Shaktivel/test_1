@@ -42,28 +42,32 @@ elif [[ $platform == "2" || $platform == "1" ]]; then
         nasm_f="macho64"
     fi
     #clang -c array_copy2.c -o array_copy2.o
-    nasm -f $nasm_f array_copy2c.asm -o array_copy2.o
+    # nasm -f $nasm_f array_copy2c.asm -o array_copy2.o
     nasm -f $nasm_f array_read.asm
     nasm -f $nasm_f array_write.asm
-    nasm -f $nasm_f kernel_sin1c.asm -o kernel_sin.o
-    nasm -f $nasm_f array_mul4a.asm -o array_mul.o
-    nasm -f $nasm_f array_fma4a.asm -o array_fma.o
-    clang -O2 -c kernel_sin2.ll -o kernel_sin.o
-    clang -O3 -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
+    # nasm -f $nasm_f kernel_sin1c.asm -o kernel_sin.o
+    # nasm -f $nasm_f array_mul4a.asm -o array_mul.o
+    # nasm -f $nasm_f array_fma4a.asm -o array_fma.o
+    # clang -O2 -c kernel_sin2.ll -o kernel_sin.o
+    # clang -O3 -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
     #clang -O1 -c array_copy2.c -o array_copy2.o
-    nasm -f $nasm_f kernel_sin1a.asm -o kernel_sin.o
+    # nasm -f $nasm_f kernel_sin1a.asm -o kernel_sin.o
     #clang -O2 -march=native -c kernel_sin2.ll -o kernel_sin.o
     #clang -O3 -march=native -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
     gfortran -O3 -march=skylake -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
 fi
 
-gfortran -O3 -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
+# gfortran -O3 -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
 
-gfortran -O3 -funroll-loops -ffast-math sin_perf_pure.f90 -o sin_perf_pure
+# gfortran -O3 -funroll-loops -ffast-math sin_perf_pure.f90 -o sin_perf_pure
 
-gfortran -O3 -funroll-loops -ffast-math -c sin_perf_pure_vec2.f90 -o sin_perf_pure_vec2.o
-gfortran -O3 -funroll-loops -ffast-math -c sin_perf_pure_vec.f90 -o sin_perf_pure_vec.o
+# gfortran -O3 -funroll-loops -ffast-math -c sin_perf_pure_vec2.f90 -o sin_perf_pure_vec2.o
+# gfortran -O3 -funroll-loops -ffast-math -c sin_perf_pure_vec.f90 -o sin_perf_pure_vec.o
+# gfortran -O3 -funroll-loops -ffast-math -flto \
+#     -o sin_perf_pure_vec sin_perf_pure_vec.o sin_perf_pure_vec2.o \
+#     kernel_sin.o \
+#     array_copy2.o array_read.o array_write.o array_mul.o array_fma.o
+
+gfortran -O3 -funroll-loops -ffast-math -c performance.f90 -o performance.o
 gfortran -O3 -funroll-loops -ffast-math -flto \
-    -o sin_perf_pure_vec sin_perf_pure_vec.o sin_perf_pure_vec2.o \
-    kernel_sin.o \
-    array_copy2.o array_read.o array_write.o array_mul.o array_fma.o
+    -o sin_performance performance.o kernel_sin.o array_read.o array_write.o
