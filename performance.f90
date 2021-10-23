@@ -3,8 +3,9 @@ use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 use sin_implementations, only: array_read, array_write, kernel_sin1
 implicit none
 
+integer :: j, k, M, u
+integer(i8) :: Ntile
 ! The sizes must be divisible by 512 (=64 doubles)
-real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 integer(i8), parameter :: sizes(*) = [ &
     512, &
     1024, &         ! 1 KB
@@ -35,10 +36,7 @@ integer(i8), parameter :: sizes(*) = [ &
     16 * 1024 * 1024, & ! 16 MB
     32 * 1024 * 1024  &
 ]
-
-
-integer :: j, k, M, u
-integer(i8) :: Ntile
+real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 real(dp) :: xmin, xmax
 real(dp) :: t1, t2, time_kernel, time_read, time_write
 real(dp), allocatable :: x(:)

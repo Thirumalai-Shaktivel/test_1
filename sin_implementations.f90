@@ -93,7 +93,6 @@ do i = 1, n
 end do
 end subroutine
 
-
 subroutine kernel_sin4(n, A, B) bind(c)
 ! Intel: runs at 1.545 cycles; Peak:: 1.458
 implicit none
@@ -121,6 +120,5 @@ do i = 1, n
     B(i) = x*(S1+z*S2)
 end do
 end subroutine
-
 
 end module sin_implementations

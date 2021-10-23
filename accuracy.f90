@@ -15,7 +15,6 @@ a = 1e20_dp
 beta = log(a) / (N-1)
 alpha = (xmax - xmin) / (exp(beta*N) - 1)
 
-
 do i = 1, N+1
     x = alpha * (exp(beta*(i-1)) - 1) + xmin
     print "(es23.16, 8(' ', es25.16e3))", x, &
