@@ -1,7 +1,7 @@
 #include <chrono>
 #include <iostream>
 #include <vector>
-
+#include <math.h>
 #include <mkl.h>
 
 const std::vector<int> sizes = {
@@ -49,7 +49,7 @@ int main() {
     xmax = M_PI/2;
     for(j=0; j<sizes.size(); j++) {
         Ntile = sizes[j] / 8;
-        M = 1024*10000*6 / Ntile;
+        M = 1024*10000*6*10*2 / Ntile;
         if (Ntile > 32768) M = M / 5;
         if (M == 0) M = 1;
         std::vector<double> r(Ntile), x(Ntile);
