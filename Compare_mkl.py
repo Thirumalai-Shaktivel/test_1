@@ -14,7 +14,7 @@
 # ---
 
 # !cmake mkl; cmake --build mkl;
-# !mkl/myapp > sin_perf_mkl.txt
+# !mkl/sin_perf_mkl > sin_perf_mkl.txt
 
 # %pylab inline
 
