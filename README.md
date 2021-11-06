@@ -1,10 +1,10 @@
 # Compile on Apple M1
 
 ```
-conda create -n mi gfortran jupyter matplotlib
+conda create -n mi gfortran jupyter matplotlib jupytext
 conda activate mi
 ./build.sh 3
-./sin_performance
+./sin_performance > sin_pure_data_vec.txt
 ```
 
 # Compile with MKL
