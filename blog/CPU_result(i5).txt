@@ -1,0 +1,10 @@
+[1.290828e-10 1.633789e-10 1.610913e-10 1.607292e-10 1.589412e-10]
+[2.421777e-10 1.584953e-10 1.580778e-10 1.578402e-10 1.575594e-10]
+CPU freq R avg: 0.808 GHz CPU freq R min: 0.968 GHz
+CPU freq W avg: 1.430 GHz CPU freq W min: 1.587 GHz
+Using CPU freq: [1m1.600 GHz[0m
+R avg: 0.247 R min: 0.207
+W avg: 0.280 W min: 0.252
+kernel min: 2.907
+kernel peak: 2.458
+kernel percent peak: 84.53%

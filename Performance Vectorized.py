@@ -19,8 +19,9 @@
 # Supported CPUs for analysis:
 # 1 ... 2.4 GHz 8-Core Intel Core i9 (MacBook Pro 2019)
 # 2 ... Apple M1 (ARM)
+# 3 ... Intel® Core™ i5-8250U CPU @ 1.60GHz × 8 (Ubuntu 20.04.3 LTS(64-bit))
 
-CPU = 1
+CPU = 3
 
 # +
 # Select one of the supported build platforms:
@@ -28,9 +29,9 @@ CPU = 1
 # 2 ... macOS Intel 64
 # 3 ... macOS ARM 64
 
-# !./build.sh 2
+# !./build.sh 1
 # # !./sin_perf > sin_data.txt
-# !./sin_perf_pure_vec > sin_pure_data_vec.txt
+# !./sin_performance > sin_pure_data_vec.txt
 # -
 
 # %pylab inline
@@ -110,6 +111,35 @@ elif CPU == 2:
     xor_clock = 0.125 # ?
     shift_clock = 0.125 # ?
     float_int_conv_clock = 0.125
+elif CPU == 3:
+    # Intel® Core™ i5-8250U CPU @ 1.60GHz × 8
+    # https://www.techpowerup.com/cpu-specs/core-i5-8250u.c1972
+    # Code Name: Kaby Lake-R (Predecessor: Skylake-X)
+    # OS: Ubuntu 20.04.3 LTS(64-bit)
+    # R: 0.125    (`VMOVAPS v,m` 0.5 cycles per instruction = 4 doubles)
+    # W: 0.25     (`VMOVAPS m256,y` 1 cycle per instruction = 4 doubles)
+    # Arithmetics all ads up:
+    # *,+,-   : 0.125  (`VMULPD` is 0.5 cycles per 4 doubles)
+    # fma     : 0.125  (`VFMADD...` is 0.5 cycles)
+    # min/max : 0.125  (`VMAXPD` and `VMINPD` are 0.5 cycles per 4 doubles)
+    # int->double and double->int: 0.25  (`VCVTDQ2PD` and `VCVTTPD2DQ` takes 1 cycle)
+    # blendvpd: 0.25   (`VBLENDVPD` is 1 cycle)
+    # cpu_freq = 1.60 * GHz # Base
+    # cpu_freq = 3.40 * GHz # Boost
+    cpu_freq = 1.65 * GHz   # Actual
+    L1 = 64 * KB
+    L2 = 256 * KB
+    L3 = 6 * MB
+    R_clock = 0.125
+    W_clock = 0.25
+    mul_clock = 0.125
+    plus_clock = 0.125
+    fma_clock = 0.125
+    max_clock = 0.125
+    abs_clock = 0.0825 # (`vandpd` takes 0.33 cycles)
+    xor_clock = 0.0825
+    shift_clock = 0.25 # (`vpsllq` takes 1 cycle)
+    float_int_conv_clock = 0.25
 else:
     raise Exception("CPU type not supported")
 
