@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ---
 # jupyter:
 #   jupytext:
@@ -6,7 +7,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.12.0
+#       jupytext_version: 1.13.0
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -21,7 +22,7 @@
 # 2 ... Apple M1 (ARM)
 # 3 ... Intel® Core™ i5-8250U CPU @ 1.60GHz × 8 (Ubuntu 20.04.3 LTS(64-bit))
 
-CPU = 3
+CPU = 2
 
 # +
 # Select one of the supported build platforms:
@@ -29,9 +30,10 @@ CPU = 3
 # 2 ... macOS Intel 64
 # 3 ... macOS ARM 64
 
-# !./build.sh 1
-# # !./sin_perf > sin_data.txt
-# !./sin_performance > sin_pure_data_vec.txt
+# Uncomment as needed. You can also run this in the terminal, with all others applications (browser) turned off.
+
+# #!./build.sh 1
+# #!./sin_performance > sin_pure_data_vec.txt
 # -
 
 # %pylab inline
