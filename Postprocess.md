@@ -1,30 +1,29 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     formats: ipynb,py:light
-#     text_representation:
-#       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.13.0
-#   kernelspec:
-#     display_name: Python 3 (ipykernel)
-#     language: python
-#     name: python3
-# ---
+---
+jupytext:
+  formats: ipynb,py:light,md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.13.0
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
 
-# Use this notebook to visualize the data manually for each CPU, adjust CPU frequency and ensure everything looks good. Then save the data in clock cycles which are frequency independent.
+Use this notebook to visualize the data manually for each CPU, adjust CPU frequency and ensure everything looks good. Then save the data in clock cycles which are frequency independent.
 
-# +
+```{code-cell} ipython3
 # Supported CPUs for analysis:
 # 1 ... 2.4 GHz 8-Core Intel Core i9 (MacBook Pro 2019)
 # 2 ... Apple M1 (ARM)
 # 3 ... Intel® Core™ i5-8250U CPU @ 1.60GHz × 8 (Ubuntu 20.04.3 LTS(64-bit))
 
 CPU = 2
+```
 
-# +
+```{code-cell} ipython3
 # Select one of the supported build platforms:
 # 1 ... Linux Intel 64
 # 2 ... macOS Intel 64
@@ -32,13 +31,15 @@ CPU = 2
 
 # Uncomment as needed. You can also run this in the terminal, with all others applications (browser) turned off.
 
-# #!./build.sh 1
-# #!./sin_performance > sin_pure_data_vec.txt
-# -
+#!./build.sh 1
+#!./sin_performance > sin_pure_data_vec.txt
+```
 
-# %pylab inline
+```{code-cell} ipython3
+%pylab inline
+```
 
-# +
+```{code-cell} ipython3
 D = loadtxt("sin_pure_data_vec.txt")
 x2 = D[:,0]
 sin_pure = D[:,2]
@@ -181,8 +182,9 @@ grid()
 ylim([0, 4])
 savefig("perf1.pdf")
 show()
+```
 
-# +
+```{code-cell} ipython3
 i1 = 4
 i2 = 9
 print(read[i1:i2])
@@ -207,11 +209,19 @@ kernel_min = min(sin_pure * cpu_freq)
 print("kernel min: %.3f" % kernel_min)
 print("kernel peak: %.3f" % kernel_peak)
 print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
-# -
+```
 
+```{code-cell} ipython3
 # The fastest possible way of calculating sin (not very accurate or usable)
 (fma_clock + 2*mul_clock) + (3*max_clock + fma_clock + 2*float_int_conv_clock + mul_clock)
+```
 
+```{code-cell} ipython3
 filename_out = "gfortran_intel.txt"
 D = [x2, sin_pure*cpu_freq, read*cpu_freq, write*cpu_freq]
 savetxt(filename_out, D)
+```
+
+```{code-cell} ipython3
+
+```
