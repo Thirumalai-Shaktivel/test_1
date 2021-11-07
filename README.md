@@ -8,6 +8,15 @@ conda activate mi
 jupyter notebook Postprocess.md
 ```
 
+The notebook saves the postprocessed results to a file such as
+`gfortran_intel.txt`. You can then copy it to a file such as
+`blog/sin_perf_arm2.txt` that you can then use in the notebook to do the final
+plots:
+```
+cd blog
+jupyter notebook Performance.md
+```
+
 # Compile with MKL
 
 mamba create -n mkl mkl-devel
