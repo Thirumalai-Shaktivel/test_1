@@ -70,4 +70,4 @@ gfortran -O3 -funroll-loops -ffast-math -c sin_implementations.f90 -o sin_implem
 gfortran -O3 -funroll-loops -ffast-math -c performance.f90 -o performance.o
 gfortran -O3 -funroll-loops -ffast-math -flto \
     -o sin_performance performance.o sin_implementations.o \
-    kernel_sin.o array_read.o array_write.o
+    array_read.o array_write.o
