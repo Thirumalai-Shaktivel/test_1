@@ -5,6 +5,7 @@ conda create -n mi gfortran jupyter matplotlib jupytext
 conda activate mi
 ./build.sh 3
 ./sin_performance > sin_pure_data_vec.txt
+jupyter notebook Postprocess.md
 ```
 
 # Compile with MKL
