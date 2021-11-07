@@ -21,19 +21,18 @@ rm -rf sin_perf_pure_vec
 
 
 if [[ $platform == "3" ]]; then
-    as -c array_copy3a.asm -o array_copy2.o
-    as -c array_copy3b.asm -o array_copy2.o
-    as -c array_read2a.asm -o array_read.o
+    #as -c array_copy3a.asm -o array_copy2.o
+    #as -c array_copy3b.asm -o array_copy2.o
+    #as -c array_read2a.asm -o array_read.o
     as -c array_read2b.asm -o array_read.o
-    as -c array_write2a.asm -o array_write.o
-    as -c array_write2b.asm -o array_write.o
-    as -c array_write2d.asm -o array_write.o
+    #as -c array_write2a.asm -o array_write.o
+    #as -c array_write2b.asm -o array_write.o
+    #as -c array_write2d.asm -o array_write.o
     as -c array_write2c.asm -o array_write.o
-    as -c array_mul3a.asm -o array_mul.o
-    as -c array_fma3a.asm -o array_fma.o
-    as -c kernel_sin5a.asm -o kernel_sin.o
-    as -c kernel_sin5b.asm -o kernel_sin.o
-    gfortran -O3 -march=native -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
+    #as -c array_mul3a.asm -o array_mul.o
+    #as -c array_fma3a.asm -o array_fma.o
+    #as -c kernel_sin5a.asm -o kernel_sin.o
+    #as -c kernel_sin5b.asm -o kernel_sin.o
 elif [[ $platform == "2" || $platform == "1" ]]; then
     # Use macho64 for macOS, win64 for Windows and elf64 for Linux
     if [[ $platform == "1" ]]; then
@@ -54,7 +53,6 @@ elif [[ $platform == "2" || $platform == "1" ]]; then
     # nasm -f $nasm_f kernel_sin1a.asm -o kernel_sin.o
     #clang -O2 -march=native -c kernel_sin2.ll -o kernel_sin.o
     #clang -O3 -march=native -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
-    gfortran -O3 -march=skylake -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
 fi
 
 # gfortran -O3 -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
@@ -72,4 +70,4 @@ gfortran -O3 -funroll-loops -ffast-math -c sin_implementations.f90 -o sin_implem
 gfortran -O3 -funroll-loops -ffast-math -c performance.f90 -o performance.o
 gfortran -O3 -funroll-loops -ffast-math -flto \
     -o sin_performance performance.o sin_implementations.o \
-    kernel_sin.o array_read.o array_write.o
+    array_read.o array_write.o
