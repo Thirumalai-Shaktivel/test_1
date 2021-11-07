@@ -115,7 +115,7 @@ end do
 end subroutine
 
 
-subroutine kernel_sin1(n, A, B) bind(c)
+subroutine kernel_sin1(n, A, B)
 ! Intel: 2.83 cycles per double; peak: 2.458
 ! ARM: 2.5 cycles per double; peak: 2.125
 use iso_fortran_env, only: dp=>real64
