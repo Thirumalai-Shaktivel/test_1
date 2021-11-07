@@ -33,7 +33,6 @@ if [[ $platform == "3" ]]; then
     as -c array_fma3a.asm -o array_fma.o
     as -c kernel_sin5a.asm -o kernel_sin.o
     as -c kernel_sin5b.asm -o kernel_sin.o
-    gfortran -O3 -march=native -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
 elif [[ $platform == "2" || $platform == "1" ]]; then
     # Use macho64 for macOS, win64 for Windows and elf64 for Linux
     if [[ $platform == "1" ]]; then
@@ -54,7 +53,6 @@ elif [[ $platform == "2" || $platform == "1" ]]; then
     # nasm -f $nasm_f kernel_sin1a.asm -o kernel_sin.o
     #clang -O2 -march=native -c kernel_sin2.ll -o kernel_sin.o
     #clang -O3 -march=native -funroll-loops -ffast-math -c kernel_sin3.c -o kernel_sin.o
-    gfortran -O3 -march=skylake -funroll-loops -ffast-math -c kernel_sin4.f90 -o kernel_sin.o
 fi
 
 # gfortran -O3 -funroll-loops -ffast-math sin_perf.f90 -o sin_perf
