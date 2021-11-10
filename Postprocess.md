@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.0
+    jupytext_version: 1.13.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -24,23 +24,12 @@ CPU = 2
 ```
 
 ```{code-cell} ipython3
-# Select one of the supported build platforms:
-# 1 ... Linux Intel 64
-# 2 ... macOS Intel 64
-# 3 ... macOS ARM 64
-
-# Uncomment as needed. You can also run this in the terminal, with all others applications (browser) turned off.
-
-#!./build.sh 1
-#!./sin_performance > sin_pure_data_vec.txt
-```
-
-```{code-cell} ipython3
 %pylab inline
 ```
 
 ```{code-cell} ipython3
-D = loadtxt("sin_pure_data_vec.txt")
+D = loadtxt("bench_fast.txt")
+#D = loadtxt("bench_fastest.txt")
 x2 = D[:,0]
 sin_pure = D[:,2]
 read = D[:,3]
