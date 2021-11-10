@@ -30,6 +30,8 @@ CPU = 2
 ```{code-cell} ipython3
 benchmark_type_fast = 1
 benchmark_type_fastest = 2
+benchmark_type_gfortran = 3
+
 
 benchmark_type = benchmark_type_fast
 
@@ -39,6 +41,8 @@ if benchmark_type == benchmark_type_fast:
     D = loadtxt("bench_fast.txt")
 elif benchmark_type == benchmark_type_fastest:
     D = loadtxt("bench_fastest.txt")
+elif benchmark_type == benchmark_type_gfortran:
+    D = loadtxt("bench_gfortran.txt")
 else:
     raise Exception("benchmark type not implemented")
 x2 = D[:,0]
@@ -156,6 +160,9 @@ if benchmark_type == benchmark_type_fast:
 elif benchmark_type == benchmark_type_fastest:
     # fastest peak
     kernel_peak = (1*fma_clock + 2*mul_clock) + (1*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+elif benchmark_type == benchmark_type_gfortran:
+    # reuse the fast peak for gfortran
+    kernel_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
 
 
 def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
