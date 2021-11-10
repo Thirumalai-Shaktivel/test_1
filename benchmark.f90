@@ -1,4 +1,4 @@
-program performance
+program benchmark
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 use sin_implementations, only: array_read, array_write, kernel_sin1, &
         kernel_sin4
