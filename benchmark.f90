@@ -1,7 +1,7 @@
 program benchmark
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 use sin_implementations, only: array_read, array_write, kernel_sin1, &
-        kernel_sin4
+        kernel_sin4, kernel_gfortran_sin
 implicit none
 
 integer :: j, k, M, u
@@ -44,7 +44,8 @@ real(dp), allocatable :: x(:)
 real(dp), allocatable :: r(:)
 integer, parameter :: &
     benchmark_type_fast = 1, &
-    benchmark_type_fastest = 2
+    benchmark_type_fastest = 2, &
+    benchmark_type_gfortran_sin = 3
 integer :: benchmark_type
 character(len=32) :: arg
 
@@ -91,6 +92,11 @@ do j = 1, size(sizes)
         ! It still uses (-pi, pi) reduction
         do k = 1, M
             call kernel_sin4(Ntile, x, r)
+        end do
+    elseif (benchmark_type == benchmark_type_gfortran_sin) then
+        ! The default gfortran sin
+        do k = 1, M
+            call kernel_gfortran_sin(Ntile, x, r)
         end do
     else
         error stop "Benchmark type not implemented"

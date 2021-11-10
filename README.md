@@ -6,6 +6,7 @@ conda activate mi
 ./build.sh 3
 ./benchmark 1 > bench_fast.txt
 ./benchmark 2 > bench_fastest.txt
+./benchmark 3 > bench_gfortran.txt
 jupyter notebook Postprocess.md
 ```
 

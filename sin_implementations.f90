@@ -171,5 +171,17 @@ contains
 
 end subroutine
 
+subroutine kernel_gfortran_sin(n, A, B)
+! Intel: runs at ? cycles;
+! Arm: runs at ? cycles;
+integer(i8), intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
+real(dp) :: x
+integer(i8) :: i
+do i = 1, n
+    B(i) = sin(A(i))
+end do
+end subroutine
 
 end module sin_implementations
