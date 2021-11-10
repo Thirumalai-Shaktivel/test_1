@@ -1,6 +1,7 @@
 program performance
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
-use sin_implementations, only: array_read, array_write, kernel_sin1
+use sin_implementations, only: array_read, array_write, kernel_sin1, &
+        kernel_sin4
 implicit none
 
 integer :: j, k, M, u
@@ -41,6 +42,16 @@ real(dp) :: xmin, xmax
 real(dp) :: t1, t2, time_kernel, time_read, time_write
 real(dp), allocatable :: x(:)
 real(dp), allocatable :: r(:)
+integer, parameter :: &
+    benchmark_type_fast = 1, &
+    benchmark_type_fastest = 2
+integer :: benchmark_type
+character(len=32) :: arg
+
+call get_command_argument(1, arg)
+if (len_trim(arg) == 0) error stop "Provide benchmark type number as an argument"
+arg = trim(arg)
+read(arg, *) benchmark_type
 
 xmin = -pi/2
 xmax = pi/2
@@ -69,9 +80,21 @@ do j = 1, size(sizes)
     time_write = (t2-t1)/(M*Ntile)
 
     call cpu_time(t1)
-    do k = 1, M
-        call kernel_sin1(Ntile, x, r)
-    end do
+    if (benchmark_type == benchmark_type_fast) then
+        ! This is the fast high accuracy version, the candidate for inclusion
+        ! into LFortran's runtime library
+        do k = 1, M
+            call kernel_sin1(Ntile, x, r)
+        end do
+    elseif (benchmark_type == benchmark_type_fastest) then
+        ! This is the fastest possible but low accuracy version
+        ! It still uses (-pi, pi) reduction
+        do k = 1, M
+            call kernel_sin4(Ntile, x, r)
+        end do
+    else
+        error stop "Benchmark type not implemented"
+    end if
     call cpu_time(t2)
     time_kernel = (t2-t1)/(M*Ntile)
 
