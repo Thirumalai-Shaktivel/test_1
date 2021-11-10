@@ -139,7 +139,13 @@ else:
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
 #kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*float_int_conv_clock + mul_clock)
+
+# fast peak
 kernel_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+
+# fastest peak
+#kernel_peak = (1*fma_clock + 2*mul_clock) + (1*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+
 
 def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
     L1x = L1 / (8*n)
@@ -198,11 +204,6 @@ kernel_min = min(sin_pure * cpu_freq)
 print("kernel min: %.3f" % kernel_min)
 print("kernel peak: %.3f" % kernel_peak)
 print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
-```
-
-```{code-cell} ipython3
-# The fastest possible way of calculating sin (not very accurate or usable)
-(fma_clock + 2*mul_clock) + (3*max_clock + fma_clock + 2*float_int_conv_clock + mul_clock)
 ```
 
 ```{code-cell} ipython3

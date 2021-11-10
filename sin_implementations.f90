@@ -87,7 +87,8 @@ end do
 end subroutine
 
 subroutine kernel_sin4(n, A, B) bind(c)
-! Intel: runs at 1.545 cycles; Peak:: 1.458
+! Intel: runs at 1.545 cycles; Peak: 1.458
+! Arm: runs at 1.553 cycles; Peak: 1.125
 implicit none
 integer(c_long), value, intent(in) :: n
 real(c_double), intent(in) :: A(n)
