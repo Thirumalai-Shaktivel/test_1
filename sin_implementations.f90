@@ -173,7 +173,7 @@ end subroutine
 
 subroutine kernel_gfortran_sin(n, A, B)
 ! Intel: runs at ? cycles;
-! Arm: runs at ? cycles;
+! Arm: runs at ~ 7 cycles;
 integer(i8), intent(in) :: n
 real(dp), intent(in) :: A(n)
 real(dp), intent(out) :: B(n)
