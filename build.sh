@@ -67,7 +67,7 @@ fi
 #     array_copy2.o array_read.o array_write.o array_mul.o array_fma.o
 
 gfortran -O3 -funroll-loops -ffast-math -c sin_implementations.f90 -o sin_implementations.o
-gfortran -O3 -funroll-loops -ffast-math -c performance.f90 -o performance.o
+gfortran -O3 -funroll-loops -ffast-math -c benchmark.f90 -o benchmark.o
 gfortran -O3 -funroll-loops -ffast-math -flto \
-    -o sin_performance performance.o sin_implementations.o \
+    -o benchmark benchmark.o sin_implementations.o \
     array_read.o array_write.o

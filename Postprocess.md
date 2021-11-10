@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.0
+    jupytext_version: 1.13.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -24,23 +24,27 @@ CPU = 2
 ```
 
 ```{code-cell} ipython3
-# Select one of the supported build platforms:
-# 1 ... Linux Intel 64
-# 2 ... macOS Intel 64
-# 3 ... macOS ARM 64
-
-# Uncomment as needed. You can also run this in the terminal, with all others applications (browser) turned off.
-
-#!./build.sh 1
-#!./sin_performance > sin_pure_data_vec.txt
-```
-
-```{code-cell} ipython3
 %pylab inline
 ```
 
 ```{code-cell} ipython3
-D = loadtxt("sin_pure_data_vec.txt")
+benchmark_type_fast = 1
+benchmark_type_fastest = 2
+benchmark_type_gfortran = 3
+
+
+benchmark_type = benchmark_type_fast
+
+
+
+if benchmark_type == benchmark_type_fast:
+    D = loadtxt("bench_fast.txt")
+elif benchmark_type == benchmark_type_fastest:
+    D = loadtxt("bench_fastest.txt")
+elif benchmark_type == benchmark_type_gfortran:
+    D = loadtxt("bench_gfortran.txt")
+else:
+    raise Exception("benchmark type not implemented")
 x2 = D[:,0]
 sin_pure = D[:,2]
 read = D[:,3]
@@ -149,8 +153,17 @@ else:
 
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
-#kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*float_int_conv_clock + mul_clock)
-kernel_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+
+if benchmark_type == benchmark_type_fast:
+    # fast peak
+    kernel_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+elif benchmark_type == benchmark_type_fastest:
+    # fastest peak
+    kernel_peak = (1*fma_clock + 2*mul_clock) + (1*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+elif benchmark_type == benchmark_type_gfortran:
+    # reuse the fast peak for gfortran
+    kernel_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+
 
 def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
     L1x = L1 / (8*n)
@@ -212,16 +225,7 @@ print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
 ```
 
 ```{code-cell} ipython3
-# The fastest possible way of calculating sin (not very accurate or usable)
-(fma_clock + 2*mul_clock) + (3*max_clock + fma_clock + 2*float_int_conv_clock + mul_clock)
-```
-
-```{code-cell} ipython3
 filename_out = "gfortran_intel.txt"
 D = [x2, sin_pure*cpu_freq, read*cpu_freq, write*cpu_freq]
 savetxt(filename_out, D)
-```
-
-```{code-cell} ipython3
-
 ```
