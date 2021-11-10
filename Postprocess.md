@@ -28,8 +28,19 @@ CPU = 2
 ```
 
 ```{code-cell} ipython3
-D = loadtxt("bench_fast.txt")
-#D = loadtxt("bench_fastest.txt")
+benchmark_type_fast = 1
+benchmark_type_fastest = 2
+
+benchmark_type = benchmark_type_fast
+
+
+
+if benchmark_type == benchmark_type_fast:
+    D = loadtxt("bench_fast.txt")
+elif benchmark_type == benchmark_type_fastest:
+    D = loadtxt("bench_fastest.txt")
+else:
+    raise Exception("benchmark type not implemented")
 x2 = D[:,0]
 sin_pure = D[:,2]
 read = D[:,3]
@@ -138,13 +149,13 @@ else:
 
 # Benchmark details:
 k = 8 * 2 # 8 bytes per element, 2 arrays
-#kernel_peak = (7*fma_clock + 2*mul_clock) + (3*max_clock + 3*fma_clock + 2*float_int_conv_clock + mul_clock)
 
-# fast peak
-kernel_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
-
-# fastest peak
-#kernel_peak = (1*fma_clock + 2*mul_clock) + (1*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+if benchmark_type == benchmark_type_fast:
+    # fast peak
+    kernel_peak = (7*fma_clock + 2*mul_clock) + (3*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
+elif benchmark_type == benchmark_type_fastest:
+    # fastest peak
+    kernel_peak = (1*fma_clock + 2*mul_clock) + (1*fma_clock + fma_clock+2*float_int_conv_clock + xor_clock + shift_clock)
 
 
 def draw_peak(x, L1_peak, L1, L2, L3, n, label, color):
@@ -210,8 +221,4 @@ print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
 filename_out = "gfortran_intel.txt"
 D = [x2, sin_pure*cpu_freq, read*cpu_freq, write*cpu_freq]
 savetxt(filename_out, D)
-```
-
-```{code-cell} ipython3
-
 ```
