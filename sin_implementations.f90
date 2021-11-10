@@ -87,7 +87,8 @@ end do
 end subroutine
 
 subroutine kernel_sin4(n, A, B) bind(c)
-! Intel: runs at 1.545 cycles; Peak:: 1.458
+! Intel: runs at 1.545 cycles; Peak: 1.458
+! Arm: runs at 1.553 cycles; Peak: 1.125
 implicit none
 integer(c_long), value, intent(in) :: n
 real(c_double), intent(in) :: A(n)
@@ -170,5 +171,17 @@ contains
 
 end subroutine
 
+subroutine kernel_gfortran_sin(n, A, B)
+! Intel: runs at ? cycles;
+! Arm: runs at ~ 7 cycles;
+integer(i8), intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
+real(dp) :: x
+integer(i8) :: i
+do i = 1, n
+    B(i) = sin(A(i))
+end do
+end subroutine
 
 end module sin_implementations
