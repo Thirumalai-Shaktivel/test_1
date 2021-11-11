@@ -65,20 +65,20 @@ end function
 
 subroutine kernel_sin3b(n, A, B) bind(c)
 implicit none
-integer(c_long), value, intent(in) :: n
-real(c_double), intent(in) :: A(n)
-real(c_double), intent(out) :: B(n)
+integer(i8), value, intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
 real(dp), parameter :: p1 = 3.14159202575683594e+00_dp
 real(dp), parameter :: p2 = 6.27832832833519205e-07_dp
 real(dp), parameter :: p3 = 1.24467443437932268e-13_dp
 real(dp) :: x, Nd
-integer(c_long) :: i, xi
+integer(i8) :: i, xi
 equivalence (x,xi)
 do i = 1, n
     x = A(i)
     Nd = int(x/pi + 0.5_dp*sign(1._dp, x))
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
-    xi = xor(shiftl(int(Nd, c_long),63), xi)
+    xi = xor(shiftl(int(Nd, i8),63), xi)
     B(i) = x
 end do
 do i = 1, n
@@ -90,13 +90,13 @@ subroutine kernel_sin4(n, A, B) bind(c)
 ! Intel: runs at 1.545 cycles; Peak: 1.458
 ! Arm: runs at 1.553 cycles; Peak: 1.125
 implicit none
-integer(c_long), value, intent(in) :: n
-real(c_double), intent(in) :: A(n)
-real(c_double), intent(out) :: B(n)
+integer(i8), value, intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
 real(dp), parameter :: S1 =  0.982396485658623
 real(dp), parameter :: S2 = -0.14013802346642243
 real(dp) :: x, z, Nd
-integer(c_long) :: i, xi
+integer(i8) :: i, xi
 equivalence (x,xi)
 do i = 1, n
     x = A(i)
@@ -109,7 +109,7 @@ do i = 1, n
     ! Preferred way, but slow:
     ! if (modulo(int(Nd), 2) == 1) x = -x
     ! Floating point and integer representation dependent, but fast:
-    xi = xor(shiftl(int(Nd, c_long),63), xi)
+    xi = xor(shiftl(int(Nd, i8),63), xi)
     z = x*x
     B(i) = x*(S1+z*S2)
 end do
@@ -119,19 +119,17 @@ end subroutine
 subroutine kernel_sin1(n, A, B)
 ! Intel: 2.83 cycles per double; peak: 2.458
 ! ARM: 2.5 cycles per double; peak: 2.125
-use iso_fortran_env, only: dp=>real64
-use iso_c_binding, only: c_long, c_double
 implicit none
-integer(c_long), value, intent(in) :: n
-real(c_double), intent(in) :: A(n)
-real(c_double), intent(out) :: B(n)
+integer(i8), value, intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
 real(dp), parameter :: p1 = 3.14159202575683594e+00_dp
 real(dp), parameter :: p2 = 6.27832832833519205e-07_dp
 real(dp), parameter :: p3 = 1.24467443437932268e-13_dp
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
 real(dp), parameter :: one_over_pi = 1/pi
 real(dp) :: x, z, Nd
-integer(c_long) :: i, xi
+integer(i8) :: i, xi
 equivalence (x,xi)
 do i = 1, n
     x = A(i)
@@ -143,7 +141,7 @@ do i = 1, n
     ! For odd Nd,  we have sin(A(i)) = sin(x+pi) = -sin(x) = sin(-x)
     !if (modulo(int(Nd), 2) == 1) x = -x
     !if (and(int(Nd), 1) /= 0) x = -x
-    xi = xor(shiftl(int(Nd, c_long),63), xi)
+    xi = xor(shiftl(int(Nd, i8),63), xi)
     B(i) = x
 end do
 do i = 1, n
@@ -154,7 +152,6 @@ contains
 
     ! Accurate on [-pi/2,pi/2] to about 1e-16
     elemental real(dp) function kernel_dsin(x) result(res)
-    use iso_fortran_env, only: dp=>real64
     real(dp), intent(in) :: x
     real(dp), parameter :: S1 = 1
     real(dp), parameter :: S2 = -0.16666666666665748417_dp
