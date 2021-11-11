@@ -37,13 +37,17 @@ elif [[ $platform == "2" || $platform == "1" ]]; then
     # Use macho64 for macOS, win64 for Windows and elf64 for Linux
     if [[ $platform == "1" ]]; then
         nasm_f="elf64"
+        nasm -f $nasm_f array_read1.asm
+        nasm -f $nasm_f array_write1.asm
     else
         nasm_f="macho64"
+        nasm -f $nasm_f array_read.asm
+        nasm -f $nasm_f array_write.asm
     fi
     #clang -c array_copy2.c -o array_copy2.o
     # nasm -f $nasm_f array_copy2c.asm -o array_copy2.o
-    nasm -f $nasm_f array_read.asm
-    nasm -f $nasm_f array_write.asm
+    # nasm -f $nasm_f array_read.asm
+    # nasm -f $nasm_f array_write.asm
     # nasm -f $nasm_f kernel_sin1c.asm -o kernel_sin.o
     # nasm -f $nasm_f array_mul4a.asm -o array_mul.o
     # nasm -f $nasm_f array_fma4a.asm -o array_fma.o
@@ -66,8 +70,8 @@ fi
 #     kernel_sin.o \
 #     array_copy2.o array_read.o array_write.o array_mul.o array_fma.o
 
-gfortran -O3 -funroll-loops -ffast-math -c sin_implementations.f90 -o sin_implementations.o
-gfortran -O3 -funroll-loops -ffast-math -c benchmark.f90 -o benchmark.o
-gfortran -O3 -funroll-loops -ffast-math -flto \
+gfortran -O3 -march=native -funroll-loops -ffast-math -c sin_implementations.f90 -o sin_implementations.o
+gfortran -O3 -march=native -funroll-loops -ffast-math -c benchmark.f90 -o benchmark.o
+gfortran -O3 -march=native -funroll-loops -ffast-math -flto \
     -o benchmark benchmark.o sin_implementations.o \
     array_read.o array_write.o
