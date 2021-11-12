@@ -25,7 +25,8 @@ ctx.dps = 50
 D = loadtxt("accuracy_all.txt")
 x = D[:,0]
 sin_pos = D[:,1:5]
-sin_neg = D[:,5:]
+sin_neg = D[:,5:9]
+sin_fastest2 = D[:,9]
 
 @vectorize
 def arb_sin(x): return arb(x).sin()
@@ -41,6 +42,7 @@ for i in range(4):
 assert abs(sin_pos-(-sin_neg)).max() == 0.0
 # we do not plot the error of sin(-x) below, since it overlaps with sin(x)
 
+err_fastest2 = abs(sin_fastest2 - arb_sin(x))
 
 figure(figsize=(12, 8))
 loglog(x, err_pos[:,3], "o", label="GFortran Intrinsic")
@@ -51,6 +53,7 @@ loglog(x, err_pos[:,1], "o", label="Fast")
 #loglog(x, err_neg[:,1], "y.", label="Fast (neg)")
 loglog(x, err_pos[:,2], "o", label="Fastest")
 #loglog(x, err_neg[:,2], "y.", label="Fastest (neg)")
+loglog(x, err_fastest2[:], "o", label="Fastest2")
 legend()
 xlabel("x")
 ylabel("Relative Error of sin(x)")
