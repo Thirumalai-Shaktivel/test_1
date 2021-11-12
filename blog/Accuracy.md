@@ -13,13 +13,6 @@ kernelspec:
 ---
 
 ```{code-cell} ipython3
-#!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy.f90 -o sin_accuracy
-#!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy_pure.f90 -o sin_accuracy_pure
-#!gfortran -O3  -ffast-math -funroll-loops ../accuracy.f90 -o accuracy
-#!./accuracy > sin_pure_data.txt
-```
-
-```{code-cell} ipython3
 %pylab inline
 import math
 from flint import ctx, arb
@@ -29,7 +22,7 @@ ctx.dps = 50
 ```
 
 ```{code-cell} ipython3
-D = loadtxt("sin_pure_data.txt")
+D = loadtxt("accuracy_all.txt")
 x = D[:,0]
 sin_pos = D[:,1:5]
 sin_neg = D[:,5:]
@@ -80,7 +73,7 @@ abs(sin_pos+sin_neg).max()
 ```
 
 ```{code-cell} ipython3
-D = loadtxt("sin_pure_data.txt")
+D = loadtxt("accuracy_all.txt")
 #assert(max(abs(x-D[:,0])) < 1e-16)
 x2 = D[:,0]
 sin_pure = D[:,1]
