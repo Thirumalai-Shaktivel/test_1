@@ -70,8 +70,13 @@ fi
 #     kernel_sin.o \
 #     array_copy2.o array_read.o array_write.o array_mul.o array_fma.o
 
-gfortran -O3 -march=native -funroll-loops -ffast-math -c sin_implementations.f90 -o sin_implementations.o
-gfortran -O3 -march=native -funroll-loops -ffast-math -c benchmark.f90 -o benchmark.o
-gfortran -O3 -march=native -funroll-loops -ffast-math -flto \
+FFLAGS="-O3 -march=native -funroll-loops -ffast-math"
+
+gfortran $FFLAGS -c sin_implementations.f90 -o sin_implementations.o
+gfortran $FFLAGS -c benchmark.f90 -o benchmark.o
+gfortran $FFLAGS -c accuracy.f90 -o accuracy.o
+gfortran $FFLAGS -flto \
     -o benchmark benchmark.o sin_implementations.o \
     array_read.o array_write.o
+gfortran $FFLAGS -flto \
+    -o accuracy accuracy.o sin_implementations.o

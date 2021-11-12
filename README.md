@@ -33,9 +33,7 @@ jupyter notebook Performance.md
 conda create -n mi gfortran jupyter matplotlib jupytext python-flint
 conda activate mi
 ./build.sh 3
-./benchmark 1 > bench_fast.txt
-./benchmark 2 > bench_fastest.txt
-./benchmark 3 > bench_gfortran.txt
+./accuracy > blog/accuracy_all.txt
 cd blog
 jupyter notebook Accuracy.md
 ```
