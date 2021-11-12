@@ -125,7 +125,7 @@ end subroutine
 
 subroutine kernel_sin42pi(n, A, B) bind(c)
 ! Intel: runs at ? cycles; Peak: ?
-! Arm: runs at ? cycles; Peak: ?
+! Arm: runs at 1.3 cycles; Peak: 0.625
 implicit none
 integer(i8), value, intent(in) :: n
 real(dp), intent(in) :: A(n)
