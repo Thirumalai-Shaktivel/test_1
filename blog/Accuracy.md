@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.12.0
+    jupytext_version: 1.13.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -15,9 +15,7 @@ kernelspec:
 ```{code-cell} ipython3
 #!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy.f90 -o sin_accuracy
 #!gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace ../sin_accuracy_pure.f90 -o sin_accuracy_pure
-!gfortran -O3 -march=skylake -ffast-math -funroll-loops ../sin_accuracy.f90 -o sin_accuracy
-!gfortran -O3 -march=skylake -ffast-math -funroll-loops ../sin_accuracy_pure.f90 -o sin_accuracy_pure
-!./sin_accuracy > sin_data.txt
+!gfortran -O3  -ffast-math -funroll-loops ../sin_accuracy_pure.f90 -o sin_accuracy_pure
 !./sin_accuracy_pure > sin_pure_data.txt
 ```
 
@@ -82,14 +80,14 @@ abs(sin_pos+sin_neg).max()
 ```
 
 ```{code-cell} ipython3
-D = loadtxt("sin_data.txt")
-x = D[:,0]
-sin_gf = D[:,1]
 D = loadtxt("sin_pure_data.txt")
 #assert(max(abs(x-D[:,0])) < 1e-16)
 x2 = D[:,0]
 sin_pure = D[:,1]
 sin_pure_double = D[:,2]
+x = x2
+sin_gf = D[:, 4]
+
 
 @vectorize
 def diff_ulp(x, y):
