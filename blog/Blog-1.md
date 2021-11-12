@@ -73,3 +73,77 @@ As can be seen, the GFortran's version is extremely accurate, over 80% of the ti
 
 The fast `sin(x)` version is still very accurate, up to 5 ULP with an average of 1.16 ULP. But it is not as accurate as GFortran's version.
 <!-- #endregion -->
+
+## Source Code
+```fortran
+! Accurate on [-pi/2,pi/2] to about 1e-16
+elemental real(dp) function kernel_dsin(x) result(res)
+use, intrinsic :: iso_fortran_env, only: dp => real64
+real(dp), intent(in) :: x
+real(dp), parameter :: S1 = 1
+real(dp), parameter :: S2 = -0.16666666666665748417_dp
+real(dp), parameter :: S3 = 8.333333333260810195e-3_dp
+real(dp), parameter :: S4 = -1.9841269819408224684e-4_dp
+real(dp), parameter :: S5 = 2.7557315969010714494e-6_dp
+real(dp), parameter :: S6 = -2.5051843446312301534e-8_dp
+real(dp), parameter :: S7 = 1.6047020166520616231e-10_dp
+real(dp), parameter :: S8 = -7.360938387054769116e-13_dp
+real(dp) :: z
+z = x*x
+res = x * (S1+z*(S2+z*(S3+z*(S4+z*(S5+z*(S6+z*(S7+z*S8)))))))
+end function
+```
+### Fast
+```fortran
+subroutine kernel_sin1(n, A, B)
+! Intel: 2.83 cycles per double; peak: 2.458
+! ARM: 2.5 cycles per double; peak: 2.125
+use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
+implicit none
+integer(i8), value, intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
+real(dp), parameter :: p1 = 3.14159202575683594e+00_dp
+real(dp), parameter :: p2 = 6.27832832833519205e-07_dp
+real(dp), parameter :: p3 = 1.24467443437932268e-13_dp
+real(dp) :: x, Nd
+integer(i8) :: i, xi
+equivalence (x,xi)
+do i = 1, n
+    x = A(i)
+    Nd = int(x/pi + 0.5_dp*sign(1._dp, x))
+    x = ((x - Nd*p1) - Nd*p2) - Nd*p3
+    xi = xor(shiftl(int(Nd, i8),63), xi)
+    B(i) = x
+end do
+do i = 1, n
+    B(i) = kernel_dsin(B(i))
+end do
+end subroutine
+```
+### Fastest
+```fortran
+subroutine kernel_sin4(n, A, B) bind(c)
+! [-pi/2, pi/2]
+! Intel: runs at 1.545 cycles; Peak: 1.458
+! Arm: runs at 1.553 cycles; Peak: 1.125
+use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
+implicit none
+integer(i8), value, intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
+real(dp), parameter :: S1 =  0.982396485658623
+real(dp), parameter :: S2 = -0.14013802346642243
+real(dp) :: x, z, Nd
+integer(i8) :: i, xi
+equivalence (x,xi)
+do i = 1, n
+    x = A(i)
+    Nd = int(x/pi + 0.5_dp*sign(1._dp, x))
+    x = x - Nd*pi
+    xi = xor(shiftl(int(Nd, i8),63), xi)
+    z = x*x
+    B(i) = x*(S1+z*S2)
+end do
+end subroutine
+```

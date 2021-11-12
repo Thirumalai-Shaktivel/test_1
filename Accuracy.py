@@ -13,8 +13,10 @@
 #     name: python3
 # ---
 
+# !gfortran -O3 -funroll-loops -ffast-math -c sin_implementations.f90 -o sin_implementations.o
 # !gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace sin_accuracy.f90 -o sin_accuracy
-# !gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace sin_accuracy_pure.f90 -o sin_accuracy_pure
+# !gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -c -fbacktrace accuracy.f90 -o sin_accuracy_pure.o
+# !gfortran -O3 -funroll-loops -ffast-math -flto -o sin_accuracy_pure sin_accuracy_pure.o sin_implementations.o
 # !gfortran -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -g -fcheck=all -fbacktrace sin_accuracy_pure_kernel.f90 -o sin_accuracy_pure_kernel
 # !./sin_accuracy > sin_data.txt
 # !./sin_accuracy_pure > sin_pure_data.txt
