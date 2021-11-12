@@ -1,6 +1,6 @@
 program accuracy
 use, intrinsic :: iso_fortran_env, only: dp => real64
-use sin_implementations, only: dsin1, dsin3b, dsin4
+use sin_implementations, only: dsin1, dsin3b, dsin4, dsin42pi
 implicit none
 
 integer :: i, N
@@ -17,9 +17,10 @@ alpha = (xmax - xmin) / (exp(beta*N) - 1)
 
 do i = 1, N+1
     x = alpha * (exp(beta*(i-1)) - 1) + xmin
-    print "(es23.16, 8(' ', es25.16e3))", x, &
+    print "(es23.16, 9(' ', es25.16e3))", x, &
         dsin1( x), dsin3b( x), dsin4( x), sin( x), &
-        dsin1(-x), dsin3b(-x), dsin4(-x), sin(-x)
+        dsin1(-x), dsin3b(-x), dsin4(-x), sin(-x), &
+        dsin42pi(x)
 end do
 
 end program accuracy

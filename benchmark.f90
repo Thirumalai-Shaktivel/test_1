@@ -1,7 +1,7 @@
 program benchmark
 use, intrinsic :: iso_fortran_env, only: dp => real64, i8 => int64
 use sin_implementations, only: array_read, array_write, kernel_sin1, &
-        kernel_sin4, kernel_gfortran_sin
+        kernel_sin4, kernel_gfortran_sin, kernel_sin42pi
 implicit none
 
 integer :: j, k, M, u
@@ -45,7 +45,8 @@ real(dp), allocatable :: r(:)
 integer, parameter :: &
     benchmark_type_fast = 1, &
     benchmark_type_fastest = 2, &
-    benchmark_type_gfortran_sin = 3
+    benchmark_type_gfortran_sin = 3, &
+    benchmark_type_fastest2 = 4
 integer :: benchmark_type
 character(len=32) :: arg
 
@@ -89,9 +90,15 @@ do j = 1, size(sizes)
         end do
     elseif (benchmark_type == benchmark_type_fastest) then
         ! This is the fastest possible but low accuracy version
-        ! It still uses (-pi, pi) reduction
+        ! It still uses (-pi/2, pi/2) reduction
         do k = 1, M
             call kernel_sin4(Ntile, x, r)
+        end do
+    elseif (benchmark_type == benchmark_type_fastest2) then
+        ! This is the fastest possible but low accuracy version
+        ! It uses (-pi, pi) reduction
+        do k = 1, M
+            call kernel_sin42pi(Ntile, x, r)
         end do
     elseif (benchmark_type == benchmark_type_gfortran_sin) then
         ! The default gfortran sin

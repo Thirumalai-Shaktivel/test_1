@@ -47,6 +47,14 @@ call kernel_sin4(1_8, A, B)
 r = B(1)
 end function
 
+real(dp) function dsin42pi(x) result(r)
+real(dp), intent(in) :: x
+real(dp) :: A(1), B(1)
+A(1) = x
+call kernel_sin42pi(1_8, A, B)
+r = B(1)
+end function
+
 ! Accurate on [-pi/2,pi/2] to about 1e-16
 elemental real(dp) function kernel_dsin(x) result(res)
 real(dp), intent(in) :: x
@@ -110,6 +118,29 @@ do i = 1, n
     ! if (modulo(int(Nd), 2) == 1) x = -x
     ! Floating point and integer representation dependent, but fast:
     xi = xor(shiftl(int(Nd, i8),63), xi)
+    z = x*x
+    B(i) = x*(S1+z*S2)
+end do
+end subroutine
+
+subroutine kernel_sin42pi(n, A, B) bind(c)
+! Intel: runs at ? cycles; Peak: ?
+! Arm: runs at ? cycles; Peak: ?
+implicit none
+integer(i8), value, intent(in) :: n
+real(dp), intent(in) :: A(n)
+real(dp), intent(out) :: B(n)
+real(dp), parameter :: S1 =  0.982396485658623
+real(dp), parameter :: S2 = -0.14013802346642243
+real(dp) :: x, z, Nd
+integer(i8) :: i, xi
+equivalence (x,xi)
+do i = 1, n
+    x = A(i)
+    ! Nd = nint(x/pi)
+    Nd = int(x/(2*pi) + 0.5_dp*sign(1._dp, x))
+    x = x - Nd*2*pi
+    ! -pi < x < pi
     z = x*x
     B(i) = x*(S1+z*S2)
 end do
