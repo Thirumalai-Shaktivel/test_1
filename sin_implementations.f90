@@ -119,7 +119,6 @@ end subroutine
 subroutine kernel_sin1(n, A, B)
 ! Intel: 2.83 cycles per double; peak: 2.458
 ! ARM: 2.5 cycles per double; peak: 2.125
-implicit none
 integer(i8), value, intent(in) :: n
 real(dp), intent(in) :: A(n)
 real(dp), intent(out) :: B(n)
@@ -127,13 +126,11 @@ real(dp), parameter :: p1 = 3.14159202575683594e+00_dp
 real(dp), parameter :: p2 = 6.27832832833519205e-07_dp
 real(dp), parameter :: p3 = 1.24467443437932268e-13_dp
 real(dp), parameter :: pi = 3.1415926535897932384626433832795_dp
-real(dp), parameter :: one_over_pi = 1/pi
 real(dp) :: x, z, Nd
 integer(i8) :: i, xi
 equivalence (x,xi)
 do i = 1, n
     x = A(i)
-    !Nd = nint(x*one_over_pi)
     Nd = int(x/pi + 0.5_dp*sign(1._dp, x))
     x = ((x - Nd*p1) - Nd*p2) - Nd*p3
     ! -pi/2 < x < pi/2
@@ -150,7 +147,7 @@ end do
 
 contains
 
-    ! Accurate on [-pi/2,pi/2] to about 1e-16
+    ! Accurate on [-pi/2,pi/2] to about 1e-15 in relative accuracy
     elemental real(dp) function kernel_dsin(x) result(res)
     real(dp), intent(in) :: x
     real(dp), parameter :: S1 = 1
