@@ -80,3 +80,21 @@ gfortran $FFLAGS -flto \
     array_read.o array_write.o
 gfortran $FFLAGS -flto \
     -o accuracy accuracy.o sin_implementations.o
+
+# Benchmarks
+## MKL
+cmake mkl; cmake --build mkl
+mkl/sin_perf_mkl > bench_mkl.txt
+
+## AMD_LibM
+cd AMD_LibM
+export AOCL_ROOT=${PWD}
+export LD_LIBRARY_PATH=${PWD}/lib:$LD_LIBRARY_PATH;
+make clean;
+make;
+./test_libm > ../bench_amd.txt
+cd ..
+
+## VDT (VectoriseD maTh)
+g++ "VDT (VectoriseD maTh)"/main.c -o bench_vdt
+./bench_vdt > bench_vdt.txt
