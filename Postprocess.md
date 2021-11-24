@@ -33,11 +33,7 @@ benchmark_type_fastest = 2
 benchmark_type_gfortran = 3
 benchmark_type_fastest2 = 4
 
-
-
-benchmark_type = benchmark_type_fastest2
-
-
+benchmark_type = benchmark_type_fast
 
 if benchmark_type == benchmark_type_fast:
     D = loadtxt("bench_fast.txt")
@@ -191,9 +187,9 @@ figure(figsize=(20, 12))
 draw_peak(x2, kernel_peak, L1, L2, L3, 2, "Kernel Theoretical Peak Performance in L1", "g")
 draw_peak(x2, R_clock, L1, L2, L3, 1, "R Theoretical Peak Performance in L1", "gray")
 draw_peak(x2, W_clock, L1, L2, L3, 1, "W Theoretical Peak Performance in L1", "gray")
-semilogx(x2, read * cpu_freq, ".", label="R (0.125)")
-semilogx(x2, write * cpu_freq, ".", label="W (0.25)")
-semilogx(x2, sin_pure * cpu_freq, "g.", label="Kernel Actual")
+semilogx(x2, read * cpu_freq, "o", label="R (0.125)")
+semilogx(x2, write * cpu_freq, "o", label="W (0.25)")
+semilogx(x2, sin_pure * cpu_freq, "go", label="Kernel Actual")
 legend()
 xlabel("Array length [double]")
 ylabel("Time of sin(x) per array element")
@@ -235,4 +231,40 @@ print("kernel percent peak: %.2f%%" % (kernel_peak / kernel_min * 100))
 filename_out = "gfortran_intel.txt"
 D = [x2, sin_pure*cpu_freq, read*cpu_freq, write*cpu_freq]
 savetxt(filename_out, D)
+```
+
+```{code-cell} ipython3
+benchmark_amd = 1
+benchmark_gfortran = 2
+benchmark_vdt = 3
+benchmark_mkl = 4
+
+bench = 2
+
+if bench == benchmark_mkl:
+    D = loadtxt("bench_mkl.txt")
+elif bench == benchmark_amd:
+    D = loadtxt("bench_amd.txt")
+elif bench == benchmark_vdt:
+    D = loadtxt("bench_vdt.txt")
+elif bench == benchmark_gfortran:
+    D = loadtxt("bench_gfortran.txt")
+else:
+    raise Exception("benchmark not implemented")
+
+benchmark = D[:,2]
+
+figure(figsize=(20, 12))
+draw_peak(x2, kernel_peak, L1, L2, L3, 2, "Kernel Theoretical Peak Performance in L1", "g")
+draw_peak(x2, R_clock, L1, L2, L3, 1, "R Theoretical Peak Performance in L1", "gray")
+draw_peak(x2, W_clock, L1, L2, L3, 1, "W Theoretical Peak Performance in L1", "gray")
+semilogx(x2, read * cpu_freq, "o", label="R (0.125)")
+semilogx(x2, write * cpu_freq, "o", label="W (0.25)")
+semilogx(x2, sin_pure * cpu_freq, "o", label="Kernel Actual")
+semilogx(x2, benchmark * cpu_freq, "o", label="Benchmark")
+legend()
+xlabel("Array length [double]")
+ylabel("Time of sin(x) per array element")
+grid()
+# ylim([-1e4, 1.5e5])
 ```
